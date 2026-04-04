@@ -24,9 +24,11 @@ describe("manifest.json (Firefox)", () => {
     const gecko = manifest.browser_specific_settings.gecko;
     expect(gecko).toBeDefined();
     expect(gecko.id).toBe("tab-yeet@webextension.cani.ne.jp");
-    expect(gecko.strict_min_version).toBe("109.0");
+    /** Firefox 140+ / Fennec 142+ — floor for `data_collection_permissions` (Extension Workshop). */
+    expect(gecko.strict_min_version).toBe("140.0");
     expect(gecko.data_collection_permissions).toEqual({
       required: ["none"],
     });
+    expect(manifest.browser_specific_settings.gecko_android.strict_min_version).toBe("142.0");
   });
 });
