@@ -26,19 +26,19 @@ Deliver PR-gated GitHub Actions that run the existing Vitest suite, `web-ext lin
 
 ## Implementation Plan
 
-1. Add `web-ext` as a devDependency and npm scripts for extension lint/build (and optional `ci` aggregate).
+1. [x] Add `web-ext` as a devDependency and npm scripts for extension lint/build (and optional `ci` aggregate).
    - Files: `package.json`, `package-lock.json`
-   - Changes: `"lint:ext": "web-ext lint --source-dir ."`, `"build:ext": "web-ext build --source-dir . --artifacts-dir web-ext-artifacts"`, optional `"ci": "npm test && npm run lint:ext && npm run build:ext"`. Pin major line compatible with POC (`web-ext@8`).
+   - Changes: `"lint:ext": "web-ext lint --source-dir ."`, `"build:ext": "web-ext build --source-dir . --artifacts-dir web-ext-artifacts --overwrite-dest"`, `"ci": "npm test && npm run lint:ext && npm run build:ext"`. DevDependency `web-ext` `^8.3.0` (preflight advisory: explicit semver range).
 
-2. Ignore packaged-output directory used by `web-ext build`.
+2. [x] Ignore packaged-output directory used by `web-ext build`.
    - Files: `.gitignore`
    - Changes: Add `web-ext-artifacts/` (and ensure no `.zip` artifacts land in repo root).
 
-3. Add PR workflow mirroring reference naming and triggers.
+3. [x] Add PR workflow mirroring reference naming and triggers.
    - Files: `.github/workflows/ci.yaml`
    - Changes: `pull_request` on `main`; job on `ubuntu-latest`; `actions/checkout@v4`; `actions/setup-node@v4` with `node-version: '20'` and `cache: npm`; run `npm ci`, `npm test`, `npm run lint:ext`, `npm run build:ext`. Use `.yaml` extension per preflight convention.
 
-4. Add Dependabot for npm and GitHub Actions.
+4. [x] Add Dependabot for npm and GitHub Actions.
    - Files: `.github/dependabot.yaml`
    - Changes: `version: 2`; `package-ecosystem: npm` with `directory: '/'`, weekly schedule (e.g. Monday 09:00 UTC), groups for minor/patch consistent with reference intent; `package-ecosystem: github-actions` with grouped action updates; `open-pull-requests-limit`, assignee `Texarkanine`, `commit-message` prefixes `fix(deps)` / `chore(deps-dev)` / `chore(deps-ci)` matching reference patterns.
 
@@ -72,5 +72,10 @@ Deliver PR-gated GitHub Actions that run the existing Vitest suite, `web-ext lin
 - [x] Implementation plan complete
 - [x] Technology validation complete
 - [x] Preflight
-- [ ] Build
-- [ ] QA
+- [x] Build
+- [x] QA
+
+## QA (2026-04-04)
+
+- **Result**: PASS
+- **Review**: Plan fully implemented; `build:ext` gained `--overwrite-dest` so `npm run ci` is idempotent. README Development section documents `npm run ci`.
