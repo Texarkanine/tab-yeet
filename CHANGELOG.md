@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/Texarkanine/tab-yeet/compare/tab-yeet-v0.4.0...tab-yeet-v0.4.1) (2026-04-04)
+
+
+### Bug Fixes
+
+* **ci:** send AMO categories for listed submissions ([dc27b16](https://github.com/Texarkanine/tab-yeet/commit/dc27b16c8c0692b133d430c5542a8875c78b8b1f))
+
 ## [0.4.0](https://github.com/Texarkanine/tab-yeet/compare/tab-yeet-v0.3.1...tab-yeet-v0.4.0) (2026-04-04)
 
 
