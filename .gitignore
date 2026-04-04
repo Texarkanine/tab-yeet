@@ -1,2 +1,5 @@
 node_modules/
 web-ext-artifacts/
+
+# Source artwork (not shipped in .xpi; excluded in web-ext-config.cjs too)
+*.psd

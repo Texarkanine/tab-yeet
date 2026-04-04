@@ -27,6 +27,7 @@ module.exports = {
     "**/*.skbd",
     ".nvmrc",
     ".gitignore",
+    "**/*.psd",
   ],
   build: {
     filename: "{name}-{version}.xpi",
