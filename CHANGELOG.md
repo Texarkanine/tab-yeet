@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.4.0](https://github.com/Texarkanine/tab-yeet/compare/tab-yeet-v0.3.1...tab-yeet-v0.4.0) (2026-04-04)
+
+
+### Features
+
+* **ci:** split AMO signing into retryable job with artifacts ([133f349](https://github.com/Texarkanine/tab-yeet/commit/133f34900dd8f09c6c30c333ace5cf61e5049999))
+
+
+### Bug Fixes
+
+* **ci:** AMO GPL-3.0-or-later via custom_license metadata (not version.license) ([5d8146d](https://github.com/Texarkanine/tab-yeet/commit/5d8146d3d168ae57b867fddacf32bddd2f9ae0cb))
+* **ci:** AMO license GPL-3.0-only + LICENSE bundle (or-later slug invalid on API) ([cae817b](https://github.com/Texarkanine/tab-yeet/commit/cae817b7d4f10aa1e319d77aff286c7b4ade1b62))
+* pared down README ([5612abd](https://github.com/Texarkanine/tab-yeet/commit/5612abd2777a41e26e93f7154aea97b70daa5f8d))
+
 ## [0.3.1](https://github.com/Texarkanine/tab-yeet/compare/tab-yeet-v0.3.0...tab-yeet-v0.3.1) (2026-04-04)
 
 
