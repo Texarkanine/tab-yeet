@@ -1,6 +1,6 @@
 # Active Context
 
-- **Current Task**: M1 — CI workflow and Dependabot (`cicd-m1-ci-dependabot`)
+- **Current Task**: M2 — Release-please CD pipeline (`cicd-m2-release-please`)
 - **Phase**: REFLECT COMPLETE
-- **What Was Done**: M1 implemented and reflected; reflection doc at `memory-bank/active/reflection/reflection-cicd-m1-ci-dependabot.md`.
-- **Next Step**: Run **`/niko`** so Step 2a can mark Milestone 1 complete in `milestones.md` and clear the sub-run ephemeral state for Milestone 2.
+- **What Was Done**: M2 shipped (release-please, XPI attach job, lockfile PR workflow, README). `test/tooling/ci-config.test.js` removed per operator. Release/lockfile workflows aligned with `.nvmrc` and `setup-node@v6`. Reflection: `memory-bank/active/reflection/reflection-cicd-m2-release-please.md`. `.qa-validation-status`: PASS.
+- **Next Step**: Run **`/niko`** for L4 Step 2a (mark Milestone 2 complete in `milestones.md`, clear sub-run ephemerals) or merge the draft PR when ready.
