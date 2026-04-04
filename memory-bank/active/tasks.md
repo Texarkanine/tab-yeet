@@ -307,5 +307,5 @@ Key decisions made during planning:
 - [x] Implementation plan complete
 - [x] Technology validation identified
 - [x] Preflight — PASS with plan amendment (added `lib/storage.js`)
-- [ ] Build
+- [x] Build — complete (`manifest.json`, `lib/`, `popup/`, `options/`, `icons/`, Vitest suite, `README.md`)
 - [ ] QA

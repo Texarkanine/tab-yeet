@@ -1,0 +1,73 @@
+:root {
+  color-scheme: light dark;
+  font-family: system-ui, sans-serif;
+  font-size: 14px;
+}
+
+body {
+  margin: 0 auto;
+  max-width: 720px;
+  padding: 16px;
+}
+
+h1 {
+  font-size: 1.25rem;
+  margin: 0 0 16px;
+}
+
+.rule-list {
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rule-card {
+  border: 1px solid color-mix(in srgb, CanvasText 18%, transparent);
+  border-radius: 8px;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 8px;
+  align-items: start;
+}
+
+.rule-card.disabled {
+  opacity: 0.55;
+}
+
+.rule-card input[type="text"] {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.rule-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.add-panel {
+  border: 1px dashed color-mix(in srgb, CanvasText 25%, transparent);
+  border-radius: 8px;
+  padding: 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 8px;
+  align-items: end;
+}
+
+.field label {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+#error {
+  color: #c00;
+  min-height: 1.2em;
+  margin-top: 8px;
+  font-size: 13px;
+}

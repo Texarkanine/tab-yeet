@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tab Yeet</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <div class="toolbar">
+      <label class="sr-only" for="format-select">Output format</label>
+      <select id="format-select"></select>
+      <button
+        type="button"
+        id="open-options"
+        class="icon-button"
+        title="Options"
+        aria-label="Open options"
+      >
+        ⚙
+      </button>
+    </div>
+    <ul id="tab-list"></ul>
+    <div class="footer">
+      <button type="button" id="copy-btn">Copy</button>
+      <div id="feedback" role="status"></div>
+    </div>
+    <style>
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+    </style>
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>

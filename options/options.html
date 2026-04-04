@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tab Yeet — Options</title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <h1>Transform rules</h1>
+    <p>
+      Rules run in order. Each rule’s pattern is a JavaScript regular expression
+      (no flags). Disabled rules are skipped.
+    </p>
+    <ul id="rules" class="rule-list"></ul>
+    <div class="add-panel">
+      <div class="field">
+        <label for="new-pattern">Pattern</label>
+        <input id="new-pattern" type="text" autocomplete="off" />
+      </div>
+      <div class="field">
+        <label for="new-replacement">Replacement</label>
+        <input id="new-replacement" type="text" autocomplete="off" />
+      </div>
+      <button type="button" id="add-btn">Add rule</button>
+    </div>
+    <div id="error" role="alert"></div>
+    <script type="module" src="options.js"></script>
+  </body>
+</html>
