@@ -28,15 +28,16 @@ flowchart LR
     end
 
     subgraph Lib["lib/"]
+        Stor["storage.js"]
         Trans["transforms.js"]
         Fmt["formats.js"]
     end
 
     Tabs["browser.tabs\n.query()"] --> PopJS
-    Rules -->|read| PopJS
-    Rules <-->|CRUD| OptJS
-    Pref -->|read| PopJS
-    PopJS -->|write| Pref
+    Stor <-->|get/set| Rules
+    Stor <-->|get/set| Pref
+    PopJS -->|import| Stor
+    OptJS -->|import| Stor
     PopJS -->|import| Trans
     PopJS -->|import| Fmt
     PopJS -->|writeText| Clip["Clipboard"]
@@ -57,7 +58,7 @@ sequenceDiagram
     participant C as Clipboard
 
     U->>P: Opens popup
-    P->>S: get(transformRules, formatPreference)
+    P->>S: loadRules() / loadFormatPreference()
     S-->>P: {rules, format}
     P->>B: query({currentWindow: true})
     B-->>P: Tab[]
@@ -80,6 +81,7 @@ sequenceDiagram
 ### Affected Components
 
 - **`manifest.json`** — New. Extension metadata: name, version, Manifest V2, permissions (`tabs`, `clipboardWrite`, `storage`), `browser_action` with popup, `options_ui`, icon references.
+- **`lib/storage.js`** — New. Storage abstraction module. Exports `STORAGE_KEYS`, `DEFAULT_RULES`, and async helpers: `loadRules()`, `saveRules(rules)`, `loadFormatPreference()`, `saveFormatPreference(key)`. Contains first-run detection and default-seeding logic. Single source of truth for storage key names and default rules. *(Added during preflight — radical innovation finding.)*
 - **`lib/transforms.js`** — New. Pure-function module. Exports `applyTransforms(url, rules)` and `transformUrls(urls, rules)`. No browser API dependency.
 - **`lib/formats.js`** — New. Pure-function module. Exports a format map (`formatKey → fn(title, url)`) and a `formatTabs(tabs, formatKey)` function. v1 keys: `plain`, `markdown`. No browser API dependency.
 - **`popup/popup.html`** — New. Popup markup: checkbox tab list, format dropdown, copy button, feedback area.
@@ -92,13 +94,14 @@ sequenceDiagram
 
 ### Cross-Module Dependencies
 
+- `popup/popup.js` → `lib/storage.js`: imports `loadRules()`, `loadFormatPreference()`, `saveFormatPreference()`
 - `popup/popup.js` → `lib/transforms.js`: imports `transformUrls()`
 - `popup/popup.js` → `lib/formats.js`: imports format map and `formatTabs()`
 - `popup/popup.js` → `browser.tabs.query({currentWindow: true})`
-- `popup/popup.js` → `browser.storage.local` (read rules + format preference)
 - `popup/popup.js` → `navigator.clipboard.writeText()`
-- `options/options.js` → `browser.storage.local` (CRUD for rules)
-- Shared storage schema between popup and options (keys: `transformRules`, `formatPreference`)
+- `options/options.js` → `lib/storage.js`: imports `loadRules()`, `saveRules()`, `DEFAULT_RULES`
+- `lib/storage.js` → `browser.storage.local` (all storage reads/writes centralized here)
+- Shared storage schema enforced via `lib/storage.js` constants (keys: `transformRules`, `formatPreference`)
 
 ### Boundary Changes
 
@@ -139,6 +142,15 @@ Key decisions made during planning:
 - Batch transform: array of URLs processed through all rules
 - Default rules transform social media URLs correctly (Twitter/X, Instagram, Reddit, TikTok)
 
+**Storage Module (`lib/storage.js`):**
+- `loadRules()` returns rules from storage; seeds defaults on first run (empty storage)
+- `loadRules()` returns default rules array when storage is empty
+- `saveRules(rules)` persists rules to storage
+- `loadFormatPreference()` returns saved format key, defaults to `"plain"` if unset
+- `saveFormatPreference(key)` persists format preference
+- `DEFAULT_RULES` contains exactly the 4 social media transforms from VISION
+- `STORAGE_KEYS` exports the canonical key names
+
 **Format System (`lib/formats.js`):**
 - `plain` format: returns URL only
 - `markdown` format: returns `- [title](url)`
@@ -155,9 +167,9 @@ Key decisions made during planning:
 - Tab display order matches `index` property
 - Duplicate detection: tabs with same post-transform URL are unchecked (first occurrence stays checked)
 - Format dropdown populated from format map keys
-- Format preference loaded from storage on popup open
-- Format preference saved to storage on dropdown change
-- Copy: applies transforms → formats → writes to clipboard
+- Format preference loaded from `loadFormatPreference()` on popup open
+- Format preference saved via `saveFormatPreference()` on dropdown change
+- Copy: uses cached transformed URLs → formats → writes to clipboard
 - Success feedback visible after copy
 - Error state shown on clipboard failure
 - Gear icon/link navigates to options page
@@ -171,9 +183,7 @@ Key decisions made during planning:
 - Toggle: flip `enabled` flag
 - Regex validation: invalid pattern shows inline error message
 - Regex validation: valid pattern clears error
-- First-run initialization: seeds default rules when storage is empty
-- Default rules match the 4 social media transforms from VISION
-- All mutations persist to `browser.storage.local`
+- All mutations persist via `saveRules()` from `lib/storage.js`
 
 ### Test Infrastructure
 
@@ -185,6 +195,7 @@ Key decisions made during planning:
 - New test files:
   - `test/lib/transforms.test.js`
   - `test/lib/formats.test.js`
+  - `test/lib/storage.test.js`
   - `test/popup/popup.test.js`
   - `test/options/options.test.js`
 
@@ -227,31 +238,43 @@ Key decisions made during planning:
   5. Implement `formatTabs()`: map tabs through formatter, join with `\n`
   6. Run tests → all pass
 
-### Step 4: Popup (TDD)
+### Step 4: Storage Module (TDD)
+
+*(Added during preflight — radical innovation finding.)*
+
+- Files: `lib/storage.js`, `test/lib/storage.test.js`
+- TDD cycle:
+  1. Stub `lib/storage.js` with signatures + JSDoc: `STORAGE_KEYS`, `DEFAULT_RULES`, `loadRules()`, `saveRules(rules)`, `loadFormatPreference()`, `saveFormatPreference(key)`
+  2. Write storage tests in `test/lib/storage.test.js` (with mocked `browser.storage.local`)
+  3. Run tests → all fail
+  4. Implement: `loadRules()` reads from storage, seeds `DEFAULT_RULES` if empty; `saveRules()` writes to storage; format preference helpers with `"plain"` default
+  5. Run tests → all pass
+
+### Step 5: Popup (TDD)
 
 - Files: `popup/popup.html`, `popup/popup.js`, `popup/popup.css`, `test/popup/popup.test.js`
 - TDD cycle:
   1. Create `popup/popup.html` with markup structure (tab list container, format dropdown, copy button, feedback area, gear icon)
-  2. Stub `popup/popup.js` with exported functions: `init()`, `loadTabs()`, `detectDuplicates(tabs, rules)`, `renderTabList(tabs, duplicateSet)`, `handleCopy()`, `showFeedback(success)`
+  2. Stub `popup/popup.js` with exported functions: `init()`, `loadTabs()`, `detectDuplicates(tabs, transformedUrls)`, `renderTabList(tabs, duplicateSet)`, `handleCopy()`, `showFeedback(success)`
   3. Create `popup/popup.css` with base styles
-  4. Write popup tests (with mocked browser APIs and jsdom)
+  4. Write popup tests (with mocked browser APIs and jsdom). Popup imports from `lib/storage.js`, `lib/transforms.js`, `lib/formats.js`.
   5. Run tests → all fail
   6. Implement popup logic
   7. Run tests → all pass
 
-### Step 5: Options Page (TDD)
+### Step 6: Options Page (TDD)
 
 - Files: `options/options.html`, `options/options.js`, `options/options.css`, `test/options/options.test.js`
 - TDD cycle:
   1. Create `options/options.html` with markup structure (rule list, add form, validation area)
-  2. Stub `options/options.js` with exported functions: `init()`, `loadRules()`, `saveRules()`, `addRule(pattern, replacement)`, `editRule(id, updates)`, `deleteRule(id)`, `moveRule(id, direction)`, `toggleRule(id)`, `validateRegex(pattern)`, `seedDefaults()`, `DEFAULT_RULES`
+  2. Stub `options/options.js` with exported functions: `init()`, `addRule(pattern, replacement)`, `editRule(id, updates)`, `deleteRule(id)`, `moveRule(id, direction)`, `toggleRule(id)`, `validateRegex(pattern)`, `renderRules(rules)`. Storage operations delegated to `lib/storage.js`.
   3. Create `options/options.css` with base styles
   4. Write options tests (with mocked browser APIs and jsdom)
   5. Run tests → all fail
   6. Implement options logic
   7. Run tests → all pass
 
-### Step 6: Icons & Polish
+### Step 7: Icons & Polish
 
 - Files: `icons/icon-48.png`, `icons/icon-96.png`
 - Changes:
@@ -259,7 +282,7 @@ Key decisions made during planning:
   - Run full test suite
   - Update `memory-bank/systemPatterns.md` and `memory-bank/techContext.md` with patterns and tech discovered during implementation
 
-### Step 7: Documentation
+### Step 8: Documentation
 
 - Files: `README.md`
 - Changes: Brief README covering what the extension does, how to install for development (`about:debugging` → Load Temporary Add-on), and how to run tests
@@ -283,6 +306,6 @@ Key decisions made during planning:
 - [x] Test planning complete (TDD)
 - [x] Implementation plan complete
 - [x] Technology validation identified
-- [ ] Preflight
+- [x] Preflight — PASS with plan amendment (added `lib/storage.js`)
 - [ ] Build
 - [ ] QA
