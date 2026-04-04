@@ -1,14 +1,9 @@
-# Progress: M2 — Release-please CD pipeline
+# Progress: M3 — AMO submission automation
 
-Implement release-please (Node), dual version bump in `package.json` and `manifest.json`, changelog from Conventional Commits, GitHub Release with unsigned `.xpi` attachment, package-lock update workflow for release PRs, and GitHub App token pattern aligned with jekyll-mermaid-prebuild.
+Extend the release workflow so that on GitHub Release creation the extension is submitted to addons.mozilla.org via `kewisch/action-web-ext` (listed channel), with source archive, GPLv3 license metadata, release notes from the GitHub release body, and signed `.xpi` attached when AMO returns it.
 
 **Complexity:** Level 2
 
 ## Phase History
 
-- **COMPLEXITY-ANALYSIS**: Complete. M2 classified Level 2: CI/CD and release configuration, reference-aligned workflows, no product architecture change.
-- **PLAN**: Complete. `memory-bank/active/tasks.md` populated with TDD framing, ordered steps, and reference alignment (jekyll-mermaid-prebuild).
-- **PREFLIGHT**: PASS. Tooling test location and scope match repo conventions; advisory recorded for verifying manifest bump config against release-please docs on first run.
-- **BUILD**: Complete. Workflows and config committed; operator removed `test/tooling/ci-config.test.js`; release/lockfile jobs aligned with `.nvmrc` / `setup-node@v6`.
-- **QA**: PASS. Workflow semantics and Node parity reviewed; `npm test` and `npm run ci` passing without tooling config tests.
-- **REFLECT**: Complete. `memory-bank/active/reflection/reflection-cicd-m2-release-please.md`.
+- **COMPLEXITY-ANALYSIS**: Complete. M3 classified Level 2: CI/CD enhancement extending the existing release-please flow; touches workflows, optional repo docs, and external AMO/GitHub secrets—same class as M2, not a multi-subsystem redesign.

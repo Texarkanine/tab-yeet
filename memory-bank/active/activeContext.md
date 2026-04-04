@@ -1,6 +1,6 @@
 # Active Context
 
-- **Current Task**: M2 — Release-please CD pipeline (`cicd-m2-release-please`)
-- **Phase**: REFLECT COMPLETE
-- **What Was Done**: M2 shipped (release-please, XPI attach job, lockfile PR workflow, README). `test/tooling/ci-config.test.js` removed per operator. Release/lockfile workflows aligned with `.nvmrc` and `setup-node@v6`. Reflection: `memory-bank/active/reflection/reflection-cicd-m2-release-please.md`. `.qa-validation-status`: PASS.
-- **Next Step**: Run **`/niko`** for L4 Step 2a (mark Milestone 2 complete in `milestones.md`, clear sub-run ephemerals) or merge the draft PR when ready.
+- **Current Task**: M3 — AMO submission automation (`cicd-m3-amo`)
+- **Phase**: COMPLEXITY-ANALYSIS - COMPLETE
+- **What Was Done**: Target is the first unchecked milestone in `milestones.md`: AMO submission automation on release. Classified **Level 2** — contained release-pipeline work (GitHub Actions + secrets + AMO API), analogous to M2; no new application architecture.
+- **Next Step**: Level 2 **plan** phase (`level2-plan.mdc`): TDD plan, touchpoints, ordered implementation steps, then preflight.
