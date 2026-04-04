@@ -21,7 +21,7 @@
   },
   "applications": {
     "gecko": {
-      "id": "tab-yeet@local.dev",
+      "id": "tab-yeet@webextension.cani.ne.jp",
       "strict_min_version": "109.0"
     }
   }
