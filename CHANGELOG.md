@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.3.0](https://github.com/Texarkanine/tab-yeet/compare/tab-yeet-v0.2.1...tab-yeet-v0.3.0) (2026-04-04)
+
+
+### Features
+
+* **ci:** add AMO signing to release workflow with contract tests ([f58884d](https://github.com/Texarkanine/tab-yeet/commit/f58884d2e793d8bfcbda72ed6ea66adbda290493))
+
+
+### Bug Fixes
+
+* **ci:** declare GPL-3.0-or-later for AMO (drop custom licenseFile) ([a8b53d4](https://github.com/Texarkanine/tab-yeet/commit/a8b53d4c70b380506312ef1f3e68a7e5974ab432))
+* overzealous tester ([2d1033a](https://github.com/Texarkanine/tab-yeet/commit/2d1033aa0f47793e3dda2197bd7b3603c61c8fcf))
+
 ## [0.2.1](https://github.com/Texarkanine/tab-yeet/compare/tab-yeet-v0.2.0...tab-yeet-v0.2.1) (2026-04-04)
 
 
