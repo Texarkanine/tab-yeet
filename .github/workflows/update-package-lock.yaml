@@ -1,0 +1,52 @@
+name: Release PR
+
+on:
+  pull_request:
+    paths:
+      - "package.json"
+      - "manifest.json"
+
+permissions:
+  contents: write
+
+jobs:
+  update-package-lock:
+    name: Update package-lock.json
+    if: startsWith(github.head_ref, 'release-please--')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate GitHub App Token
+        id: generate-token
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ vars.HELPER_APP_ID }}
+          private-key: ${{ secrets.HELPER_APP_PRIVATE_KEY }}
+
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ steps.generate-token.outputs.token }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Update package-lock.json
+        run: npm install --package-lock-only
+
+      - name: Commit updated package-lock.json
+        uses: nick-fields/retry@v4
+        with:
+          timeout_minutes: 2
+          max_attempts: 3
+          retry_wait_seconds: 5
+          command: |
+            git config user.name "${{ github.event.pull_request.user.login }}"
+            git config user.email "${{ github.event.pull_request.user.id }}+${{ github.event.pull_request.user.login }}@users.noreply.github.com"
+            if ! git diff --quiet package-lock.json; then
+              git pull --rebase origin ${{ github.head_ref }}
+              git add package-lock.json
+              git commit -m "chore(deps): update package-lock.json for new version"
+              git push
+            fi

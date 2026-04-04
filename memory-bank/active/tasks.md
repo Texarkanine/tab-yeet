@@ -1,69 +1,84 @@
-# Task: M1 — CI workflow and Dependabot
+# Task: M2 — Release-please CD pipeline (Tab Yeet)
 
-- Task ID: cicd-m1-ci-dependabot
-- Complexity: Level 2
-- Type: Simple enhancement (DevOps / repo automation)
+- **Task ID:** `cicd-m2-release-please`
+- **Complexity:** Level 2
+- **Type:** Simple enhancement (DevOps / release automation)
 
-Deliver PR-gated GitHub Actions that run the existing Vitest suite, `web-ext lint`, and `web-ext build`, plus Dependabot configuration for `npm` and `github-actions` aligned with the jekyll-mermaid-prebuild reference (grouping, commit-message prefixes, weekly schedule).
-
+Ship release-please on `main` (Node release type), keep `package.json` and `manifest.json` versions in sync via release-please, generate changelog from Conventional Commits, and on release creation build an unsigned `.xpi` with `web-ext build` and attach it to the GitHub Release. Add a PR workflow that updates `package-lock.json` on Release Please branches (mirror `update-gemfile-lock.yaml` from jekyll-mermaid-prebuild). Use the same GitHub App token pattern (`actions/create-github-app-token` with `vars.HELPER_APP_ID` and `secrets.HELPER_APP_PRIVATE_KEY`).
 
 ## Test Plan (TDD)
 
-### Behaviors to Verify
+### Behaviors to verify
 
-- [CI / Vitest]: On a pull request to `main`, the workflow runs `npm ci` and `npm test`; the job succeeds when all Vitest tests pass.
-- [CI / web-ext lint]: The same workflow runs `npm run lint:ext`; the job succeeds when `web-ext lint` exits zero for the extension rooted at the repo (current manifest: notices/warnings allowed; errors fail CI).
-- [CI / web-ext build]: The workflow runs `npm run build:ext`; the job succeeds when a packaged artifact is produced under a dedicated artifacts directory (no untracked junk in the repo root).
-- [Dependabot]: `.github/dependabot.yaml` defines `npm` and `github-actions` updates on a weekly schedule with grouped minor/patch updates and conventional commit-message prefixes consistent with the reference project.
-- [Local parity]: After implementation, a developer can run the same checks locally via `npm test`, `npm run lint:ext`, and `npm run build:ext` (optional composite `npm run ci`).
+- **release-please config present and Node-oriented**: `release-please-config.json` exists, parses as JSON, uses a Node-oriented release strategy for the root package, and names `manifest.json` as an extra file to bump so it stays aligned with `package.json`.
+- **Manifest tracks released version**: `.release-please-manifest.json` exists, parses as JSON, and its root version matches `package.json`’s `version` before any new release (baseline drift guard).
+- **Release workflow wires app token + release-please + XPI**: `.github/workflows/release-please.yaml` exists, triggers on push to `main`, runs `googleapis/release-please-action@v4` with the app-generated token, and includes a gated job that runs only when `release_created` is true, runs `npm ci`, `npm run build:ext`, and attaches `web-ext-artifacts/*.xpi` to the GitHub Release (via an appropriate maintained upload action, e.g. `softprops/action-gh-release` with `files` or equivalent).
+- **Lockfile refresh workflow for Release PRs**: `.github/workflows/update-package-lock.yaml` (or equivalently named) exists, runs on pull requests whose head branch starts with `release-please--`, restricts file paths to version bumps (`package.json` / `manifest.json`), checks out with the app token, runs `npm install` (or `npm ci` + version-aligned refresh per chosen approach), and commits `package-lock.json` only when it changes (mirror the reference repo’s commit/retry pattern).
 
-### Test Infrastructure
+### Edge cases / negative cases
 
-- Framework: Vitest (existing unit/integration tests under `test/`)
-- Test location: `test/**/*.test.js`, `vitest.config.js`, `test/setup.js`
-- Conventions: ES modules, jsdom environment, shared mocks in `test/setup.js`
-- New test files: none required for this milestone — correctness of workflow and Dependabot config is validated by a green PR check on GitHub and local execution of npm scripts
+- **Workflow guards missing**: Tests fail if `release_created` gating is absent from the XPI job (avoid building/uploading on every `main` push).
+- **Wrong ecosystem**: Lockfile workflow must not reference Ruby/Bundler; it must be npm-based for this repo.
 
-## Implementation Plan
+### Test infrastructure
 
-1. [x] Add `web-ext` as a devDependency and npm scripts for extension lint/build (and optional `ci` aggregate).
-   - Files: `package.json`, `package-lock.json`
-   - Changes: `"lint:ext": "web-ext lint --source-dir ."`, `"build:ext": "web-ext build --source-dir . --artifacts-dir web-ext-artifacts --overwrite-dest"`, `"ci": "npm test && npm run lint:ext && npm run build:ext"`. DevDependency `web-ext` `^8.3.0` (preflight advisory: explicit semver range).
+- **Framework:** Vitest (`npm test`), configured in `package.json` / `vitest.config.js`.
+- **Test location:** Extend existing `test/tooling/ci-config.test.js` (or split into `test/tooling/github-release-config.test.js` if the file grows unwieldy — follow one file until ~clear duplication).
+- **Conventions:** Node `fs` + `path` from repo root via `fileURLToPath`; `describe`/`it`/`expect` style matches M1 tests.
+- **New test files:** Prefer none; add a second file only if the single file exceeds maintainability.
 
-2. [x] Ignore packaged-output directory used by `web-ext build`.
-   - Files: `.gitignore`
-   - Changes: Add `web-ext-artifacts/` (and ensure no `.zip` artifacts land in repo root).
+## Implementation plan
 
-3. [x] Add PR workflow mirroring reference naming and triggers.
-   - Files: `.github/workflows/ci.yaml`
-   - Changes: `pull_request` on `main`; job on `ubuntu-latest`; `actions/checkout@v4`; `actions/setup-node@v4` with `node-version: '20'` and `cache: npm`; run `npm ci`, `npm test`, `npm run lint:ext`, `npm run build:ext`. Use `.yaml` extension per preflight convention.
+1. **Tests first (M2 behaviors)**  
+   - **Files:** `test/tooling/ci-config.test.js` (and optionally new sibling under `test/tooling/`).  
+   - **Changes:** Add failing tests for the four behavior groups above (config JSON, manifest, release workflow, lockfile workflow). Run `npm test`; confirm new tests fail.
 
-4. [x] Add Dependabot for npm and GitHub Actions.
-   - Files: `.github/dependabot.yaml`
-   - Changes: `version: 2`; `package-ecosystem: npm` with `directory: '/'`, weekly schedule (e.g. Monday 09:00 UTC), groups for minor/patch consistent with reference intent; `package-ecosystem: github-actions` with grouped action updates; `open-pull-requests-limit`, assignee `Texarkanine`, `commit-message` prefixes `fix(deps)` / `chore(deps-dev)` / `chore(deps-ci)` matching reference patterns.
+2. **release-please configuration**  
+   - **Files:** `release-please-config.json`, `.release-please-manifest.json`.  
+   - **Changes:** Add Node `release-type` for package `"."`; configure `extra-files` (or documented equivalent) so `manifest.json` receives the same version bump as `package.json`. Seed `.release-please-manifest.json` with the current `0.1.0` to match `package.json` / `manifest.json`.
 
-## Technology Validation
+3. **Release Please + XPI workflow**  
+   - **Files:** `.github/workflows/release-please.yaml`.  
+   - **Changes:**  
+     - `on.push.branches: [main]`; permissions `contents: write`, `pull-requests: write`, `issues: write` (omit `id-token: write` unless a chosen action requires OIDC — reference uses it for RubyGems, not needed here).  
+     - Job `release-please` with `actions/create-github-app-token@v3` + `googleapis/release-please-action@v4`; export `release_created`, `version`, and any required SHA/tag outputs for the build job.  
+     - Job `build-release-xpi` (name flexible): `if: needs.release-please.outputs.release_created`; checkout at the released revision per action outputs; `actions/setup-node@v4` with npm cache; `npm ci`; `npm run build:ext`; upload `.xpi` to the GitHub Release created by release-please.  
+     - Pin actions to the same major/minor tags as the reference repo where practical; align `.github/workflows/ci.yaml` pins in this step if required to satisfy the L4 milestone invariant (“consistent pinned action version tags”).
 
-- `web-ext@8`: Verified via `npx web-ext@8 lint --source-dir .` (exit 0; 0 errors) and `npx web-ext@8 build --source-dir . --artifacts-dir <temp>` (produced `tab_yeet-0.1.0.zip`).
-- New runtime dependencies for the extension: none — `web-ext` is dev-only.
+4. **Lockfile update workflow**  
+   - **Files:** `.github/workflows/update-package-lock.yaml`.  
+   - **Changes:** PR trigger with `paths` for `package.json` and `manifest.json`; `if: startsWith(github.head_ref, 'release-please--')`; app token checkout; `npm install` (or documented npm command) to refresh `package-lock.json`; `nick-fields/retry@v4` commit/push loop analogous to reference (adapt git user/email pattern).
+
+5. **Documentation**  
+   - **Files:** `README.md`.  
+   - **Changes:** Document that releases are driven by release-please, Conventional Commits are required on `main`, and repo `HELPER_APP_*` secrets/vars are required for workflows that mutate branches/releases. Link to Milestone 2 operator notes in `milestones.md` where helpful.
+
+6. **Green tests + CI**  
+   - **Files:** (tests from step 1).  
+   - **Changes:** Implement configuration and workflows until all tests pass; run `npm test` locally.
+
+## Technology validation
+
+- **No new runtime or npm dependencies** for the extension; workflows use existing `web-ext` build script.  
+- **release-please-action v4** and **create-github-app-token v3** are already validated in jekyll-mermaid-prebuild; no separate POC unless local `act` simulation is needed (optional).
 
 ## Dependencies
 
-- Node 20.x in CI (LTS; matches common Actions defaults)
-- `web-ext` CLI (devDependency)
-- GitHub Actions runners and Dependabot (platform)
+- Repository variable `HELPER_APP_ID` and secret `HELPER_APP_PRIVATE_KEY` (operator — documented in `milestones.md`).  
+- Existing `npm` scripts: `build:ext`, `lint:ext`, `ci`.
 
-## Challenges & Mitigations
+## Challenges and mitigations
 
-- **web-ext lint notices/warnings**: Current manifest triggers valid notices/warnings but no errors; CI should use default lint failure policy (errors fail). If future manifest changes introduce errors, CI correctly fails — fix manifest or allowlist per Mozilla guidance.
-- **No `package-lock.json` policy**: Use `npm ci` in CI — requires a committed lockfile; generate/update lockfile when adding `web-ext`.
-- **Artifact directory hygiene**: Always pass `--artifacts-dir web-ext-artifacts` and gitignore it so `web-ext build` does not dirty the working tree.
+- **Correct `manifest.json` bumping**: If `extra-files` is insufficient for MV2 manifest shape, check release-please issue tracker / docs for JSON generic updater; mitigate by adjusting config in build after a failing dry run.  
+- **Checkout ref for release job**: Mitigate by using documented outputs from `release-please` (tag or SHA) so the XPI matches the released commit.  
+- **Action version drift**: Mitigate by pinning consistently across all Tab Yeet workflows in this milestone.
 
 ## Preflight (2026-04-04)
 
-- **Result**: PASS
-- **Findings**: None blocking. Plan touchpoints are greenfield under `.github/`; extension code unchanged; `systemPatterns.md` unconcerned with CI paths.
-- **Advisory**: Pin `web-ext` with a caret or exact version in `package.json` and let Dependabot propose bumps — matches reproducible CI.
+- **Result:** PASS  
+- **Convention:** Tooling tests under `test/tooling/` match M1; no conflict with `systemPatterns.md` (extension logic untouched).  
+- **Completeness:** Plan maps to `projectbrief.md` M2 (release-please, unsigned XPI on release, lockfile workflow, GitHub App token).  
+- **Advisory:** Confirm `extra-files: ["manifest.json"]` (or current manifest-releaser equivalent) against [release-please manifest/package configuration](https://github.com/googleapis/release-please/blob/main/docs/manifest-releaser.md) if the first `release-please` dry run does not bump `manifest.json`.
 
 ## Status
 
@@ -72,10 +87,5 @@ Deliver PR-gated GitHub Actions that run the existing Vitest suite, `web-ext lin
 - [x] Implementation plan complete
 - [x] Technology validation complete
 - [x] Preflight
-- [x] Build
-- [x] QA
-
-## QA (2026-04-04)
-
-- **Result**: PASS
-- **Review**: Plan fully implemented; `build:ext` gained `--overwrite-dest` so `npm run ci` is idempotent. README Development section documents `npm run ci`.
+- [ ] Build
+- [ ] QA
