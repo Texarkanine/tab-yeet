@@ -1,10 +1,11 @@
 # Active Context
 
 ## Current Task: Firefox manifest compliance (AMO warnings)
-**Phase:** COMPLEXITY-ANALYSIS - COMPLETE
+**Phase:** QA - COMPLETE
 
 ## What Was Done
-- Classified as **Level 1**: single-file `manifest.json` change plus a small contract test; no plan/creative/preflight.
+- Build: `applications` → `browser_specific_settings`; `data_collection_permissions.required: ["none"]`; `gecko_android.strict_min_version` 142; desktop floor 140 for built-in consent; contract test `test/tooling/manifest-firefox.test.js`; `npm test` + `web-ext lint` (0 warnings).
+- QA: PASS — scope matches brief; min-version raise is required for lint/AMO alignment, not scope creep.
 
 ## Next Step
-- Level 1 build: add failing manifest contract test, update manifest, run full suite, QA, commit.
+- Operator: delete `memory-bank/active/` when satisfied; see Level 1 wrap-up message.

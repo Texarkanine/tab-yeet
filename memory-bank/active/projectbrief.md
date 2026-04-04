@@ -12,7 +12,7 @@ AMO or `web-ext` lint reports no deprecation warning for `applications` and incl
 
 ## Requirements
 
-1. Replace deprecated `applications` with `browser_specific_settings` (Gecko id and existing `strict_min_version` preserved).
+1. Replace deprecated `applications` with `browser_specific_settings` (preserve Gecko id; set `strict_min_version` to the minimum versions that support built-in data consent: desktop 140, Android 142).
 2. Add `browser_specific_settings.gecko.data_collection_permissions` as required by Firefox for new/updated extensions.
 3. Declare accurate data collection: extension does not collect or transmit data outside the local browser (`required: ["none"]` per Extension Workshop).
 
