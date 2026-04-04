@@ -1,6 +1,6 @@
 # Active Context
 
 - **Current Task**: cicd-pipeline
-- **Phase**: PLAN - COMPLETE
-- **What Was Done**: L4 milestone list generated (3 milestones). M1: CI + Dependabot, M2: release-please CD, M3: AMO submission. All sequential — each builds on the prior.
-- **Next Step**: Preflight to validate the milestone list.
+- **Phase**: PREFLIGHT - COMPLETE (PASS)
+- **What Was Done**: Preflight validated all 3 milestones. Incorporated web-ext devDep + npm scripts into M1 scope. Advisory noted for async AMO signing in M3.
+- **Next Step**: Operator reviews the plan. Then `/niko` to begin M1 execution.
