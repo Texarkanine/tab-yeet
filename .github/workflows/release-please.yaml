@@ -63,17 +63,36 @@ jobs:
           tag_name: ${{ needs.release-please.outputs.tag_name }}
           files: web-ext-artifacts/*.xpi
 
-      # Artifact basename = web-ext safeFileName({name}) + "-" + safeFileName({version}) + ".xpi"
-      # (see node_modules/web-ext/lib/cmd/build.js). Localized names (default_locale + __MSG_) need extra logic.
-      - name: Built XPI path from manifest
-        id: xpi_path
+      - name: Stage AMO signing bundle
         run: |
+          mkdir -p amo-submit
           p=$(jq -r '
             def safe: ascii_downcase | gsub("[^a-z0-9.-]+"; "_");
             "web-ext-artifacts/" + (.name | safe) + "-" + (.version | safe) + ".xpi"
           ' manifest.json)
           test -f "$p"
-          echo "path=$p" >> "$GITHUB_OUTPUT"
+          cp "$p" amo-submit/unsigned.xpi
+          cp sources.zip amo-submit/sources.zip
+
+      - name: Upload AMO signing bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: amo-submit
+          path: amo-submit
+
+  amo-sign-and-attach:
+    name: Sign with AMO and attach signed XPI
+    needs:
+      - release-please
+      - build-release-xpi
+    if: ${{ needs.release-please.outputs.release_created == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download AMO signing bundle
+        uses: actions/download-artifact@v4
+        with:
+          name: amo-submit
+          path: amo-submit
 
       - name: Fetch GitHub Release notes for AMO
         id: gh_release
@@ -82,7 +101,6 @@ jobs:
         run: |
           tag="${{ needs.release-please.outputs.tag_name }}"
           delim="REL_NOTES_$(openssl rand -hex 8)"
-          # gh api --jq takes a single expr; do not pass "-r .body" (breaks into two args).
           body=$(gh api "repos/${{ github.repository }}/releases/tags/${tag}" | jq -r '.body // empty')
           {
             echo "body<<${delim}"
@@ -95,8 +113,8 @@ jobs:
         uses: kewisch/action-web-ext@v1
         with:
           cmd: sign
-          source: ${{ steps.xpi_path.outputs.path }}
-          sourceCode: sources.zip
+          source: amo-submit/unsigned.xpi
+          sourceCode: amo-submit/sources.zip
           channel: listed
           releaseNotes: ${{ steps.gh_release.outputs.body }}
           license: GPL-3.0-or-later
