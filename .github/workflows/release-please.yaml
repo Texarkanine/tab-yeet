@@ -109,6 +109,23 @@ jobs:
             echo "${delim}"
           } >> "$GITHUB_OUTPUT"
 
+      # AMO version.license only allows listed slugs (no GPL-3.0-or-later). Use custom_license
+      # via --amo-metadata so the listing shows SPDX GPL-3.0-or-later + full LICENSE text.
+      # Do not pass action `license:` — kewisch maps GPL-3.0-or-later to version.license and AMO 400s.
+      - name: Write AMO metadata (GPL-3.0-or-later custom_license)
+        run: |
+          jq -n --rawfile text amo-submit/LICENSE '
+            {
+              default_locale: "en-US",
+              version: {
+                custom_license: {
+                  name: {"en-US": "GPL-3.0-or-later"},
+                  text: {"en-US": $text}
+                }
+              }
+            }
+          ' > amo-submit/amo-metadata.json
+
       - name: Sign with AMO
         id: amo_sign
         uses: kewisch/action-web-ext@v1
@@ -118,11 +135,7 @@ jobs:
           sourceCode: amo-submit/sources.zip
           channel: listed
           releaseNotes: ${{ steps.gh_release.outputs.body }}
-          # AMO API allows only listed slugs; GPL-3.0-or-later is not one of them.
-          # See https://mozilla.github.io/addons-server/topics/api/licenses.html
-          # kewisch/action-web-ext uses custom_license when license is not in its KNOWN_LICENSES.
-          license: GPL-3.0-only
-          licenseFile: amo-submit/LICENSE
+          metaDataFile: amo-submit/amo-metadata.json
           apiKey: ${{ secrets.AMO_SIGN_KEY }}
           apiSecret: ${{ secrets.AMO_SIGN_SECRET }}
           timeout: 900000
