@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/Texarkanine/tab-yeet/compare/tab-yeet-v0.4.1...tab-yeet-v0.5.0) (2026-04-04)
+
+
+### Features
+
+* add icon ([7087df0](https://github.com/Texarkanine/tab-yeet/commit/7087df04e2d34698c8630f32dd92586821eda888))
+
 ## [0.4.1](https://github.com/Texarkanine/tab-yeet/compare/tab-yeet-v0.4.0...tab-yeet-v0.4.1) (2026-04-04)
 
 
