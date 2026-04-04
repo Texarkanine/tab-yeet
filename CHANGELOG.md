@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/Texarkanine/tab-yeet/compare/tab-yeet-v0.3.0...tab-yeet-v0.3.1) (2026-04-04)
+
+
+### Bug Fixes
+
+* **ci:** correct gh api + jq for release notes (avoid broken --jq -r) ([6c48485](https://github.com/Texarkanine/tab-yeet/commit/6c48485da72bc4c9eb0f4bf123d2f7a3798e7ed5))
+
 ## [0.3.0](https://github.com/Texarkanine/tab-yeet/compare/tab-yeet-v0.2.1...tab-yeet-v0.3.0) (2026-04-04)
 
 
