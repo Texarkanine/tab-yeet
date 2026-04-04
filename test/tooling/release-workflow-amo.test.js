@@ -54,6 +54,11 @@ describe("release workflow (AMO / release-please)", () => {
     expect(yaml).not.toMatch(/^\s*license:\s*GPL-/m);
   });
 
+  it("sets listed-channel categories with fixed AMO slugs (firefox app)", () => {
+    expect(yaml).toMatch(/categories:\s*\{/);
+    expect(yaml).toMatch(/firefox:\s*\[\s*"tabs"\s*\]/);
+  });
+
   it("uploads signed XPI only when the sign step produced a target path", () => {
     expect(yaml).toMatch(/if:.*amo_sign\.outputs\.target/m);
     expect(yaml).toContain("${{ steps.amo_sign.outputs.target }}");

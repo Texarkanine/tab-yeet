@@ -107,11 +107,15 @@ jobs:
       # AMO version.license only allows listed slugs (no GPL-3.0-or-later). Use custom_license
       # via --amo-metadata so the listing shows SPDX GPL-3.0-or-later + full LICENSE text.
       # Do not pass action `license:` — kewisch maps GPL-3.0-or-later to version.license and AMO 400s.
-      - name: Write AMO metadata (GPL-3.0-or-later custom_license)
+      # Listed versions require add-on categories (fixed slugs per app); see AMO API "Create" docs.
+      - name: Write AMO metadata (GPL-3.0-or-later custom_license + categories)
         run: |
           jq -n --rawfile text amo-submit/LICENSE '
             {
               default_locale: "en-US",
+              categories: {
+                firefox: ["tabs"]
+              },
               version: {
                 custom_license: {
                   name: {"en-US": "GPL-3.0-or-later"},
