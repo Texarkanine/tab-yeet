@@ -1,6 +1,6 @@
 # Active Context
 
-- **Current Task**: cicd-pipeline
-- **Phase**: PREFLIGHT - COMPLETE (PASS)
-- **What Was Done**: Preflight validated all 3 milestones. Incorporated web-ext devDep + npm scripts into M1 scope. Advisory noted for async AMO signing in M3.
-- **Next Step**: Operator reviews the plan. Then `/niko` to begin M1 execution.
+- **Current Task**: M1 — CI workflow and Dependabot (`cicd-pipeline`)
+- **Phase**: COMPLEXITY-ANALYSIS - COMPLETE
+- **What Was Done**: First L4 milestone scoped as Level 2. Rationale: self-contained CI and dependency-automation work; matches preflight sizing (M1 = L2).
+- **Next Step**: Plan phase — fill `memory-bank/active/tasks.md` per Level 2 plan rules, then Preflight.
