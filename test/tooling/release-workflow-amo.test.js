@@ -33,6 +33,12 @@ describe("release workflow (AMO / release-please)", () => {
     expect(yaml).toMatch(/channel:\s*listed/);
     expect(yaml).toContain("${{ secrets.AMO_SIGN_KEY }}");
     expect(yaml).toContain("${{ secrets.AMO_SIGN_SECRET }}");
+    expect(yaml).toContain("source: ${{ steps.xpi_path.outputs.path }}");
+  });
+
+  it("derives sign XPI path from manifest version (matches web-ext filename template)", () => {
+    expect(yaml).toMatch(/jq.*manifest\.json/s);
+    expect(yaml).toContain('tab_yeet-${v}.xpi');
   });
 
   it("submits GPLv3-or-later license and source archive to AMO (AMO slug + action KNOWN_LICENSES)", () => {

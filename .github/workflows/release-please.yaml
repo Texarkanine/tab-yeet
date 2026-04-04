@@ -63,16 +63,13 @@ jobs:
           tag_name: ${{ needs.release-please.outputs.tag_name }}
           files: web-ext-artifacts/*.xpi
 
-      - name: Resolve built XPI path
+      - name: Built XPI path from manifest
         id: xpi_path
         run: |
-          shopt -s nullglob
-          xpis=(web-ext-artifacts/*.xpi)
-          if [ "${#xpis[@]}" -ne 1 ]; then
-            echo "Expected exactly one .xpi in web-ext-artifacts, found ${#xpis[@]}"
-            exit 1
-          fi
-          echo "path=${xpis[0]}" >> "$GITHUB_OUTPUT"
+          v=$(jq -r .version manifest.json)
+          p="web-ext-artifacts/tab_yeet-${v}.xpi"
+          test -f "$p"
+          echo "path=$p" >> "$GITHUB_OUTPUT"
 
       - name: Fetch GitHub Release notes for AMO
         id: gh_release
