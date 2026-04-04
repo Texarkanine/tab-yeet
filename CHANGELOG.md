@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/Texarkanine/tab-yeet/compare/tab-yeet-v0.2.0...tab-yeet-v0.2.1) (2026-04-04)
+
+
+### Bug Fixes
+
+* **ci:** emit .xpi for releases and exclude dev files from web-ext package ([#9](https://github.com/Texarkanine/tab-yeet/issues/9)) ([c99ec05](https://github.com/Texarkanine/tab-yeet/commit/c99ec05501a752d2e54c02b4753ca01d71b0c3c1))
+
 ## [0.2.0](https://github.com/Texarkanine/tab-yeet/compare/tab-yeet-v0.1.0...tab-yeet-v0.2.0) (2026-04-04)
 
 
