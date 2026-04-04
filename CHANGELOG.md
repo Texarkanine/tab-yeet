@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.1](https://github.com/Texarkanine/tab-yeet/compare/tab-yeet-v0.5.0...tab-yeet-v0.5.1) (2026-04-04)
+
+
+### Bug Fixes
+
+* no "tooling" tests ([adb98ef](https://github.com/Texarkanine/tab-yeet/commit/adb98ef357b8d29eb0393e813f5a1b9d603cd28a))
+
 ## [0.5.0](https://github.com/Texarkanine/tab-yeet/compare/tab-yeet-v0.4.1...tab-yeet-v0.5.0) (2026-04-04)
 
 

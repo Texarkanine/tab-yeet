@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Tab Yeet",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Copy tab URLs from the current window with optional URL transforms and formatting.",
   "permissions": [
     "tabs",
@@ -28,7 +28,9 @@
       "id": "tab-yeet@webextension.cani.ne.jp",
       "strict_min_version": "140.0",
       "data_collection_permissions": {
-        "required": ["none"]
+        "required": [
+          "none"
+        ]
       }
     },
     "gecko_android": {
