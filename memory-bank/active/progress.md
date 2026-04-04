@@ -7,3 +7,4 @@ Extend the release workflow so that on GitHub Release creation the extension is 
 ## Phase History
 
 - **COMPLEXITY-ANALYSIS**: Complete. M3 classified Level 2: CI/CD enhancement extending the existing release-please flow; touches workflows, optional repo docs, and external AMO/GitHub secrets—same class as M2, not a multi-subsystem redesign.
+- **PLAN**: Complete. `memory-bank/active/tasks.md` populated with TDD contracts, ordered workflow steps (checkout depth, source archive, release notes, sign, conditional upload), README updates, and challenges.
