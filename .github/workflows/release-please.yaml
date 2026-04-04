@@ -73,6 +73,7 @@ jobs:
           test -f "$p"
           cp "$p" amo-submit/unsigned.xpi
           cp sources.zip amo-submit/sources.zip
+          cp LICENSE amo-submit/LICENSE
 
       - name: Upload AMO signing bundle
         uses: actions/upload-artifact@v4
@@ -117,7 +118,11 @@ jobs:
           sourceCode: amo-submit/sources.zip
           channel: listed
           releaseNotes: ${{ steps.gh_release.outputs.body }}
-          license: GPL-3.0-or-later
+          # AMO API allows only listed slugs; GPL-3.0-or-later is not one of them.
+          # See https://mozilla.github.io/addons-server/topics/api/licenses.html
+          # kewisch/action-web-ext uses custom_license when license is not in its KNOWN_LICENSES.
+          license: GPL-3.0-only
+          licenseFile: amo-submit/LICENSE
           apiKey: ${{ secrets.AMO_SIGN_KEY }}
           apiSecret: ${{ secrets.AMO_SIGN_SECRET }}
           timeout: 900000

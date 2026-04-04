@@ -18,6 +18,7 @@ describe("release workflow (AMO / release-please)", () => {
     expect(yaml).toMatch(/actions\/upload-artifact@v4/);
     expect(yaml).toMatch(/name:\s*amo-submit/m);
     expect(yaml).toMatch(/unsigned\.xpi/);
+    expect(yaml).toMatch(/cp LICENSE amo-submit\/LICENSE/);
   });
 
   it("runs AMO sign in a separate job that downloads the bundle", () => {
@@ -49,9 +50,9 @@ describe("release workflow (AMO / release-please)", () => {
     expect(yaml).toContain("${{ secrets.AMO_SIGN_SECRET }}");
   });
 
-  it("declares GPL-3.0-or-later and no licenseFile", () => {
-    expect(yaml).toMatch(/license:\s*GPL-3\.0-or-later/);
-    expect(yaml).not.toContain("licenseFile:");
+  it("uses AMO-valid GPL-3.0-only slug plus LICENSE file (API has no GPL-3.0-or-later)", () => {
+    expect(yaml).toMatch(/license:\s*GPL-3\.0-only/);
+    expect(yaml).toMatch(/licenseFile:\s*amo-submit\/LICENSE/);
   });
 
   it("uploads signed XPI only when the sign step produced a target path", () => {
