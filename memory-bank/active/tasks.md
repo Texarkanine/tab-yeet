@@ -59,12 +59,18 @@ Deliver PR-gated GitHub Actions that run the existing Vitest suite, `web-ext lin
 - **No `package-lock.json` policy**: Use `npm ci` in CI — requires a committed lockfile; generate/update lockfile when adding `web-ext`.
 - **Artifact directory hygiene**: Always pass `--artifacts-dir web-ext-artifacts` and gitignore it so `web-ext build` does not dirty the working tree.
 
+## Preflight (2026-04-04)
+
+- **Result**: PASS
+- **Findings**: None blocking. Plan touchpoints are greenfield under `.github/`; extension code unchanged; `systemPatterns.md` unconcerned with CI paths.
+- **Advisory**: Pin `web-ext` with a caret or exact version in `package.json` and let Dependabot propose bumps — matches reproducible CI.
+
 ## Status
 
 - [x] Initialization complete
 - [x] Test planning complete (TDD)
 - [x] Implementation plan complete
 - [x] Technology validation complete
-- [ ] Preflight
+- [x] Preflight
 - [ ] Build
 - [ ] QA
