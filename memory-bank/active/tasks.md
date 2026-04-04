@@ -308,4 +308,4 @@ Key decisions made during planning:
 - [x] Technology validation identified
 - [x] Preflight — PASS with plan amendment (added `lib/storage.js`)
 - [x] Build — complete (`manifest.json`, `lib/`, `popup/`, `options/`, `icons/`, Vitest suite, `README.md`)
-- [ ] QA
+- [x] QA — PASS (2026-04-03). JSDoc fix for `loadRules()`; popup title/URL ellipsis per VISION. See `memory-bank/active/.qa-validation-status`.

@@ -53,6 +53,11 @@ body {
   min-width: 0;
   display: block;
   overflow: hidden;
+}
+
+.tab-row .title,
+.tab-row .url {
+  overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }

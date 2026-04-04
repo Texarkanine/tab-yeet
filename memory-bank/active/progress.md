@@ -23,3 +23,14 @@ Build the complete Tab Yeet browser extension from scratch as specified in `memo
   - Unknown format keys in `formatTabs()` fall back to `plain`
 * Insights
   - jsdom does not implement `document.execCommand` by default; popup fallback test assigns a stub
+
+## 2026-04-03 - QA - PASS
+
+* Work completed
+  - Semantic review vs plan/VISION: deliverables complete, no blocking gaps
+  - Fixed `loadRules()` JSDoc to match first-run vs empty-array behavior
+  - Popup CSS: per-line ellipsis on title and URL rows (VISION truncation)
+* Decisions made
+  - Trivial fixes applied in QA; no return to Build for design-level issues
+* Insights
+  - Nested block elements under `label` need their own ellipsis rules for truncation to apply
