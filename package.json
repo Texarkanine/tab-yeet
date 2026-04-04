@@ -8,7 +8,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "lint:ext": "web-ext lint --source-dir .",
-    "build:ext": "web-ext build --source-dir . --artifacts-dir web-ext-artifacts --overwrite-dest",
+    "build:ext": "web-ext build --source-dir . --artifacts-dir web-ext-artifacts",
     "ci": "npm test && npm run lint:ext && npm run build:ext"
   },
   "devDependencies": {
