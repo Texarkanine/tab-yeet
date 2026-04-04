@@ -79,6 +79,6 @@ No new **npm** dependencies. **New technology**: `kewisch/action-web-ext` at a *
 - [x] Test planning complete (TDD)
 - [x] Implementation plan complete
 - [x] Technology validation complete
-- [ ] Preflight
+- [x] Preflight
 - [ ] Build
 - [ ] QA

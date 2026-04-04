@@ -8,3 +8,4 @@ Extend the release workflow so that on GitHub Release creation the extension is 
 
 - **COMPLEXITY-ANALYSIS**: Complete. M3 classified Level 2: CI/CD enhancement extending the existing release-please flow; touches workflows, optional repo docs, and external AMO/GitHub secrets—same class as M2, not a multi-subsystem redesign.
 - **PLAN**: Complete. `memory-bank/active/tasks.md` populated with TDD contracts, ordered workflow steps (checkout depth, source archive, release notes, sign, conditional upload), README updates, and challenges.
+- **PREFLIGHT**: PASS. Plan matches `test/tooling/` conventions; operator removed generic `ci-config.test.js` — replacement is scoped AMO contract test only. Advisory: confirm GPLv3 SPDX id against Mozilla license list when authoring YAML; optional pin of `kewisch/action-web-ext` to commit SHA for supply chain.
