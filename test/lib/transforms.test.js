@@ -76,7 +76,7 @@ describe("default social rules", () => {
   it("transforms Instagram, Reddit, and TikTok URLs", () => {
     expect(
       applyTransforms("https://instagram.com/p/abc", DEFAULT_RULES),
-    ).toBe("https://ddinstagram.com/p/abc");
+    ).toBe("https://instagramez.com/p/abc");
     expect(
       applyTransforms("https://www.reddit.com/r/x/y", DEFAULT_RULES),
     ).toBe("https://vxreddit.com/r/x/y");
