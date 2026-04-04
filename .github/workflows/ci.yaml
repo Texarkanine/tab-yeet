@@ -23,3 +23,9 @@ jobs:
         run: npm run lint:ext
       - name: Build extension
         run: npm run build:ext
+      - name: Upload extension artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-yeet-extension
+          path: web-ext-artifacts/
+          if-no-files-found: error

@@ -31,6 +31,8 @@ describe("CI tooling config", () => {
     expect(y).toContain("node-version-file:");
     expect(y).toContain(".nvmrc");
     expect(y).not.toMatch(/node-version:\s*["']?20/);
+    expect(y).toMatch(/actions\/upload-artifact@v4/);
+    expect(y).toContain("web-ext-artifacts");
   });
 
   it("has dependabot for npm and github-actions", () => {
