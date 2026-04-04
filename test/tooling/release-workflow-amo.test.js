@@ -24,17 +24,14 @@ describe("release workflow (AMO / release-please)", () => {
   it("runs AMO sign in a separate job that downloads the bundle", () => {
     expect(yaml).toMatch(/actions\/download-artifact@v4/);
     expect(yaml).toMatch(/amo-submit\/unsigned\.xpi/);
-    expect(yaml).toMatch(/amo-submit\/sources\.zip/);
     expect(yaml).toMatch(/needs:\s*(\[|-)/m);
     expect(yaml).toMatch(/build-release-xpi/);
   });
 
-  it("checks out the release tag with full history for git archive in build job", () => {
-    expect(yaml).toContain("fetch-depth: 0");
-  });
-
-  it("creates a source zip via git archive for AMO sourceCode", () => {
-    expect(yaml).toMatch(/git archive.*sources\.zip/s);
+  it("does not ship a separate source archive (XPI is unminified source)", () => {
+    expect(yaml).not.toContain("sourceCode:");
+    expect(yaml).not.toContain("sources.zip");
+    expect(yaml).not.toContain("git archive");
   });
 
   it("fetches release notes from GitHub API for the release tag", () => {

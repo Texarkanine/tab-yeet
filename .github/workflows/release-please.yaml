@@ -41,7 +41,6 @@ jobs:
       - uses: actions/checkout@v6
         with:
           ref: ${{ needs.release-please.outputs.tag_name }}
-          fetch-depth: 0
 
       - uses: actions/setup-node@v6
         with:
@@ -50,9 +49,6 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-
-      - name: Package source for AMO
-        run: git archive --format=zip --output=sources.zip HEAD
 
       - name: Build extension
         run: npm run build:ext
@@ -72,7 +68,6 @@ jobs:
           ' manifest.json)
           test -f "$p"
           cp "$p" amo-submit/unsigned.xpi
-          cp sources.zip amo-submit/sources.zip
           cp LICENSE amo-submit/LICENSE
 
       - name: Upload AMO signing bundle
@@ -132,7 +127,6 @@ jobs:
         with:
           cmd: sign
           source: amo-submit/unsigned.xpi
-          sourceCode: amo-submit/sources.zip
           channel: listed
           releaseNotes: ${{ steps.gh_release.outputs.body }}
           metaDataFile: amo-submit/amo-metadata.json
