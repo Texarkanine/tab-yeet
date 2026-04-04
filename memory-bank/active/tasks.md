@@ -80,5 +80,5 @@ No new **npm** dependencies. **New technology**: `kewisch/action-web-ext` at a *
 - [x] Implementation plan complete
 - [x] Technology validation complete
 - [x] Preflight
-- [ ] Build
-- [ ] QA
+- [x] Build
+- [x] QA
