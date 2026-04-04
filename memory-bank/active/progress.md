@@ -34,3 +34,14 @@ Build the complete Tab Yeet browser extension from scratch as specified in `memo
   - Trivial fixes applied in QA; no return to Build for design-level issues
 * Insights
   - Nested block elements under `label` need their own ellipsis rules for truncation to apply
+
+## 2026-04-03 - REFLECT - COMPLETE
+
+* Work completed
+  - Wrote `memory-bank/active/reflection/reflection-tab-yeet-v1.md` (requirements vs outcome, plan accuracy, build/QA, cross-phase analysis, technical and process insights)
+  - Updated `activeContext.md` for Reflect phase completion; next step is archive
+* Decisions made
+  - None — reflection is retrospective only
+* Insights
+  - Preflight storage module and integration test over `transformRules` reduced cross-page drift risk
+  - jsdom `execCommand` stub is required to exercise clipboard fallback in automated tests
