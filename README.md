@@ -16,7 +16,13 @@ Firefox / LibreWolf extension (Manifest V2): copy URLs from all tabs in the **cu
    npm test
    ```
 
-3. Load the extension in Firefox:
+3. Match CI locally (Vitest, `web-ext lint`, `web-ext build`):
+
+   ```bash
+   npm run ci
+   ```
+
+4. Load the extension in Firefox:
 
    - Open `about:debugging#/runtime/this-firefox`
    - Click **Load Temporary Add-on…**
