@@ -26,5 +26,5 @@
 ## Execution Order
 
 - [x] Add CI workflow (Vitest + web-ext lint + web-ext build) and Dependabot configuration for npm and GitHub Actions ecosystems
-- [ ] Add release-please configuration, release workflow with unsigned .xpi attachment, and package-lock.json update workflow for release PRs — matching the jekyll-mermaid-prebuild reference flow
+- [x] Add release-please configuration, release workflow with unsigned .xpi attachment, and package-lock.json update workflow for release PRs — matching the jekyll-mermaid-prebuild reference flow
 - [ ] Add AMO submission automation to the release workflow using kewisch/action-web-ext sign (listed channel) with source code archive and GPLv3 license, attaching signed .xpi to the GitHub release when available

@@ -42,9 +42,9 @@ jobs:
         with:
           ref: ${{ needs.release-please.outputs.tag_name }}
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: "20"
+          node-version-file: ".nvmrc"
           cache: npm
 
       - name: Install dependencies
