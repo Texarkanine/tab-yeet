@@ -32,7 +32,7 @@ Use **Preferences** (gear in the popup, or the add-on’s options in `about:addo
 
 ## Releases
 
-Releases on `main` are automated with [release-please](https://github.com/googleapis/release-please): merge Conventional Commit messages (`feat:`, `fix:`, etc.), then merge the release PR when you are ready to tag. When a GitHub Release is created, CI builds an unsigned `.xpi` via `web-ext build` and attaches it to that release, then submits that build to [AMO](https://addons.mozilla.org/) for signing ([`kewisch/action-web-ext`](https://github.com/kewisch/action-web-ext) with `channel: listed`). The workflow packages a `sources.zip` from `git archive` for Mozilla’s source policy, forwards the GitHub Release notes, and declares **GPL-3.0-only** with the repo `LICENSE` text. If AMO returns a signed file in the job (some listed submissions finish later), that signed `.xpi` is uploaded to the GitHub Release as well.
+Releases on `main` are automated with [release-please](https://github.com/googleapis/release-please): merge Conventional Commit messages (`feat:`, `fix:`, etc.), then merge the release PR when you are ready to tag. When a GitHub Release is created, CI builds an unsigned `.xpi` via `web-ext build` and attaches it to that release, then submits that build to [AMO](https://addons.mozilla.org/) for signing ([`kewisch/action-web-ext`](https://github.com/kewisch/action-web-ext) with `channel: listed`). The workflow packages a `sources.zip` from `git archive` for Mozilla’s source policy, forwards the GitHub Release notes, and declares **GPL-3.0-or-later** (SPDX; matches Mozilla’s license list and `kewisch/action-web-ext`’s built-in license path). If AMO returns a signed file in the job (some listed submissions finish later), that signed `.xpi` is uploaded to the GitHub Release as well.
 
 Configure these **repository secrets**: `AMO_SIGN_KEY` (JWT issuer) and `AMO_SIGN_SECRET` (JWT secret) from the [AMO Developer Hub API credentials page](https://addons.mozilla.org/developers/addon/api/key/). The first public listing must exist on AMO before API uploads apply to your add-on; see `memory-bank/active/milestones.md` (Milestone 3).
 
@@ -40,4 +40,4 @@ Workflows that open or update branches (release-please and the `package-lock.jso
 
 ## License
 
-GPL-3.0 — see [LICENSE](LICENSE).
+GPL-3.0-or-later — see [LICENSE](LICENSE).

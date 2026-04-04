@@ -21,7 +21,7 @@ As a Tab Yeet extension developer, I want a complete CI/CD and release infrastru
 - On release creation: submit packaged extension to AMO via `kewisch/action-web-ext` sign command (listed channel)
 - Release notes forwarded from GitHub release body
 - Source code archive attached per AMO policy
-- License (GPLv3) specified in submission
+- License (GPL-3.0-or-later / SPDX) specified in submission
 - Signed `.xpi` attached to GitHub release if available (listed extensions go through async review)
 
 ## Reference Implementation

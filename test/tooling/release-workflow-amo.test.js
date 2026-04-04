@@ -35,10 +35,10 @@ describe("release workflow (AMO / release-please)", () => {
     expect(yaml).toContain("${{ secrets.AMO_SIGN_SECRET }}");
   });
 
-  it("submits GPLv3 metadata and source archive to AMO", () => {
+  it("submits GPLv3-or-later license and source archive to AMO (AMO slug + action KNOWN_LICENSES)", () => {
     expect(yaml).toMatch(/sourceCode:\s*sources\.zip/);
-    expect(yaml).toMatch(/license:\s*GPL-3\.0-only/);
-    expect(yaml).toMatch(/licenseFile:\s*LICENSE/);
+    expect(yaml).toMatch(/license:\s*GPL-3\.0-or-later/);
+    expect(yaml).not.toContain("licenseFile:");
   });
 
   it("uploads signed XPI only when the sign step produced a target path", () => {

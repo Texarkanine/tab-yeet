@@ -96,8 +96,7 @@ jobs:
           sourceCode: sources.zip
           channel: listed
           releaseNotes: ${{ steps.gh_release.outputs.body }}
-          license: GPL-3.0-only
-          licenseFile: LICENSE
+          license: GPL-3.0-or-later
           apiKey: ${{ secrets.AMO_SIGN_KEY }}
           apiSecret: ${{ secrets.AMO_SIGN_SECRET }}
           timeout: 900000
