@@ -4,7 +4,7 @@ Firefox / LibreWolf extension (Manifest V2): copy URLs from all tabs in the **cu
 
 ## Development
 
-1. Clone the repository and install dev dependencies:
+1. Clone the repository. Use **Node** at the version in [`.nvmrc`](.nvmrc) (currently **24** LTS — the same line CI uses). With [nvm](https://github.com/nvm-sh/nvm): `nvm install` then `nvm use`. Install dev dependencies:
 
    ```bash
    npm install

@@ -5,7 +5,14 @@ import { describe, expect, it } from "vitest";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 
-describe("M1 CI tooling config", () => {
+describe("CI tooling config", () => {
+  it("pins Node version in .nvmrc for local dev and CI", () => {
+    const p = resolve(root, ".nvmrc");
+    expect(existsSync(p)).toBe(true);
+    const v = readFileSync(p, "utf8").trim();
+    expect(v).toBe("24");
+  });
+
   it("package.json defines web-ext and extension scripts", () => {
     const pkg = JSON.parse(readFileSync(resolve(root, "package.json"), "utf8"));
     expect(pkg.devDependencies?.["web-ext"]).toBeDefined();
@@ -27,6 +34,9 @@ describe("M1 CI tooling config", () => {
     expect(y).toContain("npm test");
     expect(y).toMatch(/npm run lint:ext/);
     expect(y).toMatch(/npm run build:ext/);
+    expect(y).toContain("node-version-file:");
+    expect(y).toContain(".nvmrc");
+    expect(y).not.toMatch(/node-version:\s*["']?20/);
   });
 
   it("has dependabot for npm and github-actions", () => {
