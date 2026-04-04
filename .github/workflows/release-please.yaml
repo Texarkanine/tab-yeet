@@ -63,11 +63,15 @@ jobs:
           tag_name: ${{ needs.release-please.outputs.tag_name }}
           files: web-ext-artifacts/*.xpi
 
+      # Artifact basename = web-ext safeFileName({name}) + "-" + safeFileName({version}) + ".xpi"
+      # (see node_modules/web-ext/lib/cmd/build.js). Localized names (default_locale + __MSG_) need extra logic.
       - name: Built XPI path from manifest
         id: xpi_path
         run: |
-          v=$(jq -r .version manifest.json)
-          p="web-ext-artifacts/tab_yeet-${v}.xpi"
+          p=$(jq -r '
+            def safe: ascii_downcase | gsub("[^a-z0-9.-]+"; "_");
+            "web-ext-artifacts/" + (.name | safe) + "-" + (.version | safe) + ".xpi"
+          ' manifest.json)
           test -f "$p"
           echo "path=$p" >> "$GITHUB_OUTPUT"
 
