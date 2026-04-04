@@ -9,7 +9,7 @@ Implement the Tab Yeet browser extension as specified in `memory-bank/VISION.md`
 - **Options page** (`options/`) — CRUD management for transform rules (add, edit, delete, reorder, enable/disable toggle, inline regex validation)
 - **Transform engine** (`lib/transforms.js`) — Sequential regex rule application against every URL
 - **Format system** (`lib/formats.js`) — Strategy map of `formatKey → formatterFunction(title, url)`; v1 ships `plain` and `markdown`
-- **Default transform rules** — Twitter/X → fixupx.com, Instagram → instagramez.com (InstagramEZ per [Lexedia embed fixer list](https://gist.github.com/Lexedia/bbbde4dbbf628b0bfe8476a96a977a8f)), Reddit → vxreddit.com, TikTok → vxtiktok.com
+- **Default transform rules** — Twitter/X → fixupx.com, Instagram → eeinstagram.com (community-recommended on [Lexedia embed fixer list](https://gist.github.com/Lexedia/bbbde4dbbf628b0bfe8476a96a977a8f) gist), Reddit → vxreddit.com, TikTok → vxtiktok.com
 - **Icons** (`icons/`) — Extension icons at 48px and 96px
 
 ## Authoritative Spec

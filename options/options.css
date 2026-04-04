@@ -25,6 +25,8 @@ h1 {
 }
 
 .rule-card {
+  /* color-mix() needs Firefox 113+; fallbacks keep borders on strict_min_version 109 */
+  border: 1px solid rgba(0, 0, 0, 0.18);
   border: 1px solid color-mix(in srgb, CanvasText 18%, transparent);
   border-radius: 8px;
   padding: 10px;
@@ -50,6 +52,7 @@ h1 {
 }
 
 .add-panel {
+  border: 1px dashed rgba(0, 0, 0, 0.25);
   border: 1px dashed color-mix(in srgb, CanvasText 25%, transparent);
   border-radius: 8px;
   padding: 12px;
@@ -70,4 +73,16 @@ h1 {
   min-height: 1.2em;
   margin-top: 8px;
   font-size: 13px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .rule-card {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid color-mix(in srgb, CanvasText 18%, transparent);
+  }
+
+  .add-panel {
+    border: 1px dashed rgba(255, 255, 255, 0.28);
+    border: 1px dashed color-mix(in srgb, CanvasText 25%, transparent);
+  }
 }

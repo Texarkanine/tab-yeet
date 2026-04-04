@@ -15,6 +15,7 @@ body {
   align-items: center;
   gap: 8px;
   padding: 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
   border-bottom: 1px solid color-mix(in srgb, CanvasText 15%, transparent);
 }
 
@@ -45,6 +46,7 @@ body {
   align-items: flex-start;
   gap: 6px;
   padding: 4px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   border-bottom: 1px solid color-mix(in srgb, CanvasText 8%, transparent);
 }
 
@@ -96,4 +98,16 @@ body {
 
 #feedback.error {
   color: #c00;
+}
+
+@media (prefers-color-scheme: dark) {
+  .toolbar {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    border-bottom: 1px solid color-mix(in srgb, CanvasText 15%, transparent);
+  }
+
+  .tab-row {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid color-mix(in srgb, CanvasText 8%, transparent);
+  }
 }
