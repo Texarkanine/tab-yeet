@@ -82,9 +82,11 @@ jobs:
         run: |
           tag="${{ needs.release-please.outputs.tag_name }}"
           delim="REL_NOTES_$(openssl rand -hex 8)"
+          # gh api --jq takes a single expr; do not pass "-r .body" (breaks into two args).
+          body=$(gh api "repos/${{ github.repository }}/releases/tags/${tag}" | jq -r '.body // empty')
           {
             echo "body<<${delim}"
-            gh api "repos/${{ github.repository }}/releases/tags/${tag}" --jq -r .body
+            echo "$body"
             echo "${delim}"
           } >> "$GITHUB_OUTPUT"
 
