@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.1](https://github.com/Texarkanine/tab-yeet/compare/tab-yeet-v0.6.0...tab-yeet-v0.6.1) (2026-04-05)
+
+
+### Bug Fixes
+
+* **docs:** README fix to proc proper Release ([db71812](https://github.com/Texarkanine/tab-yeet/commit/db71812de3da43e7bdbd4c32e11612325e8a8e98))
+
 ## [0.6.0](https://github.com/Texarkanine/tab-yeet/compare/tab-yeet-v0.5.1...tab-yeet-v0.6.0) (2026-04-04)
 
 ## [0.5.1](https://github.com/Texarkanine/tab-yeet/compare/tab-yeet-v0.5.0...tab-yeet-v0.5.1) (2026-04-04)
