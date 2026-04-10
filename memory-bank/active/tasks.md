@@ -77,4 +77,4 @@ No new technology — validation not required.
 - [x] Technology validation complete
 - [x] Preflight (PASS — one advisory: `build:ext` change also affects `release-please.yaml`, benign since Chrome zip is produced but not consumed until M3)
 - [x] Build (2/4 files changed: `package.json`, `.github/workflows/ci.yaml`; 67 tests pass; both artifacts verified)
-- [ ] QA
+- [x] QA (PASS — clean, no issues)
