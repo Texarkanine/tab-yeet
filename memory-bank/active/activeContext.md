@@ -4,11 +4,12 @@
 CI: Dual-Target Build Validation on PRs (M2)
 
 ## Phase
-QA - COMPLETE
+REFLECT COMPLETE
 
 ## What Was Done
-- Semantic review passed: KISS, DRY, YAGNI, completeness, regression, integrity, documentation all clean
-- No fixes needed — implementation is minimal and correct
+- Reflected on M2: clean execution, one plan correction (Chrome lint excluded)
+- Key process insight: L4 sub-run plans should cross-check previous milestone's `ci` script
+- No persistent file updates needed
 
 ## Next Step
-- Reflect phase runs automatically
+Run `/niko` to continue to the next milestone.

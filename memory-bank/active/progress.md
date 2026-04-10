@@ -11,3 +11,4 @@ Update `ci.yaml` to build and lint both Firefox MV2 and Chrome MV3 targets on PR
 - **PREFLIGHT**: PASS. One advisory: updating `build:ext` to build both targets also affects `release-please.yaml` — benign since Chrome zip is produced but not consumed until M3. Firefox/AMO pipeline unaffected.
 - **BUILD**: Complete. 2 files changed (`package.json`, `.github/workflows/ci.yaml`). 67 tests passing, both artifacts verified. Deviation: removed Chrome lint from plan after confirming M1's finding that `web-ext lint` rejects Chrome MV3 manifests.
 - **QA**: PASS. Clean review — no issues found. All constraints satisfied.
+- **REFLECT**: Complete. One process insight: L4 sub-run plans should cross-check previous milestone's decisions (especially the `ci` npm script) before proposing CI changes.
