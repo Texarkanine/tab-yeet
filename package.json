@@ -7,9 +7,14 @@
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
-    "lint:ext": "web-ext lint --source-dir .",
-    "build:ext": "web-ext build --source-dir . --artifacts-dir web-ext-artifacts",
-    "ci": "npm test && npm run lint:ext && npm run build:ext"
+    "stage:chrome": "node scripts/stage-chrome.js",
+    "lint:firefox": "web-ext lint --source-dir .",
+    "lint:chrome": "npm run stage:chrome && web-ext lint --source-dir build/chrome",
+    "lint:ext": "npm run lint:firefox",
+    "build:firefox": "web-ext build --source-dir . --artifacts-dir web-ext-artifacts",
+    "build:chrome": "npm run stage:chrome && web-ext build --source-dir build/chrome --artifacts-dir web-ext-artifacts --filename \"{name}-{version}-chrome.zip\" --overwrite-dest",
+    "build:ext": "npm run build:firefox",
+    "ci": "npm test && npm run lint:firefox && npm run build:firefox && npm run build:chrome"
   },
   "devDependencies": {
     "jsdom": "^29.0.1",

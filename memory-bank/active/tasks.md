@@ -30,37 +30,14 @@ Create a manifest transform script to generate a Chrome MV3 manifest from the ex
 
 ## Implementation Plan
 
-1. **Stub transform function + test file**
-   - Files: `scripts/transform-manifest.js`, `test/scripts/transform-manifest.test.js`
-   - Changes: Export `transformManifest(mv2)` with empty implementation; create test file with empty `it()` blocks
-
-2. **Implement tests for `transformManifest`**
-   - Files: `test/scripts/transform-manifest.test.js`
-   - Changes: Fill in all test cases per behaviors above; run tests → all should fail
-
-3. **Implement `transformManifest`**
-   - Files: `scripts/transform-manifest.js`
-   - Changes: Implement MV2→MV3 conversion logic (manifest_version, browser_action→action, remove browser_specific_settings, remove clipboardWrite); run tests → all should pass
-
-4. **Create staging script**
-   - Files: `scripts/stage-chrome.js`
-   - Changes: Script that creates `build/chrome/` with extension source files (popup/, options/, lib/, icons/) and transformed Chrome manifest
-
-5. **Update npm scripts**
-   - Files: `package.json`
-   - Changes: Add `stage:chrome`, `build:firefox`, `build:chrome`, `lint:firefox`, `lint:chrome`; alias `build:ext`→`build:firefox`, `lint:ext`→`lint:firefox` for backwards compat; update `ci` to run both targets
-
-6. **Update `.gitignore`**
-   - Files: `.gitignore`
-   - Changes: Add `build/` directory
-
-7. **Verify both builds**
-   - Run `npm run lint:firefox`, `npm run lint:chrome`, `npm run build:firefox`, `npm run build:chrome`
-   - Confirm Firefox produces `.xpi`, Chrome produces `-chrome.zip`
-
-8. **Update README**
-   - Files: `README.md`
-   - Changes: Update Development section for dual-target builds; note both Firefox and Chrome build commands
+1. [x] Stub transform function + test file
+2. [x] Implement tests for `transformManifest`
+3. [x] Implement `transformManifest`
+4. [x] Create staging script
+5. [x] Update npm scripts
+6. [x] Update `.gitignore`
+7. [x] Verify both builds
+8. [x] Update README
 
 ## Technology Validation
 
@@ -74,8 +51,8 @@ No new technology — validation not required. `web-ext` (already a dev dependen
 ## Challenges & Mitigations
 
 - **`web-ext-config.cjs` applies to Chrome builds**: The config is CWD-based, so Chrome builds inherit Firefox ignore patterns and `.xpi` filename. Mitigation: harmless extra ignores; override filename via `--filename` CLI arg.
-- **`web-ext lint` Chrome limitations** (from L4 preflight): `web-ext lint` validates Firefox-centric rules. It will accept MV3 manifests but won't catch Chrome-specific issues. Acceptable — Chrome validation happens at CWS upload time.
-- **`clipboardWrite` decision**: Dropping it from Chrome manifest since Clipboard API works in extension popups without it. Documented in transform function.
+- **`web-ext lint` Chrome limitations** (from L4 preflight): `web-ext lint` validates Firefox-centric rules. Reports `ADDON_ID_REQUIRED` error for Chrome MV3 manifests (Firefox-specific requirement). Chrome lint excluded from CI; Chrome validation happens at CWS upload time.
+- **`clipboardWrite` decision**: Dropped from Chrome manifest since Clipboard API works in extension popups without it. Documented in transform function.
 
 ## Status
 
@@ -83,6 +60,6 @@ No new technology — validation not required. `web-ext` (already a dev dependen
 - [x] Test planning complete (TDD)
 - [x] Implementation plan complete
 - [x] Technology validation complete
-- [ ] Preflight
-- [ ] Build
+- [x] Preflight
+- [x] Build
 - [ ] QA
