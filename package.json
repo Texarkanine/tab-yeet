@@ -3,7 +3,7 @@
   "version": "0.6.1",
   "private": true,
   "type": "module",
-  "description": "Firefox extension: copy tab URLs with transforms and formatting",
+  "description": "Browser extension: copy tab URLs with transforms and formatting",
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",

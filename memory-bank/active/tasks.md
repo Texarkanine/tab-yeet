@@ -62,4 +62,4 @@ No new technology — validation not required. `web-ext` (already a dev dependen
 - [x] Technology validation complete
 - [x] Preflight
 - [x] Build
-- [ ] QA
+- [x] QA
