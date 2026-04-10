@@ -4,13 +4,12 @@
 CI: Dual-Target Build Validation on PRs (M2)
 
 ## Phase
-PLAN - COMPLETE
+PREFLIGHT - COMPLETE
 
 ## What Was Done
-- Produced 4-step implementation plan: update npm aliases, update CI workflow, validate locally, check README
-- Identified 7 validation behaviors (all exercised by existing scripts, no new unit tests needed)
-- Two files affected: `package.json`, `.github/workflows/ci.yaml`
-- No new dependencies or technology
+- Convention compliance verified: all changes in correct locations, naming follows patterns
+- Dependency impact traced: `build:ext` also used in `release-please.yaml` — benign (Chrome zip produced but not consumed until M3, Firefox pipeline unaffected)
+- No conflicts, no duplication, all requirements mapped to concrete steps
 
 ## Next Step
-- Preflight validation runs automatically
+- Build phase runs automatically

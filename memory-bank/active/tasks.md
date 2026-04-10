@@ -75,6 +75,6 @@ No new technology — validation not required.
 - [x] Test planning complete (TDD)
 - [x] Implementation plan complete
 - [x] Technology validation complete
-- [ ] Preflight
+- [x] Preflight (PASS — one advisory: `build:ext` change also affects `release-please.yaml`, benign since Chrome zip is produced but not consumed until M3)
 - [ ] Build
 - [ ] QA
