@@ -8,3 +8,4 @@ Extend release-please pipeline to build both Firefox MV2 and Chrome MV3 targets 
 
 - **COMPLEXITY-ANALYSIS**: Complete. Level 3 determined — multiple CI/CD files, new CWS publishing target, documentation deliverable, cross-cutting release pipeline concerns.
 - **PLAN**: Complete. 6-step plan: rename build job + attach Chrome zip, stage CWS artifact, add CWS publish job, update README, create CWS setup docs, verify RP config (no-op). No open questions. No unit tests (pure CI/CD + docs). Key decisions: direct curl for CWS API, conditional job, separate docs/cws-setup.md.
+- **PREFLIGHT**: PASS. Two advisory items: (1) add proper error handling to CWS curl commands (incorporated into plan), (2) `secrets.*` in job `if:` condition is functionally correct but may log warnings — low risk, proceed as planned.

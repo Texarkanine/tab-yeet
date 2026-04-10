@@ -4,14 +4,14 @@
 Release Pipeline: CWS Publishing, Dual-Target Release Artifacts & Account Setup Docs (M3)
 
 ## Phase
-PLAN - COMPLETE
+PREFLIGHT - PASS
 
 ## What Was Done
-- Component analysis: 3 files affected (release-please.yaml, README.md, new docs/cws-setup.md)
-- No open questions — clear approach using direct `curl` CWS API calls, separate setup doc, conditional job
-- No unit tests needed (pure CI/CD YAML + docs changes); verification via workflow run
-- 6-step implementation plan: rename build job + attach Chrome zip, stage CWS artifact, add CWS publish job, update README, create CWS setup docs, verify release-please config (no-op)
-- Key decisions: direct curl over third-party action, conditional CWS job, job rename to `build-release`
+- Convention compliance: verified — `docs/cws-setup.md` is new directory but standard location; all other files are in-place edits
+- Dependency impact: verified — `build-release-xpi` job ID only referenced within release-please.yaml (lines 36, 83)
+- Conflict detection: none — no existing CWS infrastructure
+- Completeness: all 5 milestone requirements mapped to implementation steps
+- Plan amended: added curl error handling (preflight advisory)
 
 ## Next Step
-Proceed to Preflight phase to validate the plan.
+Proceed to Build phase (`/niko-build`). STOP and wait for operator.

@@ -120,8 +120,8 @@ None — the integration test for this milestone is the release workflow itself.
     - Steps:
       1. Download `cws-submit` artifact
       2. Exchange refresh token for access token via Google OAuth2 token endpoint (`curl -s -X POST https://oauth2.googleapis.com/token`)
-      3. Upload zip to CWS (`curl -s -X PUT "https://www.googleapis.com/upload/chromewebstore/v1.1/items/${EXTENSION_ID}" -H "Authorization: Bearer ${TOKEN}" -T cws-submit/extension.zip`)
-      4. Publish (`curl -s -X POST "https://www.googleapis.com/chromewebstore/v1.1/items/${EXTENSION_ID}/publish" -H "Authorization: Bearer ${TOKEN}"`)
+      3. Upload zip to CWS (`curl -sf -X PUT "https://www.googleapis.com/upload/chromewebstore/v1.1/items/${EXTENSION_ID}" -H "Authorization: Bearer ${TOKEN}" -T cws-submit/extension.zip`). Capture and validate response — log the response body and fail the step on non-200 status.
+      4. Publish (`curl -sf -X POST "https://www.googleapis.com/chromewebstore/v1.1/items/${EXTENSION_ID}/publish" -H "Authorization: Bearer ${TOKEN}"`). Capture and validate response — same error handling pattern.
     - Secrets: `CWS_EXTENSION_ID`, `CWS_CLIENT_ID`, `CWS_CLIENT_SECRET`, `CWS_REFRESH_TOKEN`
 
 ### 4. Update README Releases section
@@ -165,6 +165,6 @@ No new technology — validation not required. The CWS API is used via `curl` (a
 - [x] Test planning complete (TDD)
 - [x] Implementation plan complete
 - [x] Technology validation complete
-- [ ] Preflight
+- [x] Preflight (PASS — 2 advisory items, no blockers)
 - [ ] Build
 - [ ] QA
