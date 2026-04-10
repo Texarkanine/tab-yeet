@@ -1,11 +1,9 @@
-# Progress: Chromium (MV3) Support for Tab Yeet
+# Progress: Dual-Manifest Build System (M1)
 
-Add Manifest V3 Chromium support to Tab Yeet: dual-manifest build, browser API compatibility, CWS publishing pipeline, and release-please dual-target configuration — all from one codebase.
+Create manifest transform script to generate Chrome MV3 manifest from Firefox MV2 manifest, add `build:firefox`/`build:chrome` npm scripts, verify both outputs with `web-ext lint`, and update README.
 
-**Complexity:** Level 4
+**Complexity:** Level 2
 
 ## Phase History
 
-- **COMPLEXITY-ANALYSIS**: Complete. Level 4 determined — multiple subsystems (build, CI/CD, packaging, browser compat, release mgmt) with cross-cutting architectural decisions.
-- **PLAN**: Complete. 3 milestones defined: (1) dual-manifest build system, (2) CI dual-target validation, (3) release pipeline + CWS publishing. No polyfill milestone needed — Chrome MV3 natively supports `browser.*`.
-- **PREFLIGHT**: PASS with ADVISORY. Source code confirmed compatible with Chrome MV3 (ES modules, `browser.*` namespace, inline styles all work). 4 advisory items documented in tasks.md for sub-run awareness.
+- **COMPLEXITY-ANALYSIS**: Complete. Level 2 determined — self-contained build system enhancement affecting scripts and manifest generation only.

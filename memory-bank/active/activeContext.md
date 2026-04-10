@@ -1,20 +1,15 @@
 # Active Context
 
 ## Current Task
-Chromium (MV3) Support for Tab Yeet
+Build system: dual-manifest packaging for Firefox MV2 and Chrome MV3
 
 ## Phase
-PREFLIGHT - COMPLETE (PASS with ADVISORY)
+COMPLEXITY-ANALYSIS - COMPLETE
 
 ## What Was Done
-- Validated milestone plan against codebase reality
-- Confirmed source code (`lib/`, `popup/`, `options/`) is fully compatible with Chrome MV3:
-  - `browser.*` namespace: natively supported in Chrome M136+
-  - ES module `<script type="module">`: supported under default MV3 CSP
-  - Inline `<style>` blocks: allowed by default MV3 CSP
-  - All API calls (`browser.tabs.query`, `browser.storage.local`, `browser.runtime.openOptionsPage`, `navigator.clipboard.writeText`): work in both environments
-- Verified release-please version tracking works automatically (Chrome manifest generated from MV2 manifest at build time)
-- Documented 4 advisory items for sub-run awareness
+- Classified M1 (first unchecked milestone) as Level 2: Simple Enhancement
+- Scope is self-contained to the build system: manifest transform script, npm scripts, web-ext lint verification, README update
+- Aligns with milestone's own L2 estimate
 
 ## Next Step
-Present plan to operator for review. On approval, begin milestone execution via `/niko`.
+Load Level 2 workflow and begin planning phase.
