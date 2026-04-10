@@ -1,15 +1,14 @@
 # Active Context
 
 ## Current Task
-CI: Dual-Target Build Validation on PRs (M2)
+Release Pipeline: CWS Publishing, Dual-Target Release Artifacts & Account Setup Docs (M3)
 
 ## Phase
-REFLECT COMPLETE
+COMPLEXITY-ANALYSIS - COMPLETE
 
 ## What Was Done
-- Reflected on M2: clean execution, one plan correction (Chrome lint excluded)
-- Key process insight: L4 sub-run plans should cross-check previous milestone's `ci` script
-- No persistent file updates needed
+- Complexity Level 3 determined: multiple CI/CD files affected (release-please.yaml, potentially new CWS publish workflow), new publishing target (CWS), documentation deliverable, and cross-cutting concerns with existing Firefox/AMO pipeline
+- Aligns with L4 plan's estimated L3
 
 ## Next Step
-Run `/niko` to continue to the next milestone.
+Load Level 3 workflow and begin planning phase.

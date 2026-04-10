@@ -1,14 +1,9 @@
-# Progress: CI Dual-Target Build Validation (M2)
+# Progress: Release Pipeline — CWS Publishing & Dual-Target Artifacts (M3)
 
-Update `ci.yaml` to build and lint both Firefox MV2 and Chrome MV3 targets on PRs, uploading both as artifacts.
+Extend release-please pipeline to build both Firefox MV2 and Chrome MV3 targets on release, attach both to GitHub releases, add CWS publish job, update release-please config for dual-manifest version tracking, and document CWS developer account + Google Cloud OAuth2 setup + repo secrets.
 
-**Complexity:** Level 2
+**Complexity:** Level 3
 
 ## Phase History
 
-- **COMPLEXITY-ANALYSIS**: Complete. Level 2 determined — self-contained CI workflow change affecting a single file (`ci.yaml`).
-- **PLAN**: Complete. 4-step plan: update npm aliases, update CI workflow, validate locally, check README. 7 validation behaviors, 2 files affected.
-- **PREFLIGHT**: PASS. One advisory: updating `build:ext` to build both targets also affects `release-please.yaml` — benign since Chrome zip is produced but not consumed until M3. Firefox/AMO pipeline unaffected.
-- **BUILD**: Complete. 2 files changed (`package.json`, `.github/workflows/ci.yaml`). 67 tests passing, both artifacts verified. Deviation: removed Chrome lint from plan after confirming M1's finding that `web-ext lint` rejects Chrome MV3 manifests.
-- **QA**: PASS. Clean review — no issues found. All constraints satisfied.
-- **REFLECT**: Complete. One process insight: L4 sub-run plans should cross-check previous milestone's decisions (especially the `ci` npm script) before proposing CI changes.
+- **COMPLEXITY-ANALYSIS**: Complete. Level 3 determined — multiple CI/CD files, new CWS publishing target, documentation deliverable, cross-cutting release pipeline concerns.
