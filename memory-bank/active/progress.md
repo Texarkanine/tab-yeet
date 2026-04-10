@@ -12,3 +12,4 @@ Create manifest transform script to generate Chrome MV3 manifest from Firefox MV
 - **BUILD**: Complete. 8/8 implementation steps done. 61 tests passing (10 new). Firefox lint clean, both builds produce artifacts. `web-ext lint` Chrome limitation discovered and handled (excluded from CI, documented).
 - **QA**: PASS. One trivial fix applied: `package.json` description updated from "Firefox extension" to "Browser extension". No substantive issues found.
 - **REFLECT**: Complete. Key insight: `web-ext lint` rejects valid Chrome MV3 manifests — more Firefox-coupled than L4 preflight anticipated. `techContext.md` updated.
+- **REWORK**: Chrome does not implement `browser.*` namespace — L4 preflight was wrong. Added `browser-shim.js` (aliases `chrome` → `browser`) to Chrome build. Staging script now injects shim into HTML pages. 6 new tests, 67 total passing.

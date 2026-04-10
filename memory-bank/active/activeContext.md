@@ -1,16 +1,17 @@
 # Active Context
 
 ## Current Task
-Dual-Manifest Build System (M1)
+Dual-Manifest Build System (M1) — rework
 
 ## Phase
 REFLECT COMPLETE
 
 ## What Was Done
-- Reflection document written at `memory-bank/active/reflection/reflection-dual-manifest-build.md`
-- Key insight: `web-ext lint` more Firefox-coupled than anticipated — rejects valid Chrome MV3 manifests
-- Persistent file reconciliation: `techContext.md` updated to reflect dual-target support
-- Million-dollar question: current approach near-optimal for this scale, no redesign warranted
+- Fixed critical bug: Chrome does not implement `browser.*` namespace (the L4 preflight assertion was wrong)
+- Added `scripts/chrome-shim.js` with `BROWSER_SHIM` content and `injectShimScript()` utility
+- Updated `scripts/stage-chrome.js` to write `browser-shim.js` to staging dir and inject `<script>` tags into HTML files
+- Added 6 tests in `test/scripts/chrome-shim.test.js`, all passing
+- 67 total tests passing, both builds verified
 
 ## Next Step
 Run `/niko` to continue to the next milestone.

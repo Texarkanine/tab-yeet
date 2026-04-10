@@ -26,9 +26,10 @@ Build was smooth — TDD cycles worked efficiently for the pure `transformManife
 
 ### Technical
 - `web-ext lint` is more tightly coupled to Firefox than documentation suggests. It doesn't just miss Chrome issues — it actively rejects valid Chrome MV3 manifests with Firefox-specific validation rules. M2/M3 should not plan for Chrome linting via `web-ext lint`.
+- **Critical correction**: Chrome does NOT implement the `browser.*` namespace. The L4 preflight assertion that "Chrome M136+ natively supports `browser.*`" was wrong. A `browser-shim.js` (aliasing `chrome` → `browser`) must be injected into Chrome builds. Shared source code stays untouched.
 
 ### Process
-- Nothing notable.
+- Validating runtime behavior in the target browser should happen during the build phase, not deferred to after reflection. The M1 build verified that `web-ext build` succeeds but didn't verify the extension actually loads and runs in Chrome.
 
 ### Million-Dollar Question
 If Chrome MV3 had been a foundational assumption, the project might store a single abstract manifest definition and generate both MV2 and MV3 from it. But with only two targets and a simple derivation (remove Firefox fields, rename one key), keeping MV2 as source of truth with an automated transform is already near-optimal for this scale. No redesign warranted.

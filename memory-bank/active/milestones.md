@@ -3,7 +3,7 @@
 ## Cross-milestone invariants
 
 - Existing Firefox/AMO publishing pipeline must remain functional at every milestone boundary
-- Shared source code (`lib/`, `popup/`, `options/`) must not be modified — `browser.*` APIs work natively in both Firefox MV2 and Chrome MV3 (M136+); no polyfills, no browser-specific code paths
+- Shared source code (`lib/`, `popup/`, `options/`) must not be modified — Chrome build includes a `browser-shim.js` that aliases `chrome` → `browser` (Chrome does not implement the `browser.*` namespace); no browser-specific code paths in shared source
 - GPLv3 licensing preserved in both packages
 - Zero network permissions maintained in both packages
 - `release-please` continues to manage versioning; `package.json` version is the single source of truth — both manifests derive their version from it

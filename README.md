@@ -43,7 +43,7 @@ Use **Preferences** (gear in the popup, or the add-on's options) to edit transfo
 
 ### Build architecture
 
-The Firefox MV2 `manifest.json` at the project root is the source of truth. The Chrome MV3 manifest is generated at build time by `scripts/transform-manifest.js`, which handles the MV2→MV3 differences (e.g., `browser_action` → `action`, removing Firefox-specific fields). The staging script (`scripts/stage-chrome.js`) assembles a clean build directory at `build/chrome/` with the transformed manifest and extension source files.
+The Firefox MV2 `manifest.json` at the project root is the source of truth. The Chrome MV3 manifest is generated at build time by `scripts/transform-manifest.js`, which handles the MV2→MV3 differences (e.g., `browser_action` → `action`, removing Firefox-specific fields). The staging script (`scripts/stage-chrome.js`) assembles a clean build directory at `build/chrome/` with the transformed manifest, extension source files, and a `browser-shim.js` that aliases `chrome` → `browser` (Chrome does not implement the `browser.*` namespace).
 
 > **Note:** `web-ext lint` is Firefox-centric and reports false positives for Chrome manifests (e.g., missing addon ID). Only Firefox is linted in CI; Chrome validation happens at Chrome Web Store upload time.
 
