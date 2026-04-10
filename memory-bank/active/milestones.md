@@ -20,6 +20,6 @@ These findings from the L4 preflight apply to specific milestones:
 
 ## Execution Order
 
-- [ ] Build system: dual-manifest packaging for Firefox MV2 and Chrome MV3 (create manifest transform script, add `build:firefox`/`build:chrome` npm scripts, verify both with `web-ext lint`, update README) — estimated L2
+- [x] Build system: dual-manifest packaging for Firefox MV2 and Chrome MV3 (create manifest transform script, add `build:firefox`/`build:chrome` npm scripts, verify both with `web-ext lint`, update README) — estimated L2
 - [ ] CI: dual-target build validation on PRs (update `ci.yaml` to build+lint both targets, upload both as artifacts) — estimated L2
 - [ ] Release pipeline: CWS publishing, dual-target release artifacts, and account setup documentation (extend `release-please.yaml` to build both targets on release, attach both to GH releases, add CWS publish job, update release-please config for dual-manifest version tracking, document CWS developer account + Google Cloud OAuth2 setup + repo secrets) — estimated L3
