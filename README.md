@@ -50,5 +50,11 @@ The Firefox MV2 `manifest.json` at the project root is the source of truth. The 
 ## Releases
 
 Releases on `main` are automated with [release-please](https://github.com/googleapis/release-please): merge Conventional Commit messages (`feat:`, `fix:`, etc.), then merge the release PR when you are ready to tag.
-When a GitHub Release is created, CI builds an unsigned `.xpi` via `web-ext build` and attaches it to that release, then submits that build to [AMO](https://addons.mozilla.org/) for signing ([`kewisch/action-web-ext`](https://github.com/kewisch/action-web-ext) with `channel: listed`).
+
+When a GitHub Release is created, CI builds both the Firefox `.xpi` and Chrome `.zip` and attaches them to the release. From there, two publishing jobs run in parallel:
+
+- **Firefox / AMO** — the unsigned `.xpi` is submitted to [AMO](https://addons.mozilla.org/) for signing ([`kewisch/action-web-ext`](https://github.com/kewisch/action-web-ext) with `channel: listed`).
+- **Chrome Web Store** — the `.zip` is uploaded and published to the [Chrome Web Store](https://chromewebstore.google.com/) via the CWS API. This job is optional; if the CWS secrets are not configured, it is skipped and the Firefox/AMO pipeline proceeds independently.
+
+For first-time CWS setup (developer account, Google Cloud OAuth2 credentials, and repository secrets), see [`docs/cws-setup.md`](docs/cws-setup.md).
 
