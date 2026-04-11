@@ -27,15 +27,15 @@ The CWS API requires an OAuth2 access token. You'll create a desktop OAuth clien
 
 ### Obtain a Refresh Token
 
-Run the consent flow to get a refresh token with the `chromewebstore` scope:
+Run the consent flow to get a refresh token with the `chromewebstore` scope. Google removed the OOB redirect flow in January 2023, so this uses a loopback redirect instead.
 
 1. Open this URL in your browser (replace `YOUR_CLIENT_ID`):
 
    ```
-   https://accounts.google.com/o/oauth2/auth?response_type=code&scope=https://www.googleapis.com/auth/chromewebstore&client_id=YOUR_CLIENT_ID&redirect_uri=urn:ietf:wg:oauth:2.0:oob
+   https://accounts.google.com/o/oauth2/v2/auth?response_type=code&scope=https://www.googleapis.com/auth/chromewebstore&client_id=YOUR_CLIENT_ID&redirect_uri=http://localhost&access_type=offline
    ```
 
-2. Authorize the application and copy the **authorization code**.
+2. Authorize the application. The browser will redirect to `http://localhost?code=...` (the page won't load — that's expected). Copy the `code` parameter value from the URL bar.
 
 3. Exchange the code for tokens:
 
@@ -45,12 +45,10 @@ Run the consent flow to get a refresh token with the `chromewebstore` scope:
      -d "client_secret=YOUR_CLIENT_SECRET" \
      -d "code=YOUR_AUTH_CODE" \
      -d "grant_type=authorization_code" \
-     -d "redirect_uri=urn:ietf:wg:oauth:2.0:oob"
+     -d "redirect_uri=http://localhost"
    ```
 
 4. The response contains `access_token` and **`refresh_token`**. Save the refresh token — it does not expire unless revoked.
-
-> **Note:** If the `urn:ietf:wg:oauth:2.0:oob` redirect URI is not available for your project, use `http://localhost` instead, copy the `code` parameter from the redirect URL, and use `http://localhost` as the `redirect_uri` in the curl command above.
 
 ## 4. First Manual Publish
 

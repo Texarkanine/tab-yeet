@@ -14,7 +14,7 @@
     "build:firefox": "web-ext build --source-dir . --artifacts-dir web-ext-artifacts",
     "build:chrome": "npm run stage:chrome && web-ext build --source-dir build/chrome --artifacts-dir web-ext-artifacts --filename \"{name}-{version}-chrome.zip\" --overwrite-dest",
     "build:ext": "npm run build:firefox && npm run build:chrome",
-    "ci": "npm test && npm run lint:firefox && npm run build:firefox && npm run build:chrome"
+    "ci": "npm test && npm run lint:firefox && npm run build:ext"
   },
   "devDependencies": {
     "jsdom": "^29.0.1",

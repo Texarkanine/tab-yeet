@@ -163,16 +163,28 @@ jobs:
     needs:
       - release-please
       - build-release
-    if: ${{ needs.release-please.outputs.release_created == 'true' && secrets.CWS_CLIENT_ID != '' }}
+    if: ${{ needs.release-please.outputs.release_created == 'true' }}
     runs-on: ubuntu-latest
     steps:
+      - name: Check CWS secrets
+        id: check-secrets
+        env:
+          HAS_SECRET: ${{ secrets.CWS_CLIENT_ID }}
+        run: |
+          if [ -z "$HAS_SECRET" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::CWS secrets not configured — skipping publish"
+          fi
+
       - name: Download CWS bundle
+        if: steps.check-secrets.outputs.skip != 'true'
         uses: actions/download-artifact@v8
         with:
           name: cws-submit
           path: cws-submit
 
       - name: Upload and publish to Chrome Web Store
+        if: steps.check-secrets.outputs.skip != 'true'
         env:
           EXTENSION_ID: ${{ secrets.CWS_EXTENSION_ID }}
           CLIENT_ID: ${{ secrets.CWS_CLIENT_ID }}
