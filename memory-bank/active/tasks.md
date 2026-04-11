@@ -167,4 +167,4 @@ No new technology — validation not required. The CWS API is used via `curl` (a
 - [x] Technology validation complete
 - [x] Preflight (PASS — 2 advisory items, no blockers)
 - [x] Build
-- [ ] QA
+- [x] QA (PASS — 1 finding fixed: auth step curl error handling)
