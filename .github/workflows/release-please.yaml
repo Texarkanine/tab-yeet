@@ -172,75 +172,10 @@ jobs:
           name: cws-submit
           path: cws-submit
 
-      - name: Exchange refresh token for access token
-        id: auth
+      - name: Upload and publish to Chrome Web Store
         env:
-          CWS_CLIENT_ID: ${{ secrets.CWS_CLIENT_ID }}
-          CWS_CLIENT_SECRET: ${{ secrets.CWS_CLIENT_SECRET }}
-          CWS_REFRESH_TOKEN: ${{ secrets.CWS_REFRESH_TOKEN }}
-        run: |
-          response=$(curl -s -w "\n%{http_code}" -X POST https://oauth2.googleapis.com/token \
-            -d "client_id=${CWS_CLIENT_ID}" \
-            -d "client_secret=${CWS_CLIENT_SECRET}" \
-            -d "refresh_token=${CWS_REFRESH_TOKEN}" \
-            -d "grant_type=refresh_token")
-          http_code=$(echo "$response" | tail -1)
-          body=$(echo "$response" | sed '$d')
-          if [ "$http_code" -lt 200 ] || [ "$http_code" -ge 300 ]; then
-            echo "::error::Token exchange failed with HTTP ${http_code}"
-            echo "$body" | jq .
-            exit 1
-          fi
-          token=$(echo "$body" | jq -r '.access_token // empty')
-          if [ -z "$token" ]; then
-            echo "::error::Token response missing access_token"
-            echo "$body" | jq .
-            exit 1
-          fi
-          echo "::add-mask::${token}"
-          echo "token=${token}" >> "$GITHUB_OUTPUT"
-
-      - name: Upload zip to Chrome Web Store
-        env:
-          CWS_EXTENSION_ID: ${{ secrets.CWS_EXTENSION_ID }}
-          TOKEN: ${{ steps.auth.outputs.token }}
-        run: |
-          response=$(curl -s -w "\n%{http_code}" -X PUT \
-            "https://www.googleapis.com/upload/chromewebstore/v1.1/items/${CWS_EXTENSION_ID}" \
-            -H "Authorization: Bearer ${TOKEN}" \
-            -H "x-goog-api-version: 2" \
-            -T cws-submit/extension.zip)
-          http_code=$(echo "$response" | tail -1)
-          body=$(echo "$response" | sed '$d')
-          echo "$body" | jq .
-          if [ "$http_code" -lt 200 ] || [ "$http_code" -ge 300 ]; then
-            echo "::error::CWS upload failed with HTTP ${http_code}"
-            exit 1
-          fi
-          upload_status=$(echo "$body" | jq -r '.uploadState // empty')
-          if [ "$upload_status" != "SUCCESS" ]; then
-            echo "::error::CWS upload state: ${upload_status}"
-            exit 1
-          fi
-
-      - name: Publish to Chrome Web Store
-        env:
-          CWS_EXTENSION_ID: ${{ secrets.CWS_EXTENSION_ID }}
-          TOKEN: ${{ steps.auth.outputs.token }}
-        run: |
-          response=$(curl -s -w "\n%{http_code}" -X POST \
-            "https://www.googleapis.com/chromewebstore/v1.1/items/${CWS_EXTENSION_ID}/publish" \
-            -H "Authorization: Bearer ${TOKEN}" \
-            -H "x-goog-api-version: 2" \
-            -H "Content-Length: 0")
-          http_code=$(echo "$response" | tail -1)
-          body=$(echo "$response" | sed '$d')
-          echo "$body" | jq .
-          if [ "$http_code" -lt 200 ] || [ "$http_code" -ge 300 ]; then
-            echo "::error::CWS publish failed with HTTP ${http_code}"
-            exit 1
-          fi
-          publish_status=$(echo "$body" | jq -r '.status[0] // empty')
-          if [ "$publish_status" != "OK" ]; then
-            echo "::warning::CWS publish status: ${publish_status} (review may be pending)"
-          fi
+          EXTENSION_ID: ${{ secrets.CWS_EXTENSION_ID }}
+          CLIENT_ID: ${{ secrets.CWS_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CWS_CLIENT_SECRET }}
+          REFRESH_TOKEN: ${{ secrets.CWS_REFRESH_TOKEN }}
+        run: npx chrome-webstore-upload@3 --source cws-submit/extension.zip

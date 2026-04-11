@@ -12,5 +12,8 @@ REFLECT - COMPLETE
 - Reflection document written: `memory-bank/active/reflection/reflection-m3-release-pipeline.md`
 - Persistent files scanned — no updates needed (pure CI/CD + docs task)
 
+## Post-Reflect Improvement
+- Replaced bespoke 3-step curl CWS publish with [`chrome-webstore-upload@3`](https://github.com/fregante/chrome-webstore-upload-cli) CLI (491 stars, maintained). Job went from 80 lines to 22 lines.
+
 ## Next Step
 Run `/niko` to continue to the next milestone, or `/niko-archive` to finalize.
