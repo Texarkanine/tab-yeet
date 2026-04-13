@@ -8,6 +8,10 @@ module.exports = {
   // Global: used by `web-ext build` and `web-ext lint`
   ignoreFiles: [
     // Directory entries are not matched by `dir/**` alone; exclude the dirs explicitly.
+    "build",
+    "build/**",
+    "scripts",
+    "scripts/**",
     "memory-bank",
     "memory-bank/**",
     "test",

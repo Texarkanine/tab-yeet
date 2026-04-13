@@ -19,13 +19,21 @@ jobs:
         run: npm ci
       - name: Run tests
         run: npm test
-      - name: Lint extension
-        run: npm run lint:ext
-      - name: Build extension
-        run: npm run build:ext
-      - name: Upload extension artifact
+      - name: Lint Firefox extension
+        run: npm run lint:firefox
+      - name: Build Firefox extension
+        run: npm run build:firefox
+      - name: Build Chrome extension
+        run: npm run build:chrome
+      - name: Upload Firefox artifact
         uses: actions/upload-artifact@v7
         with:
-          name: tab-yeet-extension
-          path: web-ext-artifacts/
+          name: tab-yeet-firefox
+          path: web-ext-artifacts/*.xpi
+          if-no-files-found: error
+      - name: Upload Chrome artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: tab-yeet-chrome
+          path: web-ext-artifacts/*-chrome.zip
           if-no-files-found: error
