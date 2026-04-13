@@ -96,6 +96,9 @@ jobs:
       - build-release
     if: ${{ needs.release-please.outputs.release_created == 'true' }}
     runs-on: ubuntu-latest
+    environment:
+      name: addons.mozilla.org
+      url: https://addons.mozilla.org/en-US/firefox/addon/tab-yeet/
     steps:
       - name: Download AMO signing bundle
         uses: actions/download-artifact@v8
@@ -165,6 +168,9 @@ jobs:
       - build-release
     if: ${{ needs.release-please.outputs.release_created == 'true' }}
     runs-on: ubuntu-latest
+    environment:
+      name: chromewebstore.google.com
+      url: https://chromewebstore.google.com/detail/tab-yeet/fdgoaejobhndllbeggippcakdlmopdle?authuser=0&hl=en
     steps:
       - name: Check CWS secrets
         id: check-secrets
