@@ -17,8 +17,8 @@
     "ci": "npm test && npm run lint:firefox && npm run build:ext"
   },
   "devDependencies": {
-    "jsdom": "^29.0.1",
-    "vitest": "^4.1.2",
+    "jsdom": "^29.0.2",
+    "vitest": "^4.1.4",
     "web-ext": "^10.1.0"
   }
 }
