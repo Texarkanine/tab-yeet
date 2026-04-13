@@ -31,7 +31,7 @@ Run the consent flow to get a refresh token with the `chromewebstore` scope. Goo
 
 1. Open this URL in your browser (replace `YOUR_CLIENT_ID`):
 
-   ```
+   ```text
    https://accounts.google.com/o/oauth2/v2/auth?response_type=code&scope=https://www.googleapis.com/auth/chromewebstore&client_id=YOUR_CLIENT_ID&redirect_uri=http://localhost&access_type=offline
    ```
 
