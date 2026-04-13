@@ -25,7 +25,7 @@ jobs:
         id: generate-token
         uses: actions/create-github-app-token@v3
         with:
-          app-id: ${{ vars.HELPER_APP_ID }}
+          client-id: ${{ vars.HELPER_APP_ID }}
           private-key: ${{ secrets.HELPER_APP_PRIVATE_KEY }}
 
       - uses: googleapis/release-please-action@v4
