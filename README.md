@@ -2,7 +2,10 @@
 
 Browser extension: copy URLs from all tabs in the **current window**, with optional regex-based URL transforms and plain or Markdown list formatting.
 
-Supports **Firefox / LibreWolf** (Manifest V2) and **Chrome / Edge** (Manifest V3) from a single codebase.
+* [🦊 Install for Firefox-compatible browsers](https://addons.mozilla.org/firefox/addon/tab-yeet/)
+* [🦁 Install for Brave, Edge, Chrome, & other Chromium-compatible browsers](https://chromewebstore.google.com/detail/tab-yeet/fdgoaejobhndllbeggippcakdlmopdle)
+
+In addition, the raw `.xpi` and `.zip` files are available for manual installation from the [Releases](https://github.com/Texarkanine/tab-yeet/releases) page.
 
 ## Development
 
@@ -55,6 +58,3 @@ When a GitHub Release is created, CI builds both the Firefox `.xpi` and Chrome `
 
 - **Firefox / AMO** — the unsigned `.xpi` is submitted to [AMO](https://addons.mozilla.org/) for signing ([`kewisch/action-web-ext`](https://github.com/kewisch/action-web-ext) with `channel: listed`).
 - **Chrome Web Store** — the `.zip` is uploaded and published to the [Chrome Web Store](https://chromewebstore.google.com/) via the CWS API. This job is optional; if the CWS secrets are not configured, it is skipped and the Firefox/AMO pipeline proceeds independently.
-
-For first-time CWS setup (developer account, Google Cloud OAuth2 credentials, and repository secrets), see [`docs/cws-setup.md`](docs/cws-setup.md).
-
