@@ -5,6 +5,7 @@ import {
   editRule,
   deleteRule,
   moveRule,
+  reorderRules,
   toggleRule,
 } from "../../options/options.js";
 
@@ -59,6 +60,23 @@ describe("rule CRUD helpers", () => {
   it("moveRule is a no-op at list edges", () => {
     expect(moveRule(base, "a", "up")).toEqual(base);
     expect(moveRule(base, "b", "down")).toEqual(base);
+  });
+
+  it("reorderRules moves an item to a new index", () => {
+    const three = [
+      { id: "a", pattern: "1", replacement: "1", enabled: true },
+      { id: "b", pattern: "2", replacement: "2", enabled: true },
+      { id: "c", pattern: "3", replacement: "3", enabled: true },
+    ];
+    expect(reorderRules(three, 0, 2).map((r) => r.id)).toEqual(["b", "c", "a"]);
+    expect(reorderRules(three, 2, 0).map((r) => r.id)).toEqual(["c", "a", "b"]);
+  });
+
+  it("reorderRules is a no-op for same index or out-of-range indices", () => {
+    expect(reorderRules(base, 0, 0)).toBe(base);
+    expect(reorderRules(base, -1, 0)).toBe(base);
+    expect(reorderRules(base, 0, 5)).toBe(base);
+    expect(reorderRules([], 0, 0)).toEqual([]);
   });
 
   it("toggleRule flips enabled", () => {

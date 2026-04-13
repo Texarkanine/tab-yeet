@@ -1,0 +1,9 @@
+PASS
+
+## Summary
+
+Plan aligns with `systemPatterns.md` (options UI + pure helpers, storage via existing `saveRules`). New behavior covered by unit tests for `reorderRules`. HTML5 DnD on the options page only; no new npm dependencies. `moveRule` remains for any programmatic use / existing tests; UI switches to `reorderRules`.
+
+## Advisory
+
+None.

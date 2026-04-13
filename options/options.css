@@ -31,9 +31,38 @@ h1 {
   border-radius: 8px;
   padding: 10px;
   display: grid;
-  grid-template-columns: 1fr 1fr auto;
+  grid-template-columns: auto 1fr 1fr auto;
   gap: 8px;
   align-items: start;
+}
+
+.rule-drag-handle {
+  cursor: grab;
+  user-select: none;
+  align-self: start;
+  margin: 0;
+  padding: 4px 6px;
+  font: inherit;
+  line-height: 1;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  opacity: 0.75;
+}
+
+.rule-drag-handle:hover,
+.rule-drag-handle:focus-visible {
+  opacity: 1;
+  border-color: color-mix(in srgb, CanvasText 22%, transparent);
+}
+
+.rule-drag-handle:active {
+  cursor: grabbing;
+}
+
+.rule-card--dragging {
+  opacity: 0.55;
 }
 
 .rule-card.disabled {

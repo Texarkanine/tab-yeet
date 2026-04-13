@@ -66,6 +66,30 @@ export function moveRule(rules, id, direction) {
 }
 
 /**
+ * Moves the item at `fromIndex` to `toIndex` in a single step (same semantics as
+ * splice: remove, then insert at the new index in the shortened array).
+ *
+ * @param {Array<{ id: string, pattern: string, replacement: string, enabled: boolean }>} rules
+ * @param {number} fromIndex
+ * @param {number} toIndex
+ */
+export function reorderRules(rules, fromIndex, toIndex) {
+  if (fromIndex === toIndex) return rules;
+  if (
+    fromIndex < 0 ||
+    toIndex < 0 ||
+    fromIndex >= rules.length ||
+    toIndex >= rules.length
+  ) {
+    return rules;
+  }
+  const next = [...rules];
+  const [item] = next.splice(fromIndex, 1);
+  next.splice(toIndex, 0, item);
+  return next;
+}
+
+/**
  * @param {Array<{ id: string, pattern: string, replacement: string, enabled: boolean }>} rules
  * @param {string} id
  */
@@ -79,6 +103,40 @@ const state = {
 };
 
 /**
+ * @param {HTMLUListElement} root
+ */
+function attachRuleListDragDrop(root) {
+  if (root.dataset.tabYeetDragDropBound === "true") return;
+  root.dataset.tabYeetDragDropBound = "true";
+  root.addEventListener("dragover", (e) => {
+    const card =
+      e.target && typeof e.target.closest === "function"
+        ? e.target.closest(".rule-card")
+        : null;
+    if (!card || !root.contains(card)) return;
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+  });
+  root.addEventListener("drop", async (e) => {
+    const card =
+      e.target && typeof e.target.closest === "function"
+        ? e.target.closest(".rule-card")
+        : null;
+    if (!card || !root.contains(card)) return;
+    e.preventDefault();
+    const draggedId = e.dataTransfer.getData("text/plain");
+    const targetId = card.dataset.id;
+    if (!draggedId || !targetId || draggedId === targetId) return;
+    const from = state.rules.findIndex((r) => r.id === draggedId);
+    const to = state.rules.findIndex((r) => r.id === targetId);
+    if (from < 0 || to < 0) return;
+    state.rules = reorderRules(state.rules, from, to);
+    await saveRules(state.rules);
+    renderRules(root, state.rules);
+  });
+}
+
+/**
  * @param {HTMLElement} root
  * @param {typeof state.rules} rules
  */
@@ -88,6 +146,22 @@ export function renderRules(root, rules) {
     const li = document.createElement("li");
     li.className = `rule-card${rule.enabled ? "" : " disabled"}`;
     li.dataset.id = rule.id;
+
+    const handle = document.createElement("button");
+    handle.type = "button";
+    handle.className = "rule-drag-handle";
+    handle.textContent = "⋮⋮";
+    handle.setAttribute("aria-label", "Drag to reorder");
+    handle.title = "Drag to reorder";
+    handle.draggable = true;
+    handle.addEventListener("dragstart", (e) => {
+      e.dataTransfer.setData("text/plain", rule.id);
+      e.dataTransfer.effectAllowed = "move";
+      li.classList.add("rule-card--dragging");
+    });
+    handle.addEventListener("dragend", () => {
+      li.classList.remove("rule-card--dragging");
+    });
 
     const patWrap = document.createElement("div");
     patWrap.className = "field";
@@ -111,24 +185,6 @@ export function renderRules(root, rules) {
 
     const actions = document.createElement("div");
     actions.className = "rule-actions";
-
-    const up = document.createElement("button");
-    up.type = "button";
-    up.textContent = "Up";
-    up.addEventListener("click", async () => {
-      state.rules = moveRule(state.rules, rule.id, "up");
-      await saveRules(state.rules);
-      renderRules(root, state.rules);
-    });
-
-    const down = document.createElement("button");
-    down.type = "button";
-    down.textContent = "Down";
-    down.addEventListener("click", async () => {
-      state.rules = moveRule(state.rules, rule.id, "down");
-      await saveRules(state.rules);
-      renderRules(root, state.rules);
-    });
 
     const del = document.createElement("button");
     del.type = "button";
@@ -168,8 +224,8 @@ export function renderRules(root, rules) {
     patInput.addEventListener("blur", onCommit);
     repInput.addEventListener("blur", onCommit);
 
-    actions.append(up, down, toggle, del);
-    li.append(patWrap, repWrap, actions);
+    actions.append(toggle, del);
+    li.append(handle, patWrap, repWrap, actions);
     root.appendChild(li);
   }
 }
@@ -182,6 +238,7 @@ export function renderRules(root, rules) {
  */
 export async function init(list, patternInput, replacementInput, addBtn) {
   state.rules = await loadRules();
+  attachRuleListDragDrop(list);
   renderRules(list, state.rules);
 
   addBtn.addEventListener("click", async () => {

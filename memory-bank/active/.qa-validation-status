@@ -1,0 +1,9 @@
+PASS
+
+## Summary
+
+Implementation matches the plan: `reorderRules` is pure and unit-tested; options UI removes Up/Down, uses a drag handle with list-level `dragover`/`drop` delegation so drops work over inputs; styles match existing options page patterns. No debug artifacts; `moveRule` retained for tests and programmatic use.
+
+## Fixes applied during QA
+
+None.
