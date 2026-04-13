@@ -1,6 +1,6 @@
 {
   "name": "tab-yeet",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "private": true,
   "type": "module",
   "description": "Browser extension: copy tab URLs with transforms and formatting",

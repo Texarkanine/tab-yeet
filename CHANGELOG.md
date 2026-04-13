@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.7.1](https://github.com/Texarkanine/tab-yeet/compare/tab-yeet-v0.7.0...tab-yeet-v0.7.1) (2026-04-13)
+
+
+### Bug Fixes
+
+* **ci:** bump softprops/action-gh-release to 3 for &gt;node20 support ([3236258](https://github.com/Texarkanine/tab-yeet/commit/32362588f6fbfcb4f435aa8913a62de1efbd7923))
+* **ci:** use client-id instead of app-id for helper app token generation ([7b726ae](https://github.com/Texarkanine/tab-yeet/commit/7b726aeb86f34db7cde846d3372bf73132086355))
+* correct npx package name for chrome-webstore-upload-cli ([ea0e716](https://github.com/Texarkanine/tab-yeet/commit/ea0e716225ec006f91d07bbaa4b46e507fa87ce1))
+
 ## [0.7.0](https://github.com/Texarkanine/tab-yeet/compare/tab-yeet-v0.6.1...tab-yeet-v0.7.0) (2026-04-13)
 
 
