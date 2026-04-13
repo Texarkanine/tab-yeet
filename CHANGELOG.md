@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.7.0](https://github.com/Texarkanine/tab-yeet/compare/tab-yeet-v0.6.1...tab-yeet-v0.7.0) (2026-04-13)
+
+
+### Features
+
+* dual-target releases, CWS publish, and setup docs ([#21](https://github.com/Texarkanine/tab-yeet/issues/21)) ([80e6126](https://github.com/Texarkanine/tab-yeet/commit/80e612681dea567cf67dd9a24b3fae9e35832411))
+
+
+### Bug Fixes
+
+* **ci:** releases must have personality ([134be6a](https://github.com/Texarkanine/tab-yeet/commit/134be6a7c39e608fd5f05dfabcecab47ea3cfffe))
+
 ## [0.6.1](https://github.com/Texarkanine/tab-yeet/compare/tab-yeet-v0.6.0...tab-yeet-v0.6.1) (2026-04-05)
 
 
