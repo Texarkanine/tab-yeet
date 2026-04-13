@@ -62,18 +62,25 @@ The CWS API requires the extension to already exist on the store before API uplo
 
 After this initial publish, the CI/CD pipeline handles all subsequent version uploads automatically.
 
-## 5. Repository Secrets
+## 5. Repository Variables and Secrets
 
-Add the following secrets to the GitHub repository (**Settings → Secrets and variables → Actions → New repository secret**):
+In the GitHub repository, go to **Settings → Secrets and variables → Actions**.
+
+Add the following **repository variable** (**Variables** tab → **New repository variable**):
+
+| Variable             | Value                                              |
+| -------------------- | -------------------------------------------------- |
+| `CWS_EXTENSION_ID`  | 32-character extension ID from the CWS dashboard   |
+
+Add the following **repository secrets** (**Secrets** tab → **New repository secret**):
 
 | Secret               | Value                                              |
 | -------------------- | -------------------------------------------------- |
-| `CWS_EXTENSION_ID`  | 32-character extension ID from the CWS dashboard   |
 | `CWS_CLIENT_ID`     | OAuth2 client ID from step 3                       |
 | `CWS_CLIENT_SECRET` | OAuth2 client secret from step 3                   |
 | `CWS_REFRESH_TOKEN` | Refresh token obtained in step 3                   |
 
-Once these secrets are configured, the `cws-publish` job in the release workflow will activate automatically on the next release.
+Once these are configured, the `cws-publish` job in the release workflow will activate automatically on the next release.
 
 ## Troubleshooting
 
