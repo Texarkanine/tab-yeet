@@ -96,7 +96,7 @@ h1 {
   border-width: 2px;
 }
 
-.rule-card.disabled {
+.rule-card.disabled:not(.rule-card--dragging) {
   opacity: 0.55;
 }
 
