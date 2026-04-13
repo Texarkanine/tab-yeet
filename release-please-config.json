@@ -2,7 +2,8 @@
   "packages": {
     ".": {
       "release-type": "node",
-      "extra-files": ["manifest.json"]
+      "extra-files": ["manifest.json"],
+      "pull-request-header": ":service_dog: I have created a release \\*bark\\* \\*woof\\*"
     }
   }
 }
