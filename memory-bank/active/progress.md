@@ -12,7 +12,7 @@ Implement additional clipboard output formats (HTML/Markdown variants) and an Au
 - **PLAN** — Complete.
 - **PREFLIGHT** — Complete (PASS).
 - **BUILD** — Complete: `lib/formats.js`, `lib/automation-scripts.js`, `popup/popup.js`, `options/options.{html,css,js}`, tests; options Automation scripts section with platform tabs.
-- **QA** — Complete (PASS).
+- **QA** — Complete (PASS): typo fix in options.html ("mesaging"→"messaging"), README updated to mention HTML output formats.
 
 ## 2026-04-14 — BUILD + QA — COMPLETE
 

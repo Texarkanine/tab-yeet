@@ -1,3 +1,2 @@
 PASS
-
-Semantic review 2026-04-14: Plan requirements implemented (formats, popup labels, `lib/automation-scripts.js`, options Automation scripts UI with Windows/Linux/macOS tabs). No blocking TODOs or debug debris. Trivial: `systemPatterns.md` updated for automation snippet module.
+2026-04-14
