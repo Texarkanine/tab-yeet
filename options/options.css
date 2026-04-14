@@ -15,6 +15,82 @@ h1 {
   margin: 0 0 16px;
 }
 
+.options-section + .options-section {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  border-top: 1px solid color-mix(in srgb, CanvasText 14%, transparent);
+}
+
+.automation-lead {
+  margin: 0 0 12px;
+  color: color-mix(in srgb, CanvasText 88%, Canvas);
+}
+
+.automation-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.automation-tab {
+  font: inherit;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid color-mix(in srgb, CanvasText 22%, transparent);
+  background: color-mix(in srgb, CanvasText 6%, Canvas);
+  color: inherit;
+  cursor: pointer;
+}
+
+.automation-tab[aria-selected="true"] {
+  border-color: AccentColor;
+  background: color-mix(in srgb, AccentColor 18%, Canvas);
+}
+
+.automation-tab:focus-visible {
+  outline: 2px solid AccentColor;
+  outline-offset: 2px;
+}
+
+.automation-panel {
+  margin: 0;
+}
+
+.script-textarea {
+  width: 100%;
+  min-height: 12rem;
+  box-sizing: border-box;
+  font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, monospace;
+  font-size: 12px;
+  line-height: 1.45;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, CanvasText 18%, transparent);
+  background: Canvas;
+  color: CanvasText;
+  resize: vertical;
+}
+
+.coming-soon {
+  margin: 0;
+  opacity: 0.85;
+  font-style: italic;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .rule-list-wrap {
   position: relative;
   margin: 0 0 16px;
@@ -136,6 +212,11 @@ h1 {
 }
 
 @media (prefers-color-scheme: dark) {
+  .options-section + .options-section {
+    border-top-color: rgba(255, 255, 255, 0.14);
+    border-top-color: color-mix(in srgb, CanvasText 14%, transparent);
+  }
+
   .rule-card {
     border: 1px solid rgba(255, 255, 255, 0.2);
     border: 1px solid color-mix(in srgb, CanvasText 18%, transparent);

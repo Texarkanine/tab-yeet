@@ -1,4 +1,44 @@
+import { AUTOHOTKEY_V2_DOCS_URL, WINDOWS_CLIPBOARD_YEET_AHK } from "../lib/automation-scripts.js";
 import { loadRules, saveRules } from "../lib/storage.js";
+
+/**
+ * Wires platform tabs for the Automation scripts section and fills the Windows AHK snippet.
+ *
+ * @param {HTMLElement | null} tablistRoot
+ * @param {{ script?: string, docsUrl?: string }} [windows] — defaults to bundled AutoHotkey script and docs URL
+ */
+export function initAutomationScriptsTabs(tablistRoot, windows) {
+  if (!tablistRoot) return;
+  const script = windows?.script ?? WINDOWS_CLIPBOARD_YEET_AHK;
+  const docsUrl = windows?.docsUrl ?? AUTOHOTKEY_V2_DOCS_URL;
+
+  const tabs = [...tablistRoot.querySelectorAll('[role="tab"]')];
+  const panels = tabs.map((tab) => {
+    const id = tab.getAttribute("aria-controls");
+    return id ? document.getElementById(id) : null;
+  });
+
+  function activate(index) {
+    tabs.forEach((tab, i) => {
+      const on = i === index;
+      tab.setAttribute("aria-selected", String(on));
+      if (panels[i]) panels[i].hidden = !on;
+    });
+  }
+
+  tabs.forEach((tab, i) => {
+    tab.addEventListener("click", () => activate(i));
+  });
+
+  const ta = document.getElementById("ahk-script");
+  if (ta instanceof HTMLTextAreaElement) {
+    ta.value = script;
+  }
+  const docLink = document.getElementById("ahk-docs-link");
+  if (docLink instanceof HTMLAnchorElement) {
+    docLink.href = docsUrl;
+  }
+}
 
 /**
  * @param {string} pattern
@@ -374,4 +414,9 @@ if (
     const errorEl = document.getElementById("error");
     if (errorEl) errorEl.textContent = "Failed to load rules.";
   });
+}
+
+const automationTablist = document.getElementById("automation-tablist");
+if (automationTablist instanceof HTMLElement) {
+  initAutomationScriptsTabs(automationTablist);
 }

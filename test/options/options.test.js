@@ -8,6 +8,7 @@ import {
   reorderRules,
   reorderRulesToInsertionSlot,
   toggleRule,
+  initAutomationScriptsTabs,
 } from "../../options/options.js";
 
 describe("validateRegex", () => {
@@ -113,5 +114,60 @@ describe("rule CRUD helpers", () => {
     const next = toggleRule(base, "a");
     expect(next[0].enabled).toBe(false);
     expect(next[1].enabled).toBe(true);
+  });
+});
+
+describe("initAutomationScriptsTabs", () => {
+  it("fills the Windows textarea and documentation link", () => {
+    document.body.innerHTML = `
+      <div id="automation-tablist" role="tablist">
+        <button type="button" role="tab" id="automation-tab-windows" aria-selected="true" aria-controls="automation-panel-windows">Windows</button>
+      </div>
+      <div id="automation-panel-windows" role="tabpanel">
+        <a id="ahk-docs-link" href="#">AutoHotkey</a>
+        <textarea id="ahk-script"></textarea>
+      </div>
+    `;
+    const tablist = document.getElementById("automation-tablist");
+    initAutomationScriptsTabs(tablist, {
+      script: "SCRIPT_BODY",
+      docsUrl: "https://example.com/ahk-docs",
+    });
+    const ta = document.getElementById("ahk-script");
+    const link = document.getElementById("ahk-docs-link");
+    expect(ta?.value).toBe("SCRIPT_BODY");
+    expect(link?.getAttribute("href")).toBe("https://example.com/ahk-docs");
+  });
+
+  it("shows one platform panel at a time when tabs are clicked", () => {
+    document.body.innerHTML = `
+      <div id="automation-tablist" role="tablist">
+        <button type="button" role="tab" id="automation-tab-windows" aria-selected="true" aria-controls="automation-panel-windows">Windows</button>
+        <button type="button" role="tab" id="automation-tab-linux" aria-selected="false" aria-controls="automation-panel-linux" tabindex="-1">Linux</button>
+        <button type="button" role="tab" id="automation-tab-macos" aria-selected="false" aria-controls="automation-panel-macos" tabindex="-1">macOS</button>
+      </div>
+      <div id="automation-panel-windows" role="tabpanel"><textarea id="ahk-script"></textarea></div>
+      <div id="automation-panel-linux" role="tabpanel" hidden><p>Coming soon</p></div>
+      <div id="automation-panel-macos" role="tabpanel" hidden><p>Coming soon</p></div>
+    `;
+    const tablist = document.getElementById("automation-tablist");
+    initAutomationScriptsTabs(tablist, { script: "x", docsUrl: "https://x/1" });
+
+    const win = document.getElementById("automation-panel-windows");
+    const linux = document.getElementById("automation-panel-linux");
+    const mac = document.getElementById("automation-panel-macos");
+    expect(win?.hidden).toBe(false);
+    expect(linux?.hidden).toBe(true);
+    expect(mac?.hidden).toBe(true);
+
+    document.getElementById("automation-tab-linux")?.click();
+    expect(win?.hidden).toBe(true);
+    expect(linux?.hidden).toBe(false);
+    expect(mac?.hidden).toBe(true);
+
+    document.getElementById("automation-tab-macos")?.click();
+    expect(win?.hidden).toBe(true);
+    expect(linux?.hidden).toBe(true);
+    expect(mac?.hidden).toBe(false);
   });
 });

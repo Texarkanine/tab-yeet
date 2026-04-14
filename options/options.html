@@ -7,26 +7,117 @@
     <link rel="stylesheet" href="options.css" />
   </head>
   <body>
-    <h1>Transform rules</h1>
-    <p>
-      Rules run in order. Each rule’s pattern is a JavaScript regular expression
-      (no flags). Disabled rules are skipped.
-    </p>
-    <div class="rule-list-wrap">
-      <ul id="rules" class="rule-list"></ul>
-    </div>
-    <div class="add-panel">
-      <div class="field">
-        <label for="new-pattern">Pattern</label>
-        <input id="new-pattern" type="text" autocomplete="off" />
+    <section class="options-section" aria-labelledby="transform-heading">
+      <h1 id="transform-heading">Transform rules</h1>
+      <p>
+        Rules run in order. Each rule’s pattern is a JavaScript regular expression
+        (no flags). Disabled rules are skipped.
+      </p>
+      <div class="rule-list-wrap">
+        <ul id="rules" class="rule-list"></ul>
       </div>
-      <div class="field">
-        <label for="new-replacement">Replacement</label>
-        <input id="new-replacement" type="text" autocomplete="off" />
+      <div class="add-panel">
+        <div class="field">
+          <label for="new-pattern">Pattern</label>
+          <input id="new-pattern" type="text" autocomplete="off" />
+        </div>
+        <div class="field">
+          <label for="new-replacement">Replacement</label>
+          <input id="new-replacement" type="text" autocomplete="off" />
+        </div>
+        <button type="button" id="add-btn">Add rule</button>
       </div>
-      <button type="button" id="add-btn">Add rule</button>
-    </div>
-    <div id="error" role="alert"></div>
+      <div id="error" role="alert"></div>
+    </section>
+
+    <section class="options-section automation-section" aria-labelledby="automation-heading">
+      <h1 id="automation-heading">Automation scripts</h1>
+      <p class="automation-lead">
+        Optional helper scripts to send each line of clipboard text as a separate message in a
+        focused chat window (for example after copying from Tab Yeet).
+      </p>
+      <div
+        class="automation-tabs"
+        role="tablist"
+        aria-label="Platform"
+        id="automation-tablist"
+      >
+        <button
+          type="button"
+          class="automation-tab"
+          role="tab"
+          id="automation-tab-windows"
+          aria-selected="true"
+          aria-controls="automation-panel-windows"
+        >
+          Windows
+        </button>
+        <button
+          type="button"
+          class="automation-tab"
+          role="tab"
+          id="automation-tab-linux"
+          aria-selected="false"
+          aria-controls="automation-panel-linux"
+          tabindex="-1"
+        >
+          Linux
+        </button>
+        <button
+          type="button"
+          class="automation-tab"
+          role="tab"
+          id="automation-tab-macos"
+          aria-selected="false"
+          aria-controls="automation-panel-macos"
+          tabindex="-1"
+        >
+          macOS
+        </button>
+      </div>
+      <div
+        id="automation-panel-windows"
+        class="automation-panel"
+        role="tabpanel"
+        aria-labelledby="automation-tab-windows"
+      >
+        <p>
+          <a
+            id="ahk-docs-link"
+            href="https://www.autohotkey.com/docs/v2/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >AutoHotkey v2 documentation</a
+          >
+        </p>
+        <label for="ahk-script" class="sr-only">AutoHotkey script</label>
+        <textarea
+          id="ahk-script"
+          readonly
+          rows="22"
+          class="script-textarea"
+          spellcheck="false"
+        ></textarea>
+      </div>
+      <div
+        id="automation-panel-linux"
+        class="automation-panel"
+        role="tabpanel"
+        aria-labelledby="automation-tab-linux"
+        hidden
+      >
+        <p class="coming-soon">Coming soon...?</p>
+      </div>
+      <div
+        id="automation-panel-macos"
+        class="automation-panel"
+        role="tabpanel"
+        aria-labelledby="automation-tab-macos"
+        hidden
+      >
+        <p class="coming-soon">Coming soon...?</p>
+      </div>
+    </section>
     <script type="module" src="options.js"></script>
   </body>
 </html>
