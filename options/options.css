@@ -15,13 +15,42 @@ h1 {
   margin: 0 0 16px;
 }
 
+.rule-list-wrap {
+  position: relative;
+  margin: 0 0 16px;
+}
+
 .rule-list {
   list-style: none;
-  margin: 0 0 16px;
+  margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.rule-insert-indicator {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 10px;
+  margin-top: -5px;
+  border-radius: 5px;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  visibility: hidden;
+  box-sizing: border-box;
+  background: #0a5bd7;
+  background: AccentColor;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, CanvasText 18%, transparent),
+    0 2px 8px color-mix(in srgb, CanvasText 22%, transparent);
+}
+
+.rule-insert-indicator.rule-insert-indicator--visible {
+  opacity: 1;
+  visibility: visible;
 }
 
 .rule-card {
@@ -31,12 +60,43 @@ h1 {
   border-radius: 8px;
   padding: 10px;
   display: grid;
-  grid-template-columns: 1fr 1fr auto;
+  grid-template-columns: auto 1fr 1fr auto;
   gap: 8px;
   align-items: start;
 }
 
-.rule-card.disabled {
+.rule-drag-handle {
+  cursor: grab;
+  user-select: none;
+  align-self: start;
+  margin: 0;
+  padding: 4px 6px;
+  font: inherit;
+  line-height: 1;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  opacity: 0.75;
+}
+
+.rule-drag-handle:hover,
+.rule-drag-handle:focus-visible {
+  opacity: 1;
+  border-color: color-mix(in srgb, CanvasText 22%, transparent);
+}
+
+.rule-drag-handle:active {
+  cursor: grabbing;
+}
+
+.rule-card.rule-card--dragging {
+  opacity: 0.18;
+  border-style: dotted;
+  border-width: 2px;
+}
+
+.rule-card.disabled:not(.rule-card--dragging) {
   opacity: 0.55;
 }
 
