@@ -9,6 +9,9 @@ import { loadRules, saveRules } from "../lib/storage.js";
 async function fetchExtensionFile(path) {
   const url = browser.runtime.getURL(path);
   const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch ${path}: ${res.status} ${res.statusText}`);
+  }
   return res.text();
 }
 
@@ -64,6 +67,7 @@ export async function initAutomationScriptsTabs(container, platforms) {
     tabEls.forEach((tab, i) => {
       const on = i === index;
       tab.setAttribute("aria-selected", String(on));
+      tab.tabIndex = on ? 0 : -1;
       panelEls[i].hidden = !on;
     });
   }

@@ -35,6 +35,20 @@ describe("FORMATS", () => {
       '<a href="https://x?q=1&amp;2">A &amp; B</a>',
     );
   });
+
+  it("markdown uses URL as link text when title is empty or whitespace", () => {
+    expect(FORMATS.markdown("", "https://x")).toBe("- [https://x](https://x)");
+    expect(FORMATS.markdown("   ", "https://x")).toBe("- [https://x](https://x)");
+  });
+
+  it("html_link uses URL as anchor text when title is empty or whitespace", () => {
+    expect(FORMATS.html_link("", "https://x?q=1")).toBe(
+      '<a href="https://x?q=1">https://x?q=1</a>',
+    );
+    expect(FORMATS.html_link("  \t  ", "https://y")).toBe(
+      '<a href="https://y">https://y</a>',
+    );
+  });
 });
 
 describe("BLOCK_FORMATS", () => {
@@ -108,6 +122,13 @@ describe("formatTabs", () => {
     );
   });
 
+  it("html_ul_links uses URL as anchor text when title is empty or whitespace", () => {
+    const tabs = [{ title: "", url: "https://a" }, { title: "  ", url: "https://b" }];
+    expect(formatTabs(tabs, "html_ul_links")).toBe(
+      `<ul>\n<li><a href="https://a">https://a</a></li>\n<li><a href="https://b">https://b</a></li>\n</ul>`,
+    );
+  });
+
   it("falls back to plain for unknown format keys", () => {
     const tabs = [{ title: "T", url: "https://u" }];
     expect(formatTabs(tabs, "no-such-key")).toBe("https://u");
@@ -117,5 +138,11 @@ describe("formatTabs", () => {
     expect(formatTabs([{}], "markdown")).toBe("- []()");
     expect(formatTabs([{}], "markdown_url")).toBe("- ");
     expect(formatTabs([{}], "html_link")).toBe('<a href=""></a>');
+  });
+
+  it("uses URL as markdown link text when title missing but URL present", () => {
+    expect(formatTabs([{ url: "https://only-url" }], "markdown")).toBe(
+      "- [https://only-url](https://only-url)",
+    );
   });
 });

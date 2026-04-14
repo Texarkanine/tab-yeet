@@ -184,10 +184,14 @@ describe("initAutomationScriptsTabs", () => {
 
     await initAutomationScriptsTabs(container);
 
+    const tabs = container.querySelectorAll('[role="tab"]');
     const panels = container.querySelectorAll('[role="tabpanel"]');
     expect(panels[0].hidden).toBe(false);
     expect(panels[1].hidden).toBe(true);
     expect(panels[2].hidden).toBe(true);
+    expect(tabs[0].tabIndex).toBe(0);
+    expect(tabs[1].tabIndex).toBe(-1);
+    expect(tabs[2].tabIndex).toBe(-1);
   });
 
   it("clicking a tab shows that panel and hides others", async () => {
@@ -209,17 +213,27 @@ describe("initAutomationScriptsTabs", () => {
     const tabs = container.querySelectorAll('[role="tab"]');
     const panels = container.querySelectorAll('[role="tabpanel"]');
 
+    expect(tabs[0].tabIndex).toBe(0);
+    expect(tabs[1].tabIndex).toBe(-1);
+    expect(tabs[2].tabIndex).toBe(-1);
+
     tabs[1].click();
     expect(panels[0].hidden).toBe(true);
     expect(panels[1].hidden).toBe(false);
     expect(panels[2].hidden).toBe(true);
     expect(tabs[0].getAttribute("aria-selected")).toBe("false");
     expect(tabs[1].getAttribute("aria-selected")).toBe("true");
+    expect(tabs[0].tabIndex).toBe(-1);
+    expect(tabs[1].tabIndex).toBe(0);
+    expect(tabs[2].tabIndex).toBe(-1);
 
     tabs[2].click();
     expect(panels[0].hidden).toBe(true);
     expect(panels[1].hidden).toBe(true);
     expect(panels[2].hidden).toBe(false);
+    expect(tabs[0].tabIndex).toBe(-1);
+    expect(tabs[1].tabIndex).toBe(-1);
+    expect(tabs[2].tabIndex).toBe(0);
   });
 
   it("injects description HTML into the panel", async () => {
@@ -265,6 +279,21 @@ describe("initAutomationScriptsTabs", () => {
     expect(winTextarea).not.toBeNull();
     expect(winTextarea.readOnly).toBe(true);
     expect(winTextarea.value).toBe("SCRIPT_CONTENT_HERE");
+  });
+
+  it("rejects when fetch returns a non-OK response", async () => {
+    document.body.innerHTML = '<div id="container"></div>';
+    const container = document.getElementById("container");
+    globalThis.fetch = vi.fn(() =>
+      Promise.resolve({
+        ok: false,
+        status: 404,
+        statusText: "Not Found",
+        text: () => Promise.resolve(""),
+      }),
+    );
+
+    await expect(initAutomationScriptsTabs(container)).rejects.toThrow(/404/);
   });
 
   it("does not create a textarea for platforms without scriptPath", async () => {
