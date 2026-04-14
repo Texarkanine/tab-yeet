@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Tab Yeet",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "description": "Copy tab URLs from the current window with optional URL transforms and formatting.",
   "permissions": [
     "tabs",

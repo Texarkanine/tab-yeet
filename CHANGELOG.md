@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.0](https://github.com/Texarkanine/tab-yeet/compare/tab-yeet-v0.7.1...tab-yeet-v0.8.0) (2026-04-14)
+
+
+### Features
+
+* clipboard format variants and automation scripts (bundled files) ([#28](https://github.com/Texarkanine/tab-yeet/issues/28)) ([9a04a84](https://github.com/Texarkanine/tab-yeet/commit/9a04a84227e70e89f9fac6f053121c49c8d19ea2))
+* **options:** drag-to-reorder rules with insertion indicator ([#26](https://github.com/Texarkanine/tab-yeet/issues/26)) ([2275a20](https://github.com/Texarkanine/tab-yeet/commit/2275a20a34d97ba8b2bff5d3f6e492cd3a960b85))
+
 ## [0.7.1](https://github.com/Texarkanine/tab-yeet/compare/tab-yeet-v0.7.0...tab-yeet-v0.7.1) (2026-04-13)
 
 
