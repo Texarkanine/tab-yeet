@@ -89,4 +89,4 @@ No new technology — `fetch` + `browser.runtime.getURL` are standard WebExtensi
 - [x] Technology validation complete
 - [x] Preflight
 - [x] Build
-- [ ] QA
+- [x] QA

@@ -81,6 +81,7 @@ export async function initAutomationScriptsTabs(container, platforms) {
         ta.readOnly = true;
         ta.className = "script-textarea";
         ta.spellcheck = false;
+        ta.setAttribute("aria-label", `${p.label} automation script`);
         ta.value = scriptText;
         panelEls[i].appendChild(ta);
       }

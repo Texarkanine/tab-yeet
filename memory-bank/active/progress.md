@@ -17,6 +17,7 @@ Implement additional clipboard output formats (HTML/Markdown variants) and an Au
 - **PLAN (rework)** — Complete: automation scripts moved from inline JS to bundled files with registry module.
 - **PREFLIGHT (rework)** — Complete (PASS): no hidden consumers, Chrome staging safe, minor plan amendment (async `.catch()` + auto-init ID update).
 - **BUILD (rework)** — Complete: automation scripts extracted to bundled files, registry module, dynamic tab/panel construction; 90 tests pass, lint clean, Chrome build succeeds.
+- **QA (rework)** — Complete (PASS): one finding fixed — added `aria-label` to dynamically created textarea (accessibility regression from removing static HTML label).
 
 ## 2026-04-14 — BUILD + QA — COMPLETE
 
