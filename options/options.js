@@ -1,43 +1,91 @@
-import { AUTOHOTKEY_V2_DOCS_URL, WINDOWS_CLIPBOARD_YEET_AHK } from "../lib/automation-scripts.js";
+import { PLATFORMS } from "../automation-scripts/registry.js";
 import { loadRules, saveRules } from "../lib/storage.js";
 
 /**
- * Wires platform tabs for the Automation scripts section and fills the Windows AHK snippet.
- *
- * @param {HTMLElement | null} tablistRoot
- * @param {{ script?: string, docsUrl?: string }} [windows] — defaults to bundled AutoHotkey script and docs URL
+ * Fetches a bundled extension resource as text.
+ * @param {string} path Extension-relative path.
+ * @returns {Promise<string>}
  */
-export function initAutomationScriptsTabs(tablistRoot, windows) {
-  if (!tablistRoot) return;
-  const script = windows?.script ?? WINDOWS_CLIPBOARD_YEET_AHK;
-  const docsUrl = windows?.docsUrl ?? AUTOHOTKEY_V2_DOCS_URL;
+async function fetchExtensionFile(path) {
+  const url = browser.runtime.getURL(path);
+  const res = await fetch(url);
+  return res.text();
+}
 
-  const tabs = [...tablistRoot.querySelectorAll('[role="tab"]')];
-  const panels = tabs.map((tab) => {
-    const id = tab.getAttribute("aria-controls");
-    return id ? document.getElementById(id) : null;
-  });
+/**
+ * Builds platform tabs and panels for the Automation scripts section from the
+ * {@link PLATFORMS} registry. Description HTML fragments and script files are
+ * loaded from the extension bundle at runtime.
+ *
+ * @param {HTMLElement | null} container
+ * @param {typeof PLATFORMS} [platforms] Override for testing.
+ */
+export async function initAutomationScriptsTabs(container, platforms) {
+  if (!container) return;
+  const entries = platforms ?? PLATFORMS;
+
+  const tablist = document.createElement("div");
+  tablist.className = "automation-tabs";
+  tablist.setAttribute("role", "tablist");
+  tablist.setAttribute("aria-label", "Platform");
+
+  /** @type {HTMLElement[]} */
+  const tabEls = [];
+  /** @type {HTMLElement[]} */
+  const panelEls = [];
+
+  for (let i = 0; i < entries.length; i++) {
+    const p = entries[i];
+    const tabBtn = document.createElement("button");
+    tabBtn.type = "button";
+    tabBtn.className = "automation-tab";
+    tabBtn.setAttribute("role", "tab");
+    tabBtn.id = `automation-tab-${p.id}`;
+    tabBtn.setAttribute("aria-selected", String(i === 0));
+    tabBtn.setAttribute("aria-controls", `automation-panel-${p.id}`);
+    if (i > 0) tabBtn.tabIndex = -1;
+    tabBtn.textContent = p.label;
+    tablist.appendChild(tabBtn);
+    tabEls.push(tabBtn);
+
+    const panel = document.createElement("div");
+    panel.id = `automation-panel-${p.id}`;
+    panel.className = "automation-panel";
+    panel.setAttribute("role", "tabpanel");
+    panel.setAttribute("aria-labelledby", tabBtn.id);
+    if (i > 0) panel.hidden = true;
+    panelEls.push(panel);
+  }
+
+  container.appendChild(tablist);
+  for (const panel of panelEls) container.appendChild(panel);
 
   function activate(index) {
-    tabs.forEach((tab, i) => {
+    tabEls.forEach((tab, i) => {
       const on = i === index;
       tab.setAttribute("aria-selected", String(on));
-      if (panels[i]) panels[i].hidden = !on;
+      panelEls[i].hidden = !on;
     });
   }
+  tabEls.forEach((tab, i) => tab.addEventListener("click", () => activate(i)));
 
-  tabs.forEach((tab, i) => {
-    tab.addEventListener("click", () => activate(i));
-  });
+  await Promise.all(
+    entries.map(async (p, i) => {
+      const descHtml = await fetchExtensionFile(p.descriptionPath);
+      const doc = new DOMParser().parseFromString(descHtml, "text/html");
+      panelEls[i].append(...doc.body.childNodes);
 
-  const ta = document.getElementById("ahk-script");
-  if (ta instanceof HTMLTextAreaElement) {
-    ta.value = script;
-  }
-  const docLink = document.getElementById("ahk-docs-link");
-  if (docLink instanceof HTMLAnchorElement) {
-    docLink.href = docsUrl;
-  }
+      if (p.scriptPath) {
+        const scriptText = await fetchExtensionFile(p.scriptPath);
+        const ta = document.createElement("textarea");
+        ta.readOnly = true;
+        ta.className = "script-textarea";
+        ta.spellcheck = false;
+        ta.value = scriptText;
+        panelEls[i].appendChild(ta);
+      }
+    }),
+  );
 }
 
 /**
@@ -416,7 +464,9 @@ if (
   });
 }
 
-const automationTablist = document.getElementById("automation-tablist");
-if (automationTablist instanceof HTMLElement) {
-  initAutomationScriptsTabs(automationTablist);
+const automationContainer = document.getElementById("automation-container");
+if (automationContainer instanceof HTMLElement) {
+  initAutomationScriptsTabs(automationContainer).catch(() => {
+    automationContainer.textContent = "Failed to load automation scripts.";
+  });
 }

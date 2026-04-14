@@ -14,7 +14,7 @@ import { BROWSER_SHIM, injectShimScript } from "./chrome-shim.js";
 import { transformManifest } from "./transform-manifest.js";
 
 const BUILD_DIR = "build/chrome";
-const SOURCE_DIRS = ["popup", "options", "lib", "icons"];
+const SOURCE_DIRS = ["popup", "options", "lib", "icons", "automation-scripts"];
 
 rmSync(BUILD_DIR, { recursive: true, force: true });
 mkdirSync(BUILD_DIR, { recursive: true });

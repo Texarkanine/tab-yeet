@@ -1,15 +1,4 @@
-/**
- * Bundled automation snippets for the options page (platform-specific helpers).
- */
-
-/** Official AutoHotkey v2 language and API reference. */
-export const AUTOHOTKEY_V2_DOCS_URL = "https://www.autohotkey.com/docs/v2/";
-
-/**
- * AutoHotkey v2 script: send each non-empty clipboard line as its own message
- * into the focused window (Ctrl+Alt+Shift+V).
- */
-export const WINDOWS_CLIPBOARD_YEET_AHK = `; Clipboard Yeet — AutoHotkey v2
+; Clipboard Yeet — AutoHotkey v2
 ; Sends each line from clipboard as a separate message into the focused window.
 ; 
 ; Usage:
@@ -29,7 +18,7 @@ DELAY_MS := 400
         return
     }
 
-    lines := StrSplit(content, "\`n", "\`r")
+    lines := StrSplit(content, "`n", "`r")
     count := 0
 
     for line in lines {
@@ -45,4 +34,3 @@ DELAY_MS := 400
     ToolTip("Sent " count " lines")
     SetTimer(() => ToolTip(), -2000)
 }
-`;

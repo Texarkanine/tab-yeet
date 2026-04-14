@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   validateRegex,
   addRule,
@@ -118,56 +118,173 @@ describe("rule CRUD helpers", () => {
 });
 
 describe("initAutomationScriptsTabs", () => {
-  it("fills the Windows textarea and documentation link", () => {
-    document.body.innerHTML = `
-      <div id="automation-tablist" role="tablist">
-        <button type="button" role="tab" id="automation-tab-windows" aria-selected="true" aria-controls="automation-panel-windows">Windows</button>
-      </div>
-      <div id="automation-panel-windows" role="tabpanel">
-        <a id="ahk-docs-link" href="#">AutoHotkey</a>
-        <textarea id="ahk-script"></textarea>
-      </div>
-    `;
-    const tablist = document.getElementById("automation-tablist");
-    initAutomationScriptsTabs(tablist, {
-      script: "SCRIPT_BODY",
-      docsUrl: "https://example.com/ahk-docs",
+  /** @type {ReturnType<typeof vi.fn>} */
+  let fetchSpy;
+
+  function mockFetchResponses(map) {
+    fetchSpy = vi.fn((url) => {
+      const body = map[url] ?? "";
+      return Promise.resolve({ ok: true, text: () => Promise.resolve(body) });
     });
-    const ta = document.getElementById("ahk-script");
-    const link = document.getElementById("ahk-docs-link");
-    expect(ta?.value).toBe("SCRIPT_BODY");
-    expect(link?.getAttribute("href")).toBe("https://example.com/ahk-docs");
+    globalThis.fetch = fetchSpy;
+  }
+
+  beforeEach(() => {
+    browser.runtime.getURL.mockImplementation((p) => `moz-extension://ext/${p}`);
   });
 
-  it("shows one platform panel at a time when tabs are clicked", () => {
-    document.body.innerHTML = `
-      <div id="automation-tablist" role="tablist">
-        <button type="button" role="tab" id="automation-tab-windows" aria-selected="true" aria-controls="automation-panel-windows">Windows</button>
-        <button type="button" role="tab" id="automation-tab-linux" aria-selected="false" aria-controls="automation-panel-linux" tabindex="-1">Linux</button>
-        <button type="button" role="tab" id="automation-tab-macos" aria-selected="false" aria-controls="automation-panel-macos" tabindex="-1">macOS</button>
-      </div>
-      <div id="automation-panel-windows" role="tabpanel"><textarea id="ahk-script"></textarea></div>
-      <div id="automation-panel-linux" role="tabpanel" hidden><p>Coming soon</p></div>
-      <div id="automation-panel-macos" role="tabpanel" hidden><p>Coming soon</p></div>
-    `;
-    const tablist = document.getElementById("automation-tablist");
-    initAutomationScriptsTabs(tablist, { script: "x", docsUrl: "https://x/1" });
+  afterEach(() => {
+    vi.restoreAllMocks();
+    document.body.innerHTML = "";
+    delete globalThis.fetch;
+  });
 
-    const win = document.getElementById("automation-panel-windows");
-    const linux = document.getElementById("automation-panel-linux");
-    const mac = document.getElementById("automation-panel-macos");
-    expect(win?.hidden).toBe(false);
-    expect(linux?.hidden).toBe(true);
-    expect(mac?.hidden).toBe(true);
+  it("is a no-op when container is null", async () => {
+    await initAutomationScriptsTabs(null);
+  });
 
-    document.getElementById("automation-tab-linux")?.click();
-    expect(win?.hidden).toBe(true);
-    expect(linux?.hidden).toBe(false);
-    expect(mac?.hidden).toBe(true);
+  it("builds tab buttons and panels from the registry", async () => {
+    document.body.innerHTML = '<div id="container"></div>';
+    const container = document.getElementById("container");
+    mockFetchResponses({
+      "moz-extension://ext/automation-scripts/windows/description.html":
+        "<p>Win desc</p>",
+      "moz-extension://ext/automation-scripts/windows/clipboard-yeet.ahk":
+        "SCRIPT_BODY",
+      "moz-extension://ext/automation-scripts/linux/description.html":
+        '<p class="coming-soon">Coming soon...?</p>',
+      "moz-extension://ext/automation-scripts/macos/description.html":
+        '<p class="coming-soon">Coming soon...?</p>',
+    });
 
-    document.getElementById("automation-tab-macos")?.click();
-    expect(win?.hidden).toBe(true);
-    expect(linux?.hidden).toBe(true);
-    expect(mac?.hidden).toBe(false);
+    await initAutomationScriptsTabs(container);
+
+    const tabs = container.querySelectorAll('[role="tab"]');
+    const panels = container.querySelectorAll('[role="tabpanel"]');
+    expect(tabs.length).toBe(3);
+    expect(panels.length).toBe(3);
+    expect(tabs[0].textContent.trim()).toBe("Windows");
+    expect(tabs[1].textContent.trim()).toBe("Linux");
+    expect(tabs[2].textContent.trim()).toBe("macOS");
+  });
+
+  it("first tab is active by default, others hidden", async () => {
+    document.body.innerHTML = '<div id="container"></div>';
+    const container = document.getElementById("container");
+    mockFetchResponses({
+      "moz-extension://ext/automation-scripts/windows/description.html":
+        "<p>Win</p>",
+      "moz-extension://ext/automation-scripts/windows/clipboard-yeet.ahk":
+        "AHK",
+      "moz-extension://ext/automation-scripts/linux/description.html":
+        "<p>Lin</p>",
+      "moz-extension://ext/automation-scripts/macos/description.html":
+        "<p>Mac</p>",
+    });
+
+    await initAutomationScriptsTabs(container);
+
+    const panels = container.querySelectorAll('[role="tabpanel"]');
+    expect(panels[0].hidden).toBe(false);
+    expect(panels[1].hidden).toBe(true);
+    expect(panels[2].hidden).toBe(true);
+  });
+
+  it("clicking a tab shows that panel and hides others", async () => {
+    document.body.innerHTML = '<div id="container"></div>';
+    const container = document.getElementById("container");
+    mockFetchResponses({
+      "moz-extension://ext/automation-scripts/windows/description.html":
+        "<p>Win</p>",
+      "moz-extension://ext/automation-scripts/windows/clipboard-yeet.ahk":
+        "AHK",
+      "moz-extension://ext/automation-scripts/linux/description.html":
+        "<p>Lin</p>",
+      "moz-extension://ext/automation-scripts/macos/description.html":
+        "<p>Mac</p>",
+    });
+
+    await initAutomationScriptsTabs(container);
+
+    const tabs = container.querySelectorAll('[role="tab"]');
+    const panels = container.querySelectorAll('[role="tabpanel"]');
+
+    tabs[1].click();
+    expect(panels[0].hidden).toBe(true);
+    expect(panels[1].hidden).toBe(false);
+    expect(panels[2].hidden).toBe(true);
+    expect(tabs[0].getAttribute("aria-selected")).toBe("false");
+    expect(tabs[1].getAttribute("aria-selected")).toBe("true");
+
+    tabs[2].click();
+    expect(panels[0].hidden).toBe(true);
+    expect(panels[1].hidden).toBe(true);
+    expect(panels[2].hidden).toBe(false);
+  });
+
+  it("injects description HTML into the panel", async () => {
+    document.body.innerHTML = '<div id="container"></div>';
+    const container = document.getElementById("container");
+    mockFetchResponses({
+      "moz-extension://ext/automation-scripts/windows/description.html":
+        '<p><a href="https://docs.example">AHK docs</a></p>',
+      "moz-extension://ext/automation-scripts/windows/clipboard-yeet.ahk":
+        "AHK",
+      "moz-extension://ext/automation-scripts/linux/description.html":
+        "<p>Lin</p>",
+      "moz-extension://ext/automation-scripts/macos/description.html":
+        "<p>Mac</p>",
+    });
+
+    await initAutomationScriptsTabs(container);
+
+    const winPanel = container.querySelectorAll('[role="tabpanel"]')[0];
+    const link = winPanel.querySelector("a");
+    expect(link).not.toBeNull();
+    expect(link.getAttribute("href")).toBe("https://docs.example");
+  });
+
+  it("creates a read-only textarea with script content when scriptPath is present", async () => {
+    document.body.innerHTML = '<div id="container"></div>';
+    const container = document.getElementById("container");
+    mockFetchResponses({
+      "moz-extension://ext/automation-scripts/windows/description.html":
+        "<p>Win</p>",
+      "moz-extension://ext/automation-scripts/windows/clipboard-yeet.ahk":
+        "SCRIPT_CONTENT_HERE",
+      "moz-extension://ext/automation-scripts/linux/description.html":
+        "<p>Lin</p>",
+      "moz-extension://ext/automation-scripts/macos/description.html":
+        "<p>Mac</p>",
+    });
+
+    await initAutomationScriptsTabs(container);
+
+    const panels = container.querySelectorAll('[role="tabpanel"]');
+    const winTextarea = panels[0].querySelector("textarea");
+    expect(winTextarea).not.toBeNull();
+    expect(winTextarea.readOnly).toBe(true);
+    expect(winTextarea.value).toBe("SCRIPT_CONTENT_HERE");
+  });
+
+  it("does not create a textarea for platforms without scriptPath", async () => {
+    document.body.innerHTML = '<div id="container"></div>';
+    const container = document.getElementById("container");
+    mockFetchResponses({
+      "moz-extension://ext/automation-scripts/windows/description.html":
+        "<p>Win</p>",
+      "moz-extension://ext/automation-scripts/windows/clipboard-yeet.ahk":
+        "AHK",
+      "moz-extension://ext/automation-scripts/linux/description.html":
+        "<p>Lin</p>",
+      "moz-extension://ext/automation-scripts/macos/description.html":
+        "<p>Mac</p>",
+    });
+
+    await initAutomationScriptsTabs(container);
+
+    const panels = container.querySelectorAll('[role="tabpanel"]');
+    expect(panels[1].querySelector("textarea")).toBeNull();
+    expect(panels[2].querySelector("textarea")).toBeNull();
   });
 });

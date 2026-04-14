@@ -14,6 +14,9 @@ Implement additional clipboard output formats (HTML/Markdown variants) and an Au
 - **BUILD** — Complete: `lib/formats.js`, `lib/automation-scripts.js`, `popup/popup.js`, `options/options.{html,css,js}`, tests; options Automation scripts section with platform tabs.
 - **QA** — Complete (PASS): typo fix in options.html ("mesaging"→"messaging"), README updated to mention HTML output formats.
 - **REFLECT** — Complete: clean execution, no substantive insights beyond noting the block/line format extensibility seam.
+- **PLAN (rework)** — Complete: automation scripts moved from inline JS to bundled files with registry module.
+- **PREFLIGHT (rework)** — Complete (PASS): no hidden consumers, Chrome staging safe, minor plan amendment (async `.catch()` + auto-init ID update).
+- **BUILD (rework)** — Complete: automation scripts extracted to bundled files, registry module, dynamic tab/panel construction; 90 tests pass, lint clean, Chrome build succeeds.
 
 ## 2026-04-14 — BUILD + QA — COMPLETE
 
