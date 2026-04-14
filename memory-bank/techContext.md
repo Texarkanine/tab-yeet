@@ -8,4 +8,4 @@ Tests run with **`npm test`** as configured in `package.json` and `vitest.config
 
 ## Extension layout
 
-Entry points: `manifest.json`, `popup/popup.html`, `options/options.html`. Shared logic lives under `lib/`.
+Entry points: `manifest.json`, `popup/popup.html`, `options/options.html`. Shared logic lives under `lib/`. Bundled automation scripts (platform-specific files + registry) live under `automation-scripts/` and are fetched at runtime by the options page.

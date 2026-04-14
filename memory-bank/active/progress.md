@@ -18,6 +18,7 @@ Implement additional clipboard output formats (HTML/Markdown variants) and an Au
 - **PREFLIGHT (rework)** — Complete (PASS): no hidden consumers, Chrome staging safe, minor plan amendment (async `.catch()` + auto-init ID update).
 - **BUILD (rework)** — Complete: automation scripts extracted to bundled files, registry module, dynamic tab/panel construction; 90 tests pass, lint clean, Chrome build succeeds.
 - **QA (rework)** — Complete (PASS): one finding fixed — added `aria-label` to dynamically created textarea (accessibility regression from removing static HTML label).
+- **REFLECT (rework)** — Complete: key insight on auditing a11y attributes when converting static HTML to dynamic DOM. `techContext.md` updated.
 
 ## 2026-04-14 — BUILD + QA — COMPLETE
 

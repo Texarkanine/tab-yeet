@@ -4,29 +4,29 @@ date: 2026-04-14
 complexity_level: 2
 ---
 
-# Reflection: Copy formats and automation scripts UI
+# Reflection: Copy formats and automation scripts UI (with rework)
 
 ## Summary
 
-Added five clipboard format variants (markdown_url, html_link, html_ul_urls, html_ul_links alongside existing plain/markdown), human-readable labels in the popup selector, and an Automation scripts section on the options page with platform tabs. All requirements delivered, tests pass, no rework needed.
+Built five clipboard format variants and an Automation scripts options section. PR feedback prompted a rework: inline JS string constants for the AHK script were extracted to real bundled files with a registry module driving dynamic tab/panel construction. Both the initial build and the rework succeeded without plan deficiencies.
 
 ## Requirements vs Outcome
 
-Every requirement from the project brief was implemented as specified: all five format variants, the FORMAT_ORDER/FORMAT_LABELS-driven popup, the options page Automation scripts section with Windows AHK script + docs link, and Linux/macOS "Coming soon...?" placeholders. No requirements were dropped, descoped, or added beyond plan.
+All requirements delivered across both iterations. The rework was additive (better architecture for the same feature set), not corrective. No requirements dropped or descoped. The rework added the extensibility property: adding a new platform now requires only files + a registry entry — no HTML or JS changes.
 
 ## Plan Accuracy
 
-The five-step plan (formats module → automation constant → popup → options → tests) executed in order with no reordering or splitting needed. The identified challenges (HTML escaping, block vs line format distinction) were exactly what materialized. File list was accurate across all steps.
+The initial L2 plan was accurate for the original scope. The rework plan was also accurate — the preflight caught one minor gap (missing `.catch()` on the async auto-init call) that was trivially amended. No steps needed reordering. The identified challenges (`web-ext lint` with HTML injection, Chrome staging `.html` scanning) were correctly assessed and didn't materialize as problems.
 
 ## Build & QA Observations
 
-Build was straightforward — existing patterns (pure lib modules, centralized storage, Vitest TDD) made the new code a natural extension. QA caught two trivial issues: a typo in user-facing text ("mesaging" → "messaging") and an incomplete README description that still said "plain or Markdown" after HTML formats were added. No substantive rework was required.
+Build was straightforward in both iterations. The `DOMParser` approach for injecting fetched HTML fragments worked cleanly and avoided CSP/lint concerns. QA caught one accessibility regression in the rework: the dynamically created textarea lost its visually-hidden `<label>` from the old static HTML, fixed by adding `aria-label`. This is a recurring pattern to watch when converting static HTML to dynamic DOM construction.
 
 ## Insights
 
 ### Technical
 
-The block/line format split in `formatTabs` (dispatching to `BLOCK_FORMATS` before falling back to `FORMATS`) is a clean extensibility seam. New block-level formats (e.g., JSON, CSV) can be added with just a formatter function and a `FORMAT_LABELS` entry — no changes to the dispatch logic.
+When replacing static HTML with dynamically constructed DOM, audit every element for accessibility attributes that were provided by the static markup (labels, ARIA relationships, `tabindex`). These are easy to lose in the conversion and won't surface in functional tests.
 
 ### Process
 
@@ -34,4 +34,4 @@ Nothing notable.
 
 ### Million-Dollar Question
 
-If multiple output formats had been a day-one assumption, the current architecture is essentially what would have emerged: a label-ordered registry driving both the UI and the formatter dispatch, with a clean split between line and block formatters. The design is already in its natural shape.
+If the extension had assumed from day one that automation scripts would be platform-specific bundled files, the architecture would look exactly like what we built: a registry module pointing to file paths, fetched at runtime. The only difference might be that `options.html` would never have had the hardcoded tabs at all. The rework arrived at the natural architecture cleanly.
