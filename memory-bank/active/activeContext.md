@@ -2,12 +2,12 @@
 
 **Current Task:** Copy format variants + Automation scripts options section
 
-**Phase:** BUILD — COMPLETE · QA — COMPLETE
+**Phase:** REFLECT — COMPLETE
 
 **What Was Done**
 
-- Build resumed: **Automation scripts** block added to `options/options.html` (section below Transform rules), styled in `options/options.css`, wired via `initAutomationScriptsTabs` in `options/options.js` (imports bundled script from `lib/automation-scripts.js`).
-- Tests: `test/options/options.test.js` covers textarea/doc injection and tab panel visibility.
-- `memory-bank/systemPatterns.md` updated to mention `lib/automation-scripts.js` and the options automation UI.
+- QA passed (second run): fixed typo in options.html, updated README to mention HTML output formats.
+- Reflection complete: clean execution, no substantive rework needed. Block/line format split noted as a good extensibility seam.
+- Persistent files reconciled: productContext.md updated for HTML format mention.
 
-**Next Step:** Run `/niko-reflect` when ready, then `/niko-archive` after reflection.
+**Next Step:** Run `/niko-archive` to create the archive document and finalize the current project.
