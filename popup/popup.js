@@ -1,4 +1,4 @@
-import { formatTabs, FORMATS } from "../lib/formats.js";
+import { formatTabs, FORMAT_ORDER, FORMAT_LABELS } from "../lib/formats.js";
 import { loadFormatPreference, loadRules, saveFormatPreference } from "../lib/storage.js";
 import { transformUrls } from "../lib/transforms.js";
 
@@ -95,11 +95,10 @@ export function showFeedback(root, success, message = "") {
  */
 export function populateFormatSelect(select) {
   select.innerHTML = "";
-  const keys = Object.keys(FORMATS).sort();
-  for (const key of keys) {
+  for (const key of FORMAT_ORDER) {
     const opt = document.createElement("option");
     opt.value = key;
-    opt.textContent = key === "plain" ? "Plain URLs" : "Markdown list";
+    opt.textContent = FORMAT_LABELS[key] ?? key;
     select.appendChild(opt);
   }
 }
@@ -158,7 +157,9 @@ export async function init(formatSelect, copyBtn, optionsBtn, list, feedbackEl) 
   populateFormatSelect(formatSelect);
   state.rules = await loadRules();
   state.formatKey = await loadFormatPreference();
-  formatSelect.value = state.formatKey in FORMATS ? state.formatKey : "plain";
+  formatSelect.value = FORMAT_ORDER.includes(state.formatKey)
+    ? state.formatKey
+    : "plain";
 
   formatSelect.addEventListener("change", async () => {
     state.formatKey = formatSelect.value;

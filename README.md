@@ -1,6 +1,6 @@
 # Tab Yeet
 
-Browser extension: copy URLs from all tabs in the **current window**, with optional regex-based URL transforms and plain or Markdown list formatting.
+Browser extension: copy URLs from all tabs in the **current window**, with optional regex-based URL transforms and multiple output formats (plain, Markdown, and HTML).
 
 * [🦊 Install for Firefox-compatible browsers](https://addons.mozilla.org/firefox/addon/tab-yeet/)
 * [🦁 Install for Brave, Edge, Chrome, & other Chromium-compatible browsers](https://chromewebstore.google.com/detail/tab-yeet/fdgoaejobhndllbeggippcakdlmopdle)

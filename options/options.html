@@ -7,26 +7,40 @@
     <link rel="stylesheet" href="options.css" />
   </head>
   <body>
-    <h1>Transform rules</h1>
-    <p>
-      Rules run in order. Each rule’s pattern is a JavaScript regular expression
-      (no flags). Disabled rules are skipped.
-    </p>
-    <div class="rule-list-wrap">
-      <ul id="rules" class="rule-list"></ul>
-    </div>
-    <div class="add-panel">
-      <div class="field">
-        <label for="new-pattern">Pattern</label>
-        <input id="new-pattern" type="text" autocomplete="off" />
+    <section class="options-section" aria-labelledby="transform-heading">
+      <h1 id="transform-heading">Transform rules</h1>
+      <p>
+        Rules run in order. Each rule’s pattern is a JavaScript regular expression
+        (no flags). Disabled rules are skipped.
+      </p>
+      <div class="rule-list-wrap">
+        <ul id="rules" class="rule-list"></ul>
       </div>
-      <div class="field">
-        <label for="new-replacement">Replacement</label>
-        <input id="new-replacement" type="text" autocomplete="off" />
+      <div class="add-panel">
+        <div class="field">
+          <label for="new-pattern">Pattern</label>
+          <input id="new-pattern" type="text" autocomplete="off" />
+        </div>
+        <div class="field">
+          <label for="new-replacement">Replacement</label>
+          <input id="new-replacement" type="text" autocomplete="off" />
+        </div>
+        <button type="button" id="add-btn">Add rule</button>
       </div>
-      <button type="button" id="add-btn">Add rule</button>
-    </div>
-    <div id="error" role="alert"></div>
+      <div id="error" role="alert"></div>
+    </section>
+
+    <section class="options-section automation-section" aria-labelledby="automation-heading">
+      <h1 id="automation-heading">Automation scripts</h1>
+      <p class="automation-lead">
+        Optional helper scripts to send each line of clipboard text as a separate message in a
+        focused chat window (for example after copying from Tab Yeet).
+        <br>
+        <br>
+        You might use this if you want to share your links on a messaging platform - with each link's preview/embed displayed individually.
+      </p>
+      <div id="automation-container"></div>
+    </section>
     <script type="module" src="options.js"></script>
   </body>
 </html>

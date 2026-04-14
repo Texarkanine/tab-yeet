@@ -1,4 +1,97 @@
+import { PLATFORMS } from "../automation-scripts/registry.js";
 import { loadRules, saveRules } from "../lib/storage.js";
+
+/**
+ * Fetches a bundled extension resource as text.
+ * @param {string} path Extension-relative path.
+ * @returns {Promise<string>}
+ */
+async function fetchExtensionFile(path) {
+  const url = browser.runtime.getURL(path);
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch ${path}: ${res.status} ${res.statusText}`);
+  }
+  return res.text();
+}
+
+/**
+ * Builds platform tabs and panels for the Automation scripts section from the
+ * {@link PLATFORMS} registry. Description HTML fragments and script files are
+ * loaded from the extension bundle at runtime.
+ *
+ * @param {HTMLElement | null} container
+ * @param {typeof PLATFORMS} [platforms] Override for testing.
+ */
+export async function initAutomationScriptsTabs(container, platforms) {
+  if (!container) return;
+  const entries = platforms ?? PLATFORMS;
+
+  const tablist = document.createElement("div");
+  tablist.className = "automation-tabs";
+  tablist.setAttribute("role", "tablist");
+  tablist.setAttribute("aria-label", "Platform");
+
+  /** @type {HTMLElement[]} */
+  const tabEls = [];
+  /** @type {HTMLElement[]} */
+  const panelEls = [];
+
+  for (let i = 0; i < entries.length; i++) {
+    const p = entries[i];
+    const tabBtn = document.createElement("button");
+    tabBtn.type = "button";
+    tabBtn.className = "automation-tab";
+    tabBtn.setAttribute("role", "tab");
+    tabBtn.id = `automation-tab-${p.id}`;
+    tabBtn.setAttribute("aria-selected", String(i === 0));
+    tabBtn.setAttribute("aria-controls", `automation-panel-${p.id}`);
+    if (i > 0) tabBtn.tabIndex = -1;
+    tabBtn.textContent = p.label;
+    tablist.appendChild(tabBtn);
+    tabEls.push(tabBtn);
+
+    const panel = document.createElement("div");
+    panel.id = `automation-panel-${p.id}`;
+    panel.className = "automation-panel";
+    panel.setAttribute("role", "tabpanel");
+    panel.setAttribute("aria-labelledby", tabBtn.id);
+    if (i > 0) panel.hidden = true;
+    panelEls.push(panel);
+  }
+
+  container.appendChild(tablist);
+  for (const panel of panelEls) container.appendChild(panel);
+
+  function activate(index) {
+    tabEls.forEach((tab, i) => {
+      const on = i === index;
+      tab.setAttribute("aria-selected", String(on));
+      tab.tabIndex = on ? 0 : -1;
+      panelEls[i].hidden = !on;
+    });
+  }
+  tabEls.forEach((tab, i) => tab.addEventListener("click", () => activate(i)));
+
+  await Promise.all(
+    entries.map(async (p, i) => {
+      const descHtml = await fetchExtensionFile(p.descriptionPath);
+      const doc = new DOMParser().parseFromString(descHtml, "text/html");
+      panelEls[i].append(...doc.body.childNodes);
+
+      if (p.scriptPath) {
+        const scriptText = await fetchExtensionFile(p.scriptPath);
+        const ta = document.createElement("textarea");
+        ta.readOnly = true;
+        ta.className = "script-textarea";
+        ta.spellcheck = false;
+        ta.setAttribute("aria-label", `${p.label} automation script`);
+        ta.value = scriptText;
+        panelEls[i].appendChild(ta);
+      }
+    }),
+  );
+}
 
 /**
  * @param {string} pattern
@@ -373,5 +466,12 @@ if (
   init(rulesEl, newPat, newRep, addBtn).catch(() => {
     const errorEl = document.getElementById("error");
     if (errorEl) errorEl.textContent = "Failed to load rules.";
+  });
+}
+
+const automationContainer = document.getElementById("automation-container");
+if (automationContainer instanceof HTMLElement) {
+  initAutomationScriptsTabs(automationContainer).catch(() => {
+    automationContainer.textContent = "Failed to load automation scripts.";
   });
 }

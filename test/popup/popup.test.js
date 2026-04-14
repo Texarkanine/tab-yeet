@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
+import { FORMAT_ORDER } from "../../lib/formats.js";
 import {
   sortTabsByWindowOrder,
   detectDuplicates,
@@ -65,11 +66,12 @@ describe("buildCopyText", () => {
 });
 
 describe("popup UI helpers", () => {
-  it("populateFormatSelect fills keys from FORMATS", () => {
+  it("populateFormatSelect fills keys in FORMAT_ORDER with labels", () => {
     const sel = document.createElement("select");
     populateFormatSelect(sel);
     const values = Array.from(sel.options).map((o) => o.value);
-    expect(values.sort()).toEqual(["markdown", "plain"]);
+    expect(values).toEqual(FORMAT_ORDER);
+    expect(sel.options.length).toBe(FORMAT_ORDER.length);
   });
 
   it("showFeedback sets classes and text", () => {

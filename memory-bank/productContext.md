@@ -8,7 +8,7 @@ Power users of Firefox and LibreWolf who frequently share batches of URLs — pa
 
 - Copy all open tab URLs from the current browser window to the clipboard in one action
 - Apply regex-based URL transforms before copying (e.g., rewrite twitter.com to fixupx.com for embeddable links)
-- Choose output format (plain URLs, Markdown list) to match the destination platform
+- Choose output format (plain URLs, Markdown lists, HTML links/lists) to match the destination platform
 - Manage a reusable library of transform rules via an options page
 
 ## Key Benefits
