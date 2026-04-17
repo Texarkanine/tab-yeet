@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.1](https://github.com/Texarkanine/tab-yeet/compare/tab-yeet-v0.8.0...tab-yeet-v0.8.1) (2026-04-17)
+
+
+### Bug Fixes
+
+* **ci:** do not attempt to attach signed XPI that we won't be getting ([27408a6](https://github.com/Texarkanine/tab-yeet/commit/27408a6184b1fa449d479d082dd834f3ef3748f3))
+* **ci:** do not wait for AMO approval on deploy ([71b507a](https://github.com/Texarkanine/tab-yeet/commit/71b507a43c6bc765bc2e56a0750e4555c9842d55))
+
 ## [0.8.0](https://github.com/Texarkanine/tab-yeet/compare/tab-yeet-v0.7.1...tab-yeet-v0.8.0) (2026-04-14)
 
 
