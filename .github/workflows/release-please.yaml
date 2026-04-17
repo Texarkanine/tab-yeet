@@ -155,13 +155,6 @@ jobs:
           timeout: 300
           approvalTimeout: 0
 
-      - name: Attach signed XPI to GitHub Release
-        if: ${{ steps.amo_sign.outputs.target != '' }}
-        uses: softprops/action-gh-release@v3
-        with:
-          tag_name: ${{ needs.release-please.outputs.tag_name }}
-          files: ${{ steps.amo_sign.outputs.target }}
-
   cws-publish:
     name: Publish to Chrome Web Store
     needs:
