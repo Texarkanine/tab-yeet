@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.2](https://github.com/Texarkanine/tab-yeet/compare/tab-yeet-v0.8.1...tab-yeet-v0.8.2) (2026-04-17)
+
+
+### Bug Fixes
+
+* **ci:** it's milliseconds, not seconds ([edf178e](https://github.com/Texarkanine/tab-yeet/commit/edf178e8ecd270741e310f2c345f3152978017a7))
+
 ## [0.8.1](https://github.com/Texarkanine/tab-yeet/compare/tab-yeet-v0.8.0...tab-yeet-v0.8.1) (2026-04-17)
 
 
