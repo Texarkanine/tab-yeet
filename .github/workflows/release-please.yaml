@@ -143,7 +143,7 @@ jobs:
 
       - name: Sign with AMO
         id: amo_sign
-        uses: kewisch/action-web-ext@v1
+        uses: texarkanine/action-web-ext@submit-timeout
         with:
           cmd: sign
           source: amo-submit/unsigned.xpi
@@ -152,7 +152,8 @@ jobs:
           metaDataFile: amo-submit/amo-metadata.json
           apiKey: ${{ secrets.AMO_SIGN_KEY }}
           apiSecret: ${{ secrets.AMO_SIGN_SECRET }}
-          timeout: 900000
+          timeout: 300
+          approvalTimeout: 0
 
       - name: Attach signed XPI to GitHub Release
         if: ${{ steps.amo_sign.outputs.target != '' }}
