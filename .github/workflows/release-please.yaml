@@ -90,7 +90,7 @@ jobs:
           path: cws-submit
 
   amo-sign-and-attach:
-    name: Sign with AMO and attach signed XPI
+    name: Sign and Submit to AMO
     needs:
       - release-please
       - build-release
@@ -152,7 +152,7 @@ jobs:
           metaDataFile: amo-submit/amo-metadata.json
           apiKey: ${{ secrets.AMO_SIGN_KEY }}
           apiSecret: ${{ secrets.AMO_SIGN_SECRET }}
-          timeout: 300
+          timeout: 120000 # two minutes
           approvalTimeout: 0
 
   cws-publish:
