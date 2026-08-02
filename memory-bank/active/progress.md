@@ -33,3 +33,17 @@ Exclude non-runtime `screenshots/` and `docs/` from Firefox/AMO XPIs, lock that 
     - Preflight PASS — proceed to build
 * Insights
     - Config-only ignore tests would miss web-ext glob quirks; built-XPI listing assertion remains load-bearing
+
+## 2026-08-02 - BUILD - COMPLETE
+
+* Work completed
+    - Added `test/tooling/web-ext-package.test.js`; excluded `screenshots/` + `docs/` in `web-ext-config.cjs` (XPI ~53KB, no store assets)
+    - Root-caused AMO `unsupported_filetype`: web-ext 8 `FileBlob` → FormData filename `"blob"` under Node 24
+    - Switched AMO sign to `kewisch/action-web-ext@v2` (web-ext 10 native `File`; `approvalTimeout: 0` still supported)
+    - Documented CWS `invalid_grant` refresh-token remediation in `docs/cws-setup.md`
+    - Full suite 104/104; lint clean; dual build OK
+* Decisions made
+    - Prefer upstream v2 over Node 20 opt-out workaround
+    - Lean packaging kept as separate hygiene win, not claimed as AMO fix
+* Insights
+    - Historical release runs often “failed” overall while AMO succeeded — CWS `invalid_grant` has been failing since at least 0.8.2
