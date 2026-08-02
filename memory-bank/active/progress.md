@@ -56,3 +56,13 @@ Exclude non-runtime `screenshots/` and `docs/` from Firefox/AMO XPIs, lock that 
     - QA PASS — no KISS/YAGNI/completeness blockers; Node 20 opt-out correctly abandoned
 * Insights
     - README already pointed at kewisch/action-web-ext generically — no doc drift from leaving the fork
+
+## 2026-08-02 - REFLECT - COMPLETE
+
+* Work completed
+    - Wrote `memory-bank/active/reflection/reflection-20260802-lean-xpi-publish-investigate.md`
+    - Reconciled persistent files — no updates required
+* Decisions made
+    - Reflect complete; archive is operator-gated
+* Insights
+    - Prefer web-ext 10+ / native `File` for AMO uploads on Node 24 runners
