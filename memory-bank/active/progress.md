@@ -66,3 +66,8 @@ Exclude non-runtime `screenshots/` and `docs/` from Firefox/AMO XPIs, lock that 
     - Reflect complete; archive is operator-gated
 * Insights
     - Prefer web-ext 10+ / native `File` for AMO uploads on Node 24 runners
+
+## 2026-08-02 - ARCHIVE - IN-PROGRESS
+
+* Work completed
+    - Entering archive after REFLECT COMPLETE
