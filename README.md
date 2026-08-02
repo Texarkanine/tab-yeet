@@ -1,5 +1,7 @@
 # Tab Yeet
 
+[![code coverage](https://codecov.io/gh/Texarkanine/tab-yeet/graph/badge.svg)](https://codecov.io/gh/Texarkanine/tab-yeet)
+
 Browser extension: copy URLs from all tabs in the **current window**, with optional regex-based URL transforms and multiple output formats (plain, Markdown, and HTML).
 
 * [🦊 Install for Firefox-compatible browsers](https://addons.mozilla.org/firefox/addon/tab-yeet/)

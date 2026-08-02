@@ -1,6 +1,7 @@
 node_modules/
 web-ext-artifacts/
 build/
+coverage/
 
 # Source artwork (not shipped in .xpi; excluded in web-ext-config.cjs too)
 *.psd

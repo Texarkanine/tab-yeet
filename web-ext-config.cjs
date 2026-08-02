@@ -10,6 +10,8 @@ module.exports = {
     // Directory entries are not matched by `dir/**` alone; exclude the dirs explicitly.
     "build",
     "build/**",
+    "coverage",
+    "coverage/**",
     "scripts",
     "scripts/**",
     "memory-bank",

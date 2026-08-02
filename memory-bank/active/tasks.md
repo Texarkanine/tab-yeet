@@ -78,6 +78,10 @@ Add Vitest coverage generation, upload reports from CI to Codecov using the exis
 - Dropped README badge assertions from the TDD plan (document change-detector)
 - Added `push` to `main` CI trigger so Codecov default-branch badge can update after merge
 
+## Build notes
+
+- Added `coverage` / `coverage/**` to `web-ext-config.cjs` after discovering `npm run ci` would lint/package coverage HTML into the Firefox XPI when `coverage/` exists locally. Contract test covers this.
+
 ## Status
 
 - [x] Initialization complete
@@ -86,5 +90,5 @@ Add Vitest coverage generation, upload reports from CI to Codecov using the exis
 - [x] Technology validation complete
 - [x] Pre-Mortem complete
 - [x] Preflight
-- [ ] Build
+- [x] Build
 - [ ] QA
