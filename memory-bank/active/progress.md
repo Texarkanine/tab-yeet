@@ -13,3 +13,13 @@ Exclude non-runtime `screenshots/` and `docs/` from Firefox/AMO XPIs, lock that 
     - Level 2: packaging ignore/tests are contained; publish work is investigate-first with in-repo fixes only where justified
 * Insights
     - Prior chat already showed screenshots = ~87% of XPI; Chrome stays lean via stage allowlist
+
+## 2026-08-02 - PLAN - COMPLETE
+
+* Work completed
+    - Wrote Level 2 plan: web-ext ignore screenshots/docs, built-XPI contract tests, AMO/CWS investigation with remediation boundaries
+* Decisions made
+    - Built-XPI zip listing assertion required (not config-string-only)
+    - Do not conflate lean packaging with AMO unsupported_filetype unless evidence ties them
+* Insights
+    - Chrome stays lean via stage allowlist; Firefox packs from repo root minus ignoreFiles
