@@ -7,6 +7,7 @@
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "stage:chrome": "node scripts/stage-chrome.js",
     "lint:firefox": "web-ext lint --source-dir .",
     "lint:chrome": "npm run stage:chrome && web-ext lint --source-dir build/chrome",
@@ -14,9 +15,10 @@
     "build:firefox": "web-ext build --source-dir . --artifacts-dir web-ext-artifacts",
     "build:chrome": "npm run stage:chrome && web-ext build --source-dir build/chrome --artifacts-dir web-ext-artifacts --filename \"{name}-{version}-chrome.zip\" --overwrite-dest",
     "build:ext": "npm run build:firefox && npm run build:chrome",
-    "ci": "npm test && npm run lint:firefox && npm run build:ext"
+    "ci": "npm run test:coverage && npm run lint:firefox && npm run build:ext"
   },
   "devDependencies": {
+    "@vitest/coverage-v8": "^4.1.10",
     "jsdom": "^30.0.0",
     "vitest": "^4.1.10",
     "web-ext": "^10.5.0"
