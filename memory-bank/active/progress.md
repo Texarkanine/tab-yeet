@@ -23,3 +23,13 @@ Exclude non-runtime `screenshots/` and `docs/` from Firefox/AMO XPIs, lock that 
     - Do not conflate lean packaging with AMO unsupported_filetype unless evidence ties them
 * Insights
     - Chrome stays lean via stage allowlist; Firefox packs from repo root minus ignoreFiles
+
+## 2026-08-02 - PREFLIGHT - COMPLETE
+
+* Work completed
+    - Validated plan against TDD encoding, conventions, completeness
+    - Amended AMO investigation: evaluate source-dir vs prebuilt `.xpi`; require contract test before any workflow YAML change
+* Decisions made
+    - Preflight PASS — proceed to build
+* Insights
+    - Config-only ignore tests would miss web-ext glob quirks; built-XPI listing assertion remains load-bearing

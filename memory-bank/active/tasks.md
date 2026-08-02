@@ -36,11 +36,12 @@ Exclude non-runtime `screenshots/` and `docs/` from Firefox/`web-ext` packages, 
 
 3. **Investigate AMO `unsupported_filetype` (run 30728594885 attempt 2)**
    - Files: `.github/workflows/release-please.yaml`, release asset `tab_yeet-0.9.0.xpi`, logs; optionally `texarkanine/action-web-ext@submit-timeout` behavior notes in `progress.md`
-   - Changes: Trace submit path (`source: amo-submit/unsigned.xpi` + metadata). Determine whether rejection is packaging (outer archive / upload path), AMO validator quirk, or credentials/version conflict. Apply an in-repo workflow/packaging fix only if evidence supports one; otherwise document operator/AMO-side next steps in `progress.md`
+   - Changes: Trace submit path (`source: amo-submit/unsigned.xpi` + metadata). Evaluate whether AMO/`web-ext sign` expects a source directory (or `.zip`) rather than a pre-built `.xpi` — web-ext docs emphasize signing from source and ignoring nested archives. Determine whether rejection is packaging/upload path, validator quirk, or credentials/version conflict. Apply an in-repo workflow/packaging fix only if evidence supports one; otherwise document operator/AMO-side next steps in `progress.md`
+   - TDD if workflow changes: Before editing `release-please.yaml`, add/extend a Vitest contract in `test/tooling/` that locks the corrected AMO submit shape (same style as `coverage-ci.test.js`)
 
 4. **Investigate CWS `invalid_grant`**
    - Files: `docs/cws-setup.md`, workflow CWS env/secrets usage
-   - Changes: Confirm OAuth refresh failure (not zip contents). Document remediation (re-consent / rotate `CWS_*` secrets) in `docs/cws-setup.md` if a troubleshooting gap exists; no fake “code fix” for expired tokens
+   - Changes: Confirm OAuth refresh failure (not zip contents). Document remediation (re-consent / rotate `CWS_*` secrets) in `docs/cws-setup.md` if a troubleshooting gap exists; no fake “code fix” for expired tokens. Docs-only — no executable-behavior tests required
 
 5. **Verify end-to-end locally**
    - Files: none (commands)
@@ -76,6 +77,11 @@ No new technology - validation not required
 - [x] Implementation plan complete
 - [x] Technology validation complete
 - [x] Pre-Mortem complete
-- [ ] Preflight
+- [x] Preflight
 - [ ] Build
 - [ ] QA
+
+## Preflight Amendments
+
+- AMO investigation must evaluate source-dir / `.zip` vs pre-built `.xpi` submit shape (web-ext sign docs).
+- Any `release-please.yaml` change requires a Vitest contract test written first.
