@@ -40,3 +40,27 @@ Wire Vitest coverage into CI, upload to Codecov via existing `CODECOV_TOKEN`, an
     - Push-to-main required for a meaningful Codecov default-branch badge
 * Insights
     - Current `ci.yaml` is PR-only; without a main trigger the badge would likely stay empty/stale
+
+## 2026-08-01 - BUILD - COMPLETE
+
+* Work completed
+    - Added `@vitest/coverage-v8`, `test:coverage`, vitest coverage config with lcov
+    - CI: coverage run + Codecov upload; triggers on PR and push to main
+    - README badge; gitignore `coverage/`; web-ext ignore `coverage` (prevents XPI pollution)
+    - 7 contract tests in `test/tooling/coverage-ci.test.js`; suite 102 passing
+* Decisions made
+    - Fail CI soft on Codecov upload errors
+    - web-ext ignore required after verifying coverage HTML was packing into `.xpi`
+* Insights
+    - Running coverage before `web-ext lint/build` from source-dir `.` is unsafe without ignoreFiles
+
+## 2026-08-01 - QA - COMPLETE
+
+* Work completed
+    - Semantic review vs plan: requirements complete; no over-engineering
+    - Updated `techContext.md` Testing section for coverage/Codecov/web-ext ignore
+    - Wrote `.qa-validation-status` PASS
+* Decisions made
+    - No further code changes required beyond techContext doc sync
+* Insights
+    - Persistent tech context had gone stale the moment coverage landed; QA Documentation check caught it

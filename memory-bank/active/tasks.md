@@ -91,4 +91,4 @@ Add Vitest coverage generation, upload reports from CI to Codecov using the exis
 - [x] Pre-Mortem complete
 - [x] Preflight
 - [x] Build
-- [ ] QA
+- [x] QA
