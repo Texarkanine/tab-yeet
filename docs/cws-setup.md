@@ -86,4 +86,5 @@ Once these are configured, the `cws-publish` job in the release workflow will ac
 
 - **Upload fails with "version already exists"**: release-please bumps the version before creating the release, so this shouldn't happen. If it does, check that the `version` in `manifest.json` was bumped by the release PR.
 - **Upload succeeds but publish is "PENDING_REVIEW"**: CWS may queue extensions for manual review. The CI job will succeed — the published version appears on the store once the review completes.
+- **CI fails at "Fetching token..." with `invalid_grant` / `Bad Request`**: The OAuth refresh token in `CWS_REFRESH_TOKEN` was rejected before any zip upload. Re-run the consent flow in step 3 (include `access_type=offline` and, if Google omits a new refresh token, revoke the app's access under the Google account and consent again), then update `CWS_CLIENT_ID`, `CWS_CLIENT_SECRET`, and `CWS_REFRESH_TOKEN` together so they stay a matching set.
 - **OAuth token exchange fails**: Verify the refresh token hasn't been revoked. Re-run the consent flow from step 3 if needed and update the `CWS_REFRESH_TOKEN` secret.

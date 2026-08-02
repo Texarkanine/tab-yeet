@@ -12,6 +12,11 @@ module.exports = {
     "build/**",
     "coverage",
     "coverage/**",
+    // Store listing / maintainer docs — not extension runtime (Chrome stage allowlist already omits these).
+    "screenshots",
+    "screenshots/**",
+    "docs",
+    "docs/**",
     "scripts",
     "scripts/**",
     "memory-bank",
