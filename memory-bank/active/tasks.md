@@ -4,54 +4,55 @@
 * Complexity: Level 2
 * Type: simple enhancement
 
-Add Vitest coverage generation, upload reports from PR CI to Codecov using the existing `CODECOV_TOKEN` secret, and surface a Codecov badge on the README. Confirmed no existing Codecov/coverage steps in `.github/workflows/` (only plain `npm test`).
+Add Vitest coverage generation, upload reports from CI to Codecov using the existing `CODECOV_TOKEN` secret, and surface a Codecov badge on the README. Confirmed no existing Codecov/coverage steps in `.github/workflows/` (only plain `npm test`).
 
 ## Test Plan (TDD)
 
 ### Behaviors to Verify
 
 - Package scripts: `package.json` defines `test:coverage` that invokes Vitest with `--coverage` → script string contains `vitest` and `--coverage`
-- Vitest coverage config: `vitest.config.js` enables v8 coverage with `lcov` reporter and includes extension/source JS under `lib/`, `popup/`, `options/`, `scripts/`, `automation-scripts/` → config exports those settings
-- CI upload: `.github/workflows/ci.yaml` runs coverage tests and uploads via `codecov/codecov-action` with `secrets.CODECOV_TOKEN` → workflow YAML contains those markers
-- README badge: `README.md` links a Codecov badge for `Texarkanine/tab-yeet` → markdown badge present near the top
+- Local CI parity: `package.json` `ci` script invokes `test:coverage` (not only plain `test`) → local `npm run ci` generates coverage like CI
+- Vitest coverage config: `vitest.config.js` enables v8 coverage with `lcov` reporter and includes extension/source JS under `lib/`, `popup/`, `options/`, `scripts/`, `automation-scripts/` → config exports those settings; excludes `test/`, `node_modules/`, `build/`, `web-ext-artifacts/`, `coverage/`
+- CI triggers: `.github/workflows/ci.yaml` runs on `pull_request` **and** `push` to `main` → default-branch uploads keep the Codecov badge current
+- CI upload: workflow runs coverage tests and uploads via `codecov/codecov-action` with `secrets.CODECOV_TOKEN` → YAML contains those markers; no duplicate upload steps
 - Ignore artifact: `.gitignore` excludes `coverage/` → directory not tracked
-- Local CI parity: `package.json` `ci` script uses coverage (not plain `npm test` alone) so local `npm run ci` matches PR test coverage generation
 
 ### Edge Cases
 
-- Duplicate work: CI must not already contain a Codecov upload step (assert presence once; pre-check confirmed absence)
+- Duplicate work: assert exactly one Codecov upload step in the PR/main CI workflow
 - Secret name must be exactly `CODECOV_TOKEN` (repo already has it)
-- Coverage include must not pull in `test/`, `node_modules/`, `build/`, or `web-ext-artifacts/`
+
+### Docs (no automated tests)
+
+- README Codecov badge for `Texarkanine/tab-yeet` — user-facing prose; verified in build/QA by inspection, not a Vitest change-detector
 
 ### Test Infrastructure
 
 - Framework: Vitest (existing)
 - Test location: `test/`
-- Conventions: `test/<area>/<name>.test.js`; describe/it/expect; no parallel harness
-- New test files: `test/tooling/coverage-ci.test.js` (contract tests over config/workflow/README — same style historically used for CI contracts in this repo)
+- Conventions: `test/<area>/<name>.test.js`; describe/it/expect
+- New test files: `test/tooling/coverage-ci.test.js` (config/workflow/gitignore contracts only)
 
 ## Implementation Plan
 
-1. **Stub failing contract tests** for scripts, vitest coverage config, CI upload step, README badge, and `.gitignore`
+1. **Stub then implement failing contract tests** for scripts, vitest coverage config, CI triggers + upload, and `.gitignore` (not README)
    - Files: `test/tooling/coverage-ci.test.js` (new)
-   - Changes: empty then implemented assertions reading files via `fs`
+   - Changes: read files via `fs` / `path`; assert load-bearing markers
 2. **Add `@vitest/coverage-v8` and `test:coverage` script; update `ci` script to use coverage**
    - Files: `package.json`, `package-lock.json`
    - Changes: devDependency; `"test:coverage": "vitest run --coverage"`; `ci` uses `npm run test:coverage`
 3. **Configure Vitest coverage** (v8, text+html+lcov reporters, include source dirs, exclude tests/build/artifacts)
    - Files: `vitest.config.js`
    - Changes: `test.coverage` block
-4. **Wire CI upload** after the test step: run `npm run test:coverage`, then `codecov/codecov-action@v7` with `token: ${{ secrets.CODECOV_TOKEN }}` and `fail_ci_if_error: false` (badge-friendly first uploads; matches reference)
+4. **Wire CI**: trigger on PR and push to `main`; replace plain `npm test` with `npm run test:coverage`; add `codecov/codecov-action@v7` with `token: ${{ secrets.CODECOV_TOKEN }}` and `fail_ci_if_error: false`
    - Files: `.github/workflows/ci.yaml`
-   - Changes: replace plain `npm test` with coverage run + upload step
-5. **Ignore coverage output; add README badge**
+5. **Ignore coverage output; add README badge** (docs)
    - Files: `.gitignore`, `README.md`
-   - Changes: `coverage/`; Codecov badge markdown after title / before install links
-6. **Run contract tests + full suite** until green; confirm `coverage/lcov.info` generated locally
+6. **Run contract tests + full suite** until green; confirm `coverage/lcov.info` generated locally via `npm run test:coverage`
 
 ## Technology Validation
 
-- `@vitest/coverage-v8@^4.1.10` (peer of Vitest 4.1.10): temporary install + `vitest run --coverage` succeeded (text report) before lockfile was reverted for clean TDD build. Default reporters alone did not emit `lcov.info` — confirms the plan's need for an explicit `lcov` reporter in `vitest.config.js`. Validation: PASS.
+- `@vitest/coverage-v8@^4.1.10`: temporary install + `vitest run --coverage` succeeded (text report). Default reporters alone did not emit `lcov.info` — confirms need for explicit `lcov` reporter. Lockfile reverted for clean TDD build. Validation: PASS.
 
 ## Dependencies
 
@@ -61,15 +62,21 @@ Add Vitest coverage generation, upload reports from PR CI to Codecov using the e
 
 ## Challenges & Mitigations
 
-- Badge stays stale until first successful upload on a PR/main run: Mitigation — `fail_ci_if_error: false` so CI still green if Codecov briefly flakes; operator already has token
-- Over-broad coverage include inflates noise: Mitigation — explicit `include` for extension/source JS only
-- Contract tests become change-detectors if they assert prose: Mitigation — assert only load-bearing markers (script names, action name, secret name, badge URL host/repo path)
+- Badge stale / empty if only PR CI uploads: Mitigation — also run CI on `push` to `main` (preflight amendment)
+- Codecov flake blocking PRs: Mitigation — `fail_ci_if_error: false`
+- Over-broad coverage include: Mitigation — explicit `include` for extension/source JS only
+- README badge test as change-detector: Mitigation — removed from test plan (docs-only)
 
 ## Pre-Mortem
 
-- Plan failed because CI already uploaded coverage and we duplicated steps: Ruled out by workspace scan of `.github/`; contract test locks single upload path
-- Plan failed because we only changed README and forgot CI: Covered by Implementation steps 4–5 and contract tests requiring both
+- Plan failed because CI already uploaded coverage and we duplicated steps: Ruled out by scan; contract asserts a single upload step
+- Plan failed because badge never showed on main: Addressed by push-to-main trigger
 - Plan failed by adding thresholds that break CI at ~56% coverage: Out of scope; do not add thresholds
+
+## Preflight Amendments (2026-08-01)
+
+- Dropped README badge assertions from the TDD plan (document change-detector)
+- Added `push` to `main` CI trigger so Codecov default-branch badge can update after merge
 
 ## Status
 
@@ -78,6 +85,6 @@ Add Vitest coverage generation, upload reports from PR CI to Codecov using the e
 - [x] Implementation plan complete
 - [x] Technology validation complete
 - [x] Pre-Mortem complete
-- [ ] Preflight
+- [x] Preflight
 - [ ] Build
 - [ ] QA

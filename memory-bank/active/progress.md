@@ -28,3 +28,15 @@ Wire Vitest coverage into CI, upload to Codecov via existing `CODECOV_TOKEN`, an
     - Explicit coverage `include` for lib/popup/options/scripts/automation-scripts
 * Insights
     - Default Vitest `--coverage` without config may not emit `lcov.info`; plan requires explicit `lcov` reporter for Codecov
+
+## 2026-08-01 - PREFLIGHT - COMPLETE
+
+* Work completed
+    - Validated plan against TDD encoding, conventions, conflicts, completeness
+    - Amended plan: no README Vitest assertions; CI also on `push` to `main`
+    - Wrote `.preflight-status` PASS
+* Decisions made
+    - README badge is docs-only (inspection in build/QA)
+    - Push-to-main required for a meaningful Codecov default-branch badge
+* Insights
+    - Current `ci.yaml` is PR-only; without a main trigger the badge would likely stay empty/stale
