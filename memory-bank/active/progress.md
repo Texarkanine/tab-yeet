@@ -64,3 +64,13 @@ Wire Vitest coverage into CI, upload to Codecov via existing `CODECOV_TOKEN`, an
     - No further code changes required beyond techContext doc sync
 * Insights
     - Persistent tech context had gone stale the moment coverage landed; QA Documentation check caught it
+
+## 2026-08-01 - REFLECT - COMPLETE
+
+* Work completed
+    - Wrote `reflection/reflection-20260801-codecov-coverage-badge.md`
+    - Reconciled persistent files (techContext already current; product/system unchanged)
+* Decisions made
+    - None beyond documenting web-ext ignore and push-to-main lessons
+* Insights
+    - See reflection doc: web-ext + coverage dir hazard; PR-only CI insufficient for Codecov badge
