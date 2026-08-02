@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.1](https://github.com/Texarkanine/tab-yeet/compare/tab-yeet-v0.9.0...tab-yeet-v0.9.1) (2026-08-02)
+
+
+### Bug Fixes
+
+* **ci:** lean Firefox XPI and fix AMO sign on Node 24 ([#45](https://github.com/Texarkanine/tab-yeet/issues/45)) ([37d6de8](https://github.com/Texarkanine/tab-yeet/commit/37d6de88aa1602d70f7989ebfa0bbf4669ff8d8f))
+
 ## [0.9.0](https://github.com/Texarkanine/tab-yeet/compare/tab-yeet-v0.8.2...tab-yeet-v0.9.0) (2026-08-02)
 
 
