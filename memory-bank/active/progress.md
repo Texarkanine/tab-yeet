@@ -47,3 +47,12 @@ Exclude non-runtime `screenshots/` and `docs/` from Firefox/AMO XPIs, lock that 
     - Lean packaging kept as separate hygiene win, not claimed as AMO fix
 * Insights
     - Historical release runs often “failed” overall while AMO succeeded — CWS `invalid_grant` has been failing since at least 0.8.2
+
+## 2026-08-02 - QA - COMPLETE
+
+* Work completed
+    - Semantic review against plan: packaging, AMO root-cause + v2 bump, CWS docs
+* Decisions made
+    - QA PASS — no KISS/YAGNI/completeness blockers; Node 20 opt-out correctly abandoned
+* Insights
+    - README already pointed at kewisch/action-web-ext generically — no doc drift from leaving the fork
