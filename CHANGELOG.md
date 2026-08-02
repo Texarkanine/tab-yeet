@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.9.0](https://github.com/Texarkanine/tab-yeet/compare/tab-yeet-v0.8.2...tab-yeet-v0.9.0) (2026-08-02)
+
+
+### Features
+
+* **ci:** upload Vitest coverage to Codecov and add README badge ([#42](https://github.com/Texarkanine/tab-yeet/issues/42)) ([27f81f4](https://github.com/Texarkanine/tab-yeet/commit/27f81f43f59ac3f6be98a9152bc71a0a267f7de9))
+
+
+### Bug Fixes
+
+* **ci:** why didn't that go? ([#44](https://github.com/Texarkanine/tab-yeet/issues/44)) ([a93aa1f](https://github.com/Texarkanine/tab-yeet/commit/a93aa1fa9a01421344420d4156d2f5e8965ac213))
+
 ## [0.8.2](https://github.com/Texarkanine/tab-yeet/compare/tab-yeet-v0.8.1...tab-yeet-v0.8.2) (2026-04-17)
 
 
