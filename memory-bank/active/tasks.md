@@ -82,6 +82,6 @@ No new technology - validation not required. AutoHotkey v2 is already the shippe
 - [x] Implementation plan complete
 - [x] Technology validation complete
 - [x] Pre-Mortem complete
-- [ ] Preflight
+- [x] Preflight
 - [ ] Build
 - [ ] QA

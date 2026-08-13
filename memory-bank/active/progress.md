@@ -51,3 +51,15 @@ Add an Escape-key abort to the shipped AutoHotkey clipboard-yeet script so a run
     - The `.ahk` is a bundled sample the extension displays; WebExtension executable behavior is unchanged
 * Insights
     - Preflight's "retain executable source-contract tests" conflicted with both the change-detector rule and the operator; the operator wins
+
+## 2026-08-13 - PREFLIGHT - COMPLETE (PASS)
+
+* Work completed
+    - Validated the replanned Level 2 implementation against `systemPatterns.md` and `always-tdd.mdc`.
+    - Confirmed the operator's bypass of executable TDD applies appropriately to the `.ahk` sample file, meaning no test infrastructure changes or new change-detectors are required.
+    - Verified plan completion across the required steps and files without overlap or missing targets.
+    - Recorded `PASS` in `.preflight-status` and updated task status.
+* Decisions made
+    - Plan passes and is ready for Build phase.
+* Insights
+    - Operator-dictated test omission for non-executable-by-us files is cleanly handled as "N/A for prose/policy artifacts" and satisfies TDD rule constraints correctly.
