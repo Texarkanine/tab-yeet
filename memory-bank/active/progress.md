@@ -90,3 +90,14 @@ Add an Escape-key abort to the shipped AutoHotkey clipboard-yeet script so a run
 * Insights
     - The riskiest part of this change was AHK v2 scoping, not the hotkey design: a missing `global` would have silently created a local and left Escape armed forever. Docs confirm the declaration covers the whole function, so the single `global` is sufficient.
     - The unguarded flag's worst case degenerates to the abort's intended outcome, which is why minimality wins over error plumbing here
+
+## 2026-08-13 - REFLECT - COMPLETE
+
+* Work completed
+    - Wrote `memory-bank/active/reflection/reflection-20260813-ahk-escape-abort.md`
+    - Reconciled persistent files: no updates
+* Decisions made
+    - The delivered hatch is the design that would have existed if it had been assumed from the start
+* Insights
+    - Bundled samples this repo only displays are inspection-verified; Vitest greps of them are change-detectors
+
