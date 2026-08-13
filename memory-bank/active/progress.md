@@ -25,3 +25,17 @@ Add an Escape-key abort to the shipped AutoHotkey clipboard-yeet script so a run
     - Do not execute AHK in CI; lock the shipped source contract only
 * Insights
     - `Sleep` is interruptible by hotkeys; `SetKeyDelay` is not — keep the existing `Sleep(DELAY_MS)` inter-line wait
+
+## 2026-08-13 - PREFLIGHT - COMPLETE (FAIL)
+
+* Work completed
+    - Validated the implementation plan against the shipped AHK script, automation registry, options-page loading path, package staging, existing tests, and official AutoHotkey v2 documentation
+    - Confirmed the executable abort design, dependency coverage, file locations, and test-before-code ordering
+    - Recorded `FAIL` in `.preflight-status` and blocked the build pending replanning
+* Decisions made
+    - Reject the planned usage-comment wording assertion because it is a prose change-detector, not an executable-behavior test
+    - Preserve the usage-comment and Windows description edits as review-verified prose deliverables
+    - Route back to `/niko-plan` as required for a blocking TDD plan-encoding failure
+* Insights
+    - The remaining source-contract tests are appropriate because AHK cannot run in the Linux Vitest environment and they lock executable safety boundaries rather than prose
+    - A Windows AutoHotkey parse smoke check could reduce syntax risk, but it would expand this Level 2 task's infrastructure scope

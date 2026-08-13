@@ -76,6 +76,27 @@ No new technology - validation not required. AutoHotkey v2 is already the shippe
 - CI is green but the script is invalid v2 and never runs for users: already covered by the Test Infrastructure residual-risk note; keep the AHK edit small and docs-shaped.
 - A test snapshots the whole `.ahk` and becomes a change-detector: already covered by Challenge 4; tests assert fragments of the contract only.
 
+## Preflight Report
+
+**Result:** FAIL
+
+### Findings
+
+- **Blocking — TDD plan encoding:** The planned test for the usage-comment wording is a prose change-detector. It can only fail when someone deliberately edits the comment, not when executable abort behavior breaks. Remove that assertion from Behaviors to Verify, Test File Mapping, and implementation step 1. Keep the usage-comment and `description.html` edits as review-verified prose deliverables with `Tests first: N/A for prose & policy artifacts`.
+- **Pass — executable TDD ordering:** The remaining source-contract tests precede the AHK implementation and cover the executable safety contract: gated Escape hotkey, `ExitApp`, gate activation after the empty-clipboard return, gate reset after the loop, and unchanged empty-clipboard behavior.
+- **Pass — conventions:** The proposed script and description paths match the platform registry and extension layout. The proposed Vitest file follows the existing `test/automation-scripts/` ESM conventions and root-file reading pattern.
+- **Pass — dependency impact:** The options page already fetches the registered AHK and description files, both Firefox packaging and Chrome staging include `automation-scripts/`, and no registry or options-page implementation changes are required. Existing tests mock script content or assert registry paths and need no changes.
+- **Pass — conflict detection:** No existing Escape abort, `ExitApp`, `#HotIf`, or sending-state implementation overlaps with the proposal. Official AutoHotkey v2 documentation confirms `#HotIf`, `Esc::ExitApp`, and that hotkeys can launch while `Sleep` is waiting.
+- **Pass — requirement coverage:** The implementation steps map both project requirements and acceptance criteria to concrete files and preserve the current send loop, delay, blank-line handling, tooltip, and empty-clipboard return.
+
+### Advisory
+
+- A future Windows CI smoke check that launches AutoHotkey v2 solely to parse the shipped script would close the documented syntax-validation gap. That adds platform setup and changes task scope/complexity, so it is not part of this Level 2 task.
+
+### Required Replan
+
+- Run `/niko-plan`, remove only the usage-comment content assertion, preserve the prose edits, and retain all executable source-contract tests before re-running `/niko-preflight`.
+
 ## Status
 
 - [x] Initialization complete
@@ -83,6 +104,6 @@ No new technology - validation not required. AutoHotkey v2 is already the shippe
 - [x] Implementation plan complete
 - [x] Technology validation complete
 - [x] Pre-Mortem complete
-- [ ] Preflight
+- [x] Preflight complete (FAIL — replan required)
 - [ ] Build
 - [ ] QA
