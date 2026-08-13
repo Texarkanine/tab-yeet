@@ -1,11 +1,12 @@
 # Active Context
 
 ## Current Task: AHK Escape abort
-**Phase:** COMPLEXITY-ANALYSIS - COMPLETE
+**Phase:** PLAN - COMPLETE
 
 ## What Was Done
-- Intent restated and approved: add Escape abort to shipped AHK clipboard-yeet so a runaway send loop can be stopped immediately.
-- Complexity determined: Level 2. Small enhancement to a single shipped script (plus comments / options-page display of that file). Not a bug — the script works as written; it lacks a best-practice emergency exit. Self-contained; no architectural change.
+- Classified Level 2: self-contained safety hatch on the shipped Windows AHK script.
+- Planned TDD source contracts in `test/automation-scripts/clipboard-yeet-ahk.test.js` (AHK cannot run in Vitest/CI).
+- Implementation: `#HotIf sending` + `Esc::ExitApp` in `automation-scripts/windows/clipboard-yeet.ahk`, plus a usage comment and a one-line description.html note. Keep existing send loop, delay, and empty-clipboard behavior.
 
 ## Next Step
-- Load the Level 2 workflow
+- Preflight validation (spawn `/niko-preflight`)
