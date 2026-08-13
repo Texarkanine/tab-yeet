@@ -39,3 +39,15 @@ Add an Escape-key abort to the shipped AutoHotkey clipboard-yeet script so a run
 * Insights
     - The remaining source-contract tests are appropriate because AHK cannot run in the Linux Vitest environment and they lock executable safety boundaries rather than prose
     - A Windows AutoHotkey parse smoke check could reduce syntax risk, but it would expand this Level 2 task's infrastructure scope
+
+## 2026-08-13 - PLAN - COMPLETE (replan)
+
+* Work completed
+    - Dropped all planned Vitest assertions on the `.ahk` file, not only the usage-comment case
+    - Kept `#HotIf sending` + `Esc::ExitApp`, usage comment, and description.html as inspection-verified edits
+* Decisions made
+    - Operator: shipped AHK is look-and-see; this repo never tested AHK semantics and should not start
+    - Same-file greps for `Esc::` / `ExitApp` / `#HotIf` are change-detectors (TDD forbids them), not a weaker substitute for an AHK runner
+    - The `.ahk` is a bundled sample the extension displays; WebExtension executable behavior is unchanged
+* Insights
+    - Preflight's "retain executable source-contract tests" conflicted with both the change-detector rule and the operator; the operator wins

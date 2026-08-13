@@ -1,13 +1,12 @@
 # Active Context
 
 ## Current Task: AHK Escape abort
-**Phase:** PREFLIGHT - COMPLETE (FAIL)
+**Phase:** PLAN - COMPLETE
 
 ## What Was Done
-- Confirmed the `#HotIf sending` + `Esc::ExitApp` design against the shipped script, extension integration, packaging, test conventions, and official AHK v2 behavior.
-- Confirmed the executable source-contract tests are ordered before production changes and cover the required abort safety boundaries.
-- Failed preflight because the plan also schedules an assertion on usage-comment wording; that is a prose change-detector prohibited by the TDD boundary.
-- Recorded the complete finding and out-of-scope Windows AHK parse-check advisory in `tasks.md`; `.preflight-status` is `FAIL`.
+- Replanned after preflight FAIL and operator direction: no Vitest tests of the `.ahk` sample. Same-file greps are change-detectors; this repo does not execute AutoHotkey; existing tests only cover the JS display path.
+- Implementation unchanged: `#HotIf sending` + `Esc::ExitApp` in `clipboard-yeet.ahk`, usage comment, one-line `description.html` note. Inspect to verify.
+- Dropped planned `test/automation-scripts/clipboard-yeet-ahk.test.js`.
 
 ## Next Step
-- Run `/niko-plan` to remove the usage-comment content assertion while preserving the prose edits and executable source-contract tests, then re-run `/niko-preflight`.
+- Preflight validation (spawn `/niko-preflight`)
