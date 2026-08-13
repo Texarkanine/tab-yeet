@@ -34,7 +34,7 @@ Verified by inspection of the shipped sample (not Vitest). Same-file greps are p
 
 ## Implementation Plan
 
-1. Add the Escape abort to the shipped AHK sample
+1. [x] Add the Escape abort to the shipped AHK sample
    - Files: `automation-scripts/windows/clipboard-yeet.ahk`
    - Tests first: `N/A for prose & policy artifacts` (bundled sample this repo does not execute; inspection-verified; Vitest greps would be change-detectors)
    - Changes:
@@ -43,11 +43,11 @@ Verified by inspection of the shipped sample (not Vitest). Same-file greps are p
      - In `^!+v`: after the empty-clipboard return, `global sending := true`; after the loop, `sending := false`
      - Header comment: Escape aborts and exits; re-run the script to restore the hotkey
      - Keep `DELAY_MS`, `SendText`/`Send("{Enter}")`, blank-line skip, and completion tooltip as they are
-2. Mention Escape in the Windows automation description fragment
+2. [x] Mention Escape in the Windows automation description fragment
    - Files: `automation-scripts/windows/description.html`
    - Tests first: `N/A for prose & policy artifacts`
    - Changes: one short sentence next to the existing AHK docs link: while sending, Escape aborts and exits the script
-3. Confirm existing JS tests still pass
+3. [x] Confirm existing JS tests still pass
    - Files: none new
    - Tests first: `N/A for prose & policy artifacts` (no new executable units; regression of the unchanged extension suite)
    - Changes: run `npm test`; fix only if this edit somehow broke JS tests (it should not)
@@ -83,5 +83,5 @@ No new technology - validation not required. AutoHotkey v2 is already the shippe
 - [x] Technology validation complete
 - [x] Pre-Mortem complete
 - [x] Preflight
-- [ ] Build
+- [x] Build
 - [ ] QA

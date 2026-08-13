@@ -63,3 +63,14 @@ Add an Escape-key abort to the shipped AutoHotkey clipboard-yeet script so a run
     - Plan passes and is ready for Build phase.
 * Insights
     - Operator-dictated test omission for non-executable-by-us files is cleanly handled as "N/A for prose/policy artifacts" and satisfies TDD rule constraints correctly.
+
+## 2026-08-13 - BUILD - COMPLETE
+
+* Work completed
+    - Implemented `#HotIf sending` / `Esc::ExitApp` in `automation-scripts/windows/clipboard-yeet.ahk`
+    - Documented Escape abort in the script header and `automation-scripts/windows/description.html`
+    - `npm test` 104/104; `npm run lint:firefox` clean
+* Decisions made
+    - Built to plan; no stay-resident flag, no new tests
+* Insights
+    - None beyond the plan

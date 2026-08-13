@@ -1,12 +1,13 @@
 # Active Context
 
 ## Current Task: AHK Escape abort
-**Phase:** PREFLIGHT - COMPLETE (PASS)
+**Phase:** BUILD - COMPLETE
 
 ## What Was Done
-- Validated the replanned Level 2 implementation against system patterns and TDD rules.
-- Confirmed operator's decision to classify the `.ahk` sample as a non-executable artifact in this repo.
-- Recorded `PASS` in `.preflight-status`.
+- Added `#HotIf sending` + `Esc::ExitApp` to `automation-scripts/windows/clipboard-yeet.ahk`; `sending` armed only after the empty-clipboard return; header documents Escape abort/exit.
+- Added one sentence to `automation-scripts/windows/description.html`.
+- Inspection: hatch is send-gated, empty clipboard does not arm `sending`, `Sleep(DELAY_MS)` unchanged.
+- `npm test`: 104 passed (11 files). `npm run lint:firefox`: 0 errors/warnings. No new tests.
 
 ## Next Step
-- Run `/niko-build`
+- QA review (spawn `/niko-qa`)
