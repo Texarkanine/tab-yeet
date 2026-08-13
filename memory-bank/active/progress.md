@@ -74,3 +74,19 @@ Add an Escape-key abort to the shipped AutoHotkey clipboard-yeet script so a run
     - Built to plan; no stay-resident flag, no new tests
 * Insights
     - None beyond the plan
+
+## 2026-08-13 - QA - COMPLETE (PASS)
+
+* Work completed
+    - Reviewed the build diff against the plan and project brief for KISS/DRY/YAGNI, completeness, regression, integrity, and documentation
+    - Confirmed against official AHK v2 Functions docs that `global sending := true` is valid and scopes the whole hotkey function, so the trailing bare `sending := false` writes the global
+    - Confirmed auto-execute assigns `sending` before `#HotIf sending` can be evaluated, and that `Sleep(DELAY_MS)` remains the interruptible wait
+    - Re-ran verification: `npm test` 104/104, `npm run lint:firefox` clean
+    - Checked doc surfaces: `description.html` is the only one; README/`docs/` never mention the script, `CHANGELOG.md` is generated
+    - Recorded `PASS` in `.qa-validation-status` and QA findings in `tasks.md`
+* Decisions made
+    - PASS with two non-blocking advisories: no `try`/`finally` around the `sending` flag, and the ~17ms uninterruptible window at each `SendText`
+    - `systemPatterns.md` correctly left untouched - the abort hatch is not a system-wide contract
+* Insights
+    - The riskiest part of this change was AHK v2 scoping, not the hotkey design: a missing `global` would have silently created a local and left Escape armed forever. Docs confirm the declaration covers the whole function, so the single `global` is sufficient.
+    - The unguarded flag's worst case degenerates to the abort's intended outcome, which is why minimality wins over error plumbing here

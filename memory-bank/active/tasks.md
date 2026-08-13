@@ -75,6 +75,22 @@ No new technology - validation not required. AutoHotkey v2 is already the shippe
 - A second preflight fails by demanding the greps the first preflight/operator already classified as change-detectors: already covered by Challenge 4; this plan's TDD section is the instruction to that check.
 - The AHK is invalid v2 and nobody notices until a user copies it: residual, accepted. Keep the edit small and docs-shaped; inspection is the verification. A Windows parse smoke check is out of scope.
 
+## QA Results (2026-08-13) - PASS
+
+Reviewed the build diff (`automation-scripts/windows/clipboard-yeet.ahk`, `automation-scripts/windows/description.html`) against this plan and `projectbrief.md`.
+
+- **Completeness:** All three plan steps landed. `sending := false` at top level, `#HotIf sending` / `Esc::ExitApp` / `#HotIf`, `global sending := true` after the empty-clipboard return, `sending := false` after the loop, header usage step 4, one description.html sentence. Nothing stubbed or TODO'd. Acceptance criteria 1 and 2 both met.
+- **Correctness (inspection, per plan):** Verified against [AHK v2 Functions docs](https://www.autohotkey.com/docs/v2/Functions.htm) that `global sending := true` is valid and that the declaration applies to the whole hotkey function, so the later bare `sending := false` writes the global rather than creating a local. Auto-execute reaches both top-level assignments before the first hotkey, so `#HotIf sending` never evaluates an unset variable. `Sleep(DELAY_MS)` kept as the interruptible inter-line wait (Challenge 1); no `SendEvent`/`SetKeyDelay` regression.
+- **KISS / YAGNI / DRY:** Six added lines, no abstraction, no flags, no helper functions, no speculative options. Nothing duplicated.
+- **Integrity:** No debug artifacts, magic numbers, or placeholders; `DELAY_MS`, blank-line skip, counter, and completion tooltip untouched. `sending` is disarmed before the tooltip, so Escape does not kill the script during the tooltip timer.
+- **Regression:** `npm test` 104/104 across 11 files; `npm run lint:firefox` 0 errors / 0 warnings. No test files added, per the operator-directed plan.
+- **Documentation:** `description.html` is the only doc surface that describes this script; README and `docs/` never mention it, and `CHANGELOG.md` is release-please generated. `systemPatterns.md` correctly left alone - no new system-wide contract.
+
+### Advisories (non-blocking)
+
+- `sending := false` is not in a `try`/`finally`. An unhandled error mid-loop would leave `sending` true, arming Escape app-wide until the script exits. Worst case is Escape exiting a helper the user must re-run anyway - the same outcome as a deliberate abort - so this does not block; adding error plumbing was not in the plan and would cut against the task's minimality.
+- During the ~17ms uninterruptible window at the start of each `SendText`, Escape may be deferred or passed to the focused window. Covered by Challenge 1; the following `Sleep(400)` catches it. Not a defect.
+
 ## Status
 
 - [x] Initialization complete
@@ -84,4 +100,4 @@ No new technology - validation not required. AutoHotkey v2 is already the shippe
 - [x] Pre-Mortem complete
 - [x] Preflight
 - [x] Build
-- [ ] QA
+- [x] QA (PASS)
