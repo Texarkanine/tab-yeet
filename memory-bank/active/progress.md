@@ -101,3 +101,13 @@ Add an Escape-key abort to the shipped AutoHotkey clipboard-yeet script so a run
 * Insights
     - Bundled samples this repo only displays are inspection-verified; Vitest greps of them are change-detectors
 
+## 2026-08-14 - POST-REFLECT
+
+* Work completed
+    - Opened draft PR #49
+    - Dismissed CodeRabbit `try/finally` finding with a PR comment (same residual as the documented abort)
+* Decisions made
+    - Squash-merge from the GitHub UI as Texarkanine; delete any `Co-authored-by: Test User <test@example.com>` GitHub adds (branch commits used an unset git identity)
+* Insights
+    - None
+
