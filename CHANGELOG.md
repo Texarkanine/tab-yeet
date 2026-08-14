@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.0](https://github.com/Texarkanine/tab-yeet/compare/tab-yeet-v0.9.1...tab-yeet-v0.10.0) (2026-08-14)
+
+
+### Features
+
+* add Escape abort to shipped AutoHotkey script ([#49](https://github.com/Texarkanine/tab-yeet/issues/49)) ([fa69e2d](https://github.com/Texarkanine/tab-yeet/commit/fa69e2dac039ce710f5df96965cf68c386275110))
+
 ## [0.9.1](https://github.com/Texarkanine/tab-yeet/compare/tab-yeet-v0.9.0...tab-yeet-v0.9.1) (2026-08-02)
 
 
